@@ -29,13 +29,13 @@ public class HatchMechClamp extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.hatchMech.fingers(direction);
+    // Robot.hatchMech.fingers(direction);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;//TODO
+    return false;//TODO
   }
 
   // Called once after isFinished returns true

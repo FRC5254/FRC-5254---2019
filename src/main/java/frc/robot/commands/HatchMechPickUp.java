@@ -33,10 +33,10 @@ public class HatchMechPickUp extends CommandGroup {
     // arm.
     requires(Robot.hatchMech);
 
-    addSequential(new HatchMechSlide(true));
-    //TODO add waits?
-    addParallel(new HatchMechClamp(true));
+    // addSequential(new HatchMechSlide(true));
+    // //TODO add waits?
+    // addParallel(new HatchMechClamp(true));
 
-    addSequential(new HatchMechSlide(false));
+    // addSequential(new HatchMechSlide(false));
   }
 }

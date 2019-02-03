@@ -33,8 +33,8 @@ public class HatchMechHoldPanel extends CommandGroup {
     // arm.
     requires(Robot.hatchMech);
 
-    addSequential(new HatchMechHalo(true));
-    addSequential(new HatchMechSlide(false));
-    addSequential(new HatchMechClamp(true));
+    // addSequential(new HatchMechHalo(true));
+    // addSequential(new HatchMechSlide(false));
+    // addSequential(new HatchMechClamp(true));
   }
 }

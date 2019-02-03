@@ -89,8 +89,8 @@ public void shiftDown() {
     right = Math.max(-1.0, Math.min(1.0, right));
     
     
-    right1.set(-right);
-    left1.set(-left);
+    right1.set(right); // for Panel mech -right
+    left1.set(left); // -left
     
   
   }

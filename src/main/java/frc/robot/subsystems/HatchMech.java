@@ -21,15 +21,55 @@ public class HatchMech extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private static DoubleSolenoid haloSolenoid;
-  private static Solenoid fingersSolenoid;
-  private static DoubleSolenoid actuateSolenoid;
+  public enum FinState {
+    CLAMPED(true), UNCLAMPED(false);
+
+    private boolean state;
+    FinState(boolean state) {
+      this.state = state;
+    }
+  }
+
+  public enum KickerState {
+    OUT(Value.kForward), IN(Value.kReverse);
+
+    private Value state;
+    KickerState(Value state) {
+      this.state = state;
+    }
+  }
+
+  public enum SliderState {
+    OUT(Value.kForward), IN(Value.kReverse);
+
+    private Value state;
+    SliderState(Value state) {
+      this.state = state;
+    }
+  }
+
+  private static DoubleSolenoid kickerSolenoid;
+  private static Solenoid finSolenoid;
+  private static DoubleSolenoid sliderSolenoid;
+
+  public FinState finState;
+  public KickerState kickerState;
+  public SliderState sliderState;
+
+  private final FinState defaultFinState = FinState.CLAMPED;
+  private final KickerState defaultKickerState = KickerState.IN;
+  private final SliderState defaultSliderState = SliderState.IN;
+
 
   public HatchMech() {
 
-    haloSolenoid = new DoubleSolenoid(RobotMap.HALO_SOLENOID_OUT, RobotMap.HALO_SOLENOID_IN);
-    fingersSolenoid = new Solenoid(RobotMap.FINGERS_SOLENOID);
-    actuateSolenoid = new DoubleSolenoid(RobotMap.ACTUATE_SOLENOID_OUT, RobotMap.ACTUATE_SOLENOID_IN);
+    kickerSolenoid = new DoubleSolenoid(RobotMap.HALO_SOLENOID_OUT, RobotMap.HALO_SOLENOID_IN);
+    finSolenoid = new Solenoid(RobotMap.FINGERS_SOLENOID);
+    sliderSolenoid = new DoubleSolenoid(RobotMap.ACTUATE_SOLENOID_OUT, RobotMap.ACTUATE_SOLENOID_IN);
+
+    finState = defaultFinState;
+    kickerState = defaultKickerState;
+    sliderState = defaultSliderState;
 
   }
   @Override
@@ -39,28 +79,22 @@ public class HatchMech extends Subsystem {
     // setDefaultCommand(new HatchMechHoldPanel());
   }
 
-  public void halo(boolean direction) {
+  public void setKickerState(KickerState newState) {
+    kickerSolenoid.set(newState.state);
+    kickerState = newState;
+  }
 
-    if (direction) {
-      haloSolenoid.set(Value.kForward);
-    } else {
-      haloSolenoid.set(Value.kReverse);
+  public void setFinState(FinState newState) {
+    if(kickerState == KickerState.OUT && newState == FinState.CLAMPED) {
+      kickerState = KickerState.IN; //TODO Does this work?
     }
 
+    finSolenoid.set(newState.state);
+    finState = newState;
   }
 
-  public void fingers(boolean direction) {
-
-    fingersSolenoid.set(direction);
+  public void setSliderState(SliderState newState) {
+    sliderSolenoid.set(newState.state);
+    sliderState = newState;
   }
-
-  public void actuate(boolean direction) {
-
-    if (direction) {
-      actuateSolenoid.set(Value.kForward);
-    } else {
-      actuateSolenoid.set(Value.kReverse);
-    }
-  }
-
 }

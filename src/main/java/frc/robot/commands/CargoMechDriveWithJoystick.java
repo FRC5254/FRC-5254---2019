@@ -27,10 +27,11 @@ public class CargoMechDriveWithJoystick extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double left = Robot.m_oi.driver.getRawAxis(4);
-
-    Robot.cargoMech.setPivotMotor(left * 1);
-    SmartDashboard.putNumber("Cargo mech", left);
+    double left = Robot.m_oi.driver.getRawAxis(1);
+    if(left > 0.1 || left < -0.1) {//TODO does this work?
+    Robot.cargoMech.setPivotMotor(left * 0.25);
+    }
+    // SmartDashboard.putNumber("Cargo mech", left);
   }
 
   // Make this return true when this Command no longer needs to run execute()

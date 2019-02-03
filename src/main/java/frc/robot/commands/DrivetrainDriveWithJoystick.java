@@ -29,7 +29,7 @@ protected void execute() {
   Robot.drivetrain.customDrive(
       Robot.m_oi.driver.getRawAxis(2),
       Robot.m_oi.driver.getRawAxis(3),
-      Robot.m_oi.driver.getRawAxis(0)
+      Robot.m_oi.driver.getRawAxis(4)
   );
   
 }
