@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
 
 public class DrivetrainDriveWithJoystick extends Command {
@@ -27,9 +28,9 @@ protected void execute() {
   
   
   Robot.drivetrain.customDrive(
-      Robot.m_oi.driverLeftTrigger,
-      Robot.m_oi.driverRightTrigger,
-      Robot.m_oi.driverRightJoystickXAxis
+      OI.driver.getRawAxis(OI.driverLeftTrigger),
+      OI.driver.getRawAxis(OI.driverRightTrigger),
+      OI.driver.getRawAxis(OI.driverRightJoystickXAxis)
   );
   
 }

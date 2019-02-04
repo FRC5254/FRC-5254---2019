@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
 
 public class CargoMechDriveWithJoystick extends Command {
@@ -26,7 +27,7 @@ public class CargoMechDriveWithJoystick extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double axis = Robot.m_oi.driverLeftJoystickYAxis;
+    double axis = OI.driver.getRawAxis(OI.driverLeftJoystickYAxis);
     if(axis > 0.1 || axis < -0.1) {
     Robot.cargoMech.setPivotMotor(axis * 0.25);
     }
