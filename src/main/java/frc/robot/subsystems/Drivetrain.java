@@ -26,7 +26,7 @@ import frc.robot.commands.DrivetrainDriveWithJoystick;
 public class Drivetrain extends PIDSubsystem {
 
   public enum ShiftState {
-    HighGear(true), LowGear(false);
+    HIGH_GEAR(true), LOW_GEAR(false);
 
     private boolean state;
     ShiftState(boolean state){

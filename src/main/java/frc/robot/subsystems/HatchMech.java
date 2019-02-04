@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.HatchMechHold;
 
 /**
  * Add your docs here.
@@ -81,7 +80,7 @@ public class HatchMech extends Subsystem {
 
   public void setFinState(FinState newState) {
     if(kickerState == KickerState.OUT && newState == FinState.CLAMPED) {
-      kickerState = KickerState.IN; //TODO Does this work?
+      setKickerState(KickerState.IN); //TODO Does this work?
     }
 
     finSolenoid.set(newState.state);
@@ -89,6 +88,9 @@ public class HatchMech extends Subsystem {
   }
 
   public void setKickerState(KickerState newState) {
+    if(finState == FinState.CLAMPED && newState == KickerState.OUT){
+      setFinState(FinState.UNCLAMPED);
+    }
     kickerSolenoid.set(newState.state);
     kickerState = newState;
   }
@@ -98,18 +100,18 @@ public class HatchMech extends Subsystem {
     sliderState = newState;
   }
 
-  public void setMechState(FinState fState, KickerState kState, SliderState sState) {
-    if (kState == KickerState.OUT && fState == FinState.CLAMPED) {
-      // Do nothing bc otherwise this woud break things
-      System.out.println("*********CRASH***********  Kicker set to out and fins set to clamped - thats a no");
-    } else {
-      finSolenoid.set(fState.state);
-      kickerSolenoid.set(kState.state);
-      sliderSolenoid.set(sState.state);
+  // public void setMechState(FinState fState, KickerState kState, SliderState sState) {
+  //   if (kState == KickerState.OUT && fState == FinState.CLAMPED) {
+  //     // Do nothing bc otherwise this woud break things
+  //     System.out.println("*********CRASH***********  Kicker set to out and fins set to clamped - thats a no");
+  //   } else {
+  //     finSolenoid.set(fState.state);
+  //     kickerSolenoid.set(kState.state);
+  //     sliderSolenoid.set(sState.state);
 
-      finState = fState;
-      kickerState = kState;
-      sliderState = sState;
-    }
-  }
+  //     finState = fState;
+  //     kickerState = kState;
+  //     sliderState = sState;
+  //   }
+  // }
 }

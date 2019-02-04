@@ -20,13 +20,5 @@ public class DrivetrainSetShiftState extends InstantCommand {
    */
   public DrivetrainSetShiftState(ShiftState shiftState) {
     super(Robot.drivetrain, () -> Robot.drivetrain.shift(shiftState));
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
   }
-
-  // Called once when the command executes
-  @Override
-  protected void initialize() {
-  }
-
 }

@@ -7,53 +7,27 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
 import frc.robot.subsystems.HatchMech.FinState;
 import frc.robot.subsystems.HatchMech.KickerState;
 import frc.robot.subsystems.HatchMech.SliderState;
 
+public class HatchMechSetMechState extends CommandGroup {
+  /**
+   * Add your docs here.
+   */
+  public HatchMechSetMechState(FinState finState, KickerState kickerState, SliderState sliderState) {
+    if(Robot.hatchMech.finState != finState) {
+      addSequential(new HatchMechSetFinState(finState));
+    }
 
-public class HatchMechSetMechState extends Command {
+    if (Robot.hatchMech.kickerState != kickerState){
+      addSequential(new HatchMechSetKickerState(kickerState));
+    }
 
-  FinState fState;
-  KickerState kState;
-  SliderState sState;
-
-  public HatchMechSetMechState(FinState fState, KickerState kState, SliderState sState) {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.hatchMech);
-    this.fState = fState;
-    this.kState = kState;
-    this.sState = sState;
-  }
-
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-  }
-
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    Robot.hatchMech.setMechState(fState, kState, sState);
-  }
-
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return true; //TODO
-  }
-
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
+    if(Robot.hatchMech.sliderState != sliderState) {
+      addSequential(new HatchMechSetSliderState(sliderState));
+    }
   }
 }

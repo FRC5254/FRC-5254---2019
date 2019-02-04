@@ -30,5 +30,7 @@ public class RobotMap {
   public static final int DRIVETRAIN_RIGHT = 3;
   public static final int DRIVETRAIN_RIGHT_2 = 6;
 
+  public static final int LEFT_TRIGGER_X_AXIS = 0; 
+
   
 }
