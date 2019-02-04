@@ -22,12 +22,12 @@ public class OI {
 
   public static Joystick driver = new Joystick(0); //TODO should this be static?
 
-  public static final int driverLeftJoystickXAxis = 0;
-  public static final int driverLeftJoystickYAxis = 1;
-  public static final int driverLeftTrigger = 2;
-  public static final int driverRightTrigger = 3;
-  public static final int driverRightJoystickXAxis = 4;
-  public static final int driverRightJoystickYAxis = 5;
+  public static final int DRIVER_LEFT_JOYSTICK_X_AXIS = 0;
+  public static final int DRIVER_LEFT_JOYSTICK_Y_AXIS = 1;
+  public static final int DRIVER_LEFT_TRIGGER = 2;
+  public static final int DRIVER_RIGHT_TRIGGER = 3;
+  public static final int DRIVER_RIGHT_JOYTICK_X_AXIS = 4;
+  public static final int DRIVER_RIGHT_JOYSTICK_Y_AXIS = 5;
 
   public OI() {
     Button aButton = new JoystickButton(driver, 1);

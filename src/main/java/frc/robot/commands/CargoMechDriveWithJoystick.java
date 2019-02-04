@@ -27,7 +27,7 @@ public class CargoMechDriveWithJoystick extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double axis = OI.driver.getRawAxis(OI.driverLeftJoystickYAxis);
+    double axis = OI.driver.getRawAxis(OI.DRIVER_LEFT_JOYSTICK_Y_AXIS);
     if(axis > 0.1 || axis < -0.1) {
     Robot.cargoMech.setPivotMotor(axis * 0.25);
     }

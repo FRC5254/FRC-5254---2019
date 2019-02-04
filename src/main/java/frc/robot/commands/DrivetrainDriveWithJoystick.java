@@ -28,9 +28,9 @@ protected void execute() {
   
   
   Robot.drivetrain.customDrive(
-      OI.driver.getRawAxis(OI.driverLeftTrigger),
-      OI.driver.getRawAxis(OI.driverRightTrigger),
-      OI.driver.getRawAxis(OI.driverRightJoystickXAxis)
+      OI.driver.getRawAxis(OI.DRIVER_LEFT_TRIGGER),
+      OI.driver.getRawAxis(OI.DRIVER_RIGHT_TRIGGER),
+      OI.driver.getRawAxis(OI.DRIVER_RIGHT_JOYTICK_X_AXIS)
   );
   
 }
