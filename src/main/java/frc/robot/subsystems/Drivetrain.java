@@ -15,7 +15,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
@@ -26,12 +25,23 @@ import frc.robot.commands.DrivetrainDriveWithJoystick;
  */
 public class Drivetrain extends PIDSubsystem {
 
+  public enum ShiftState {
+    HighGear(true), LowGear(false);
+
+    private boolean state;
+    ShiftState(boolean state){
+      this.state = state;
+    }
+  }
+
   private WPI_TalonSRX left1, left2, right1, right2;
   private DifferentialDrive drive;
   private Encoder leftEncoder, rightEncoder;
   private ADXRS450_Gyro gyro;
   
   private static Solenoid shiftingSolenoid;
+
+  public ShiftState shiftState;
   
   public Drivetrain() {
     super("Drivetrain", 0.0, 0.0, 0.0);
@@ -62,12 +72,9 @@ public class Drivetrain extends PIDSubsystem {
     // shiftingSolenoid = new Solenoid(RobotMap.shiftingSolenoid);
   }
   
-public void shiftUp() {
-  shiftingSolenoid.set(true);
-}
-
-public void shiftDown() {
-  shiftingSolenoid.set(false);
+public void shift(ShiftState newState) {
+  shiftingSolenoid.set(newState.state);
+  shiftState = newState;
 }
 
   public void arcadeDrive(double throttle, double turn) {
@@ -81,7 +88,7 @@ public void shiftDown() {
       turn = 0.0;
     }
 
-    turn = turn * turn * Math.signum(turn);
+    turn = turn * turn * Math.signum(turn); //TODO add negative?
 
     double left = rightTrigger - leftTrigger +  turn;
     double right = rightTrigger - leftTrigger - turn;

@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.CargoMechSetIntake;
-import frc.robot.commands.HatchMechClamp;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -31,8 +30,8 @@ public class OI {
     Button leftBumper = new JoystickButton(driver, 5);
     Button rightBumper =  new JoystickButton(driver, 6);
 
-    aButton.whenPressed(new HatchMechClamp(true));
-    aButton.whenReleased(new HatchMechClamp(false));
+    // aButton.whenPressed(new HatchMechClamp(true));
+    // aButton.whenReleased(new HatchMechClamp(false));
     // xButton.whenPressed(new HatchMechHalo(false));
     // xButton.whenReleased(new HatchMechHalo(true));
     // yButton.whenPressed(new HatchMechSlide(true));

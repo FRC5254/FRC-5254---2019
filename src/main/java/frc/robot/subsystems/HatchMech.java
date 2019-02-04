@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.HatchMechHoldPanel;
+import frc.robot.commands.HatchMechHold;
 
 /**
  * Add your docs here.
@@ -48,8 +48,8 @@ public class HatchMech extends Subsystem {
     }
   }
 
-  private static DoubleSolenoid kickerSolenoid;
   private static Solenoid finSolenoid;
+  private static DoubleSolenoid kickerSolenoid;
   private static DoubleSolenoid sliderSolenoid;
 
   public FinState finState;
@@ -63,8 +63,8 @@ public class HatchMech extends Subsystem {
 
   public HatchMech() {
 
-    kickerSolenoid = new DoubleSolenoid(RobotMap.HALO_SOLENOID_OUT, RobotMap.HALO_SOLENOID_IN);
     finSolenoid = new Solenoid(RobotMap.FINGERS_SOLENOID);
+    kickerSolenoid = new DoubleSolenoid(RobotMap.HALO_SOLENOID_OUT, RobotMap.HALO_SOLENOID_IN);
     sliderSolenoid = new DoubleSolenoid(RobotMap.ACTUATE_SOLENOID_OUT, RobotMap.ACTUATE_SOLENOID_IN);
 
     finState = defaultFinState;
@@ -76,12 +76,7 @@ public class HatchMech extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    // setDefaultCommand(new HatchMechHoldPanel());
-  }
-
-  public void setKickerState(KickerState newState) {
-    kickerSolenoid.set(newState.state);
-    kickerState = newState;
+    // setDefaultCommand(new HatchMechHold());
   }
 
   public void setFinState(FinState newState) {
@@ -93,8 +88,28 @@ public class HatchMech extends Subsystem {
     finState = newState;
   }
 
+  public void setKickerState(KickerState newState) {
+    kickerSolenoid.set(newState.state);
+    kickerState = newState;
+  }
+
   public void setSliderState(SliderState newState) {
     sliderSolenoid.set(newState.state);
     sliderState = newState;
+  }
+
+  public void setMechState(FinState fState, KickerState kState, SliderState sState) {
+    if (kState == KickerState.OUT && fState == FinState.CLAMPED) {
+      // Do nothing bc otherwise this woud break things
+      System.out.println("*********CRASH***********  Kicker set to out and fins set to clamped - thats a no");
+    } else {
+      finSolenoid.set(fState.state);
+      kickerSolenoid.set(kState.state);
+      sliderSolenoid.set(sState.state);
+
+      finState = fState;
+      kickerState = kState;
+      sliderState = sState;
+    }
   }
 }
