@@ -10,11 +10,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.CargoMechDriveWithJoystick;
+import frc.robot.commands.CargoMechDriveWithJoystick;;
 
 /**
  * Add your docs here.
@@ -26,7 +25,9 @@ public class CargoMech extends Subsystem {
   private static Victor cargoMotor;
   private static TalonSRX pivotMotor, pivotMotor_2;
 
-  public CargoMech() {
+  public static CargoMech instance = new CargoMech();
+
+  private CargoMech() {
 
     cargoMotor = new Victor(RobotMap.CARGO_MOTOR);
     pivotMotor = new TalonSRX(RobotMap.CARGO_PIVOT_MOTOR);
@@ -37,14 +38,10 @@ public class CargoMech extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-    
     setDefaultCommand(new CargoMechDriveWithJoystick());
   }
 
   public void setIntakeMotor(double speed) {
-
     cargoMotor.set(speed);
   }
 

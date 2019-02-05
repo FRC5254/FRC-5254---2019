@@ -73,9 +73,7 @@ public class HatchMech extends Subsystem {
   }
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-    // setDefaultCommand(new HatchMechHold());
+    // No commands here
   }
 
   public void setFinState(FinState newState) {
@@ -99,19 +97,4 @@ public class HatchMech extends Subsystem {
     sliderSolenoid.set(newState.state);
     sliderState = newState;
   }
-
-  // public void setMechState(FinState fState, KickerState kState, SliderState sState) {
-  //   if (kState == KickerState.OUT && fState == FinState.CLAMPED) {
-  //     // Do nothing bc otherwise this woud break things
-  //     System.out.println("*********CRASH***********  Kicker set to out and fins set to clamped - thats a no");
-  //   } else {
-  //     finSolenoid.set(fState.state);
-  //     kickerSolenoid.set(kState.state);
-  //     sliderSolenoid.set(sState.state);
-
-  //     finState = fState;
-  //     kickerState = kState;
-  //     sliderState = sState;
-  //   }
-  // }
 }

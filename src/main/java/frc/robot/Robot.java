@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-import java.sql.Driver;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -46,7 +44,8 @@ public class Robot extends TimedRobot {
     drivetrain = new Drivetrain();
     intake = new Intake();
     hatchMech = new HatchMech();
-    cargoMech = new CargoMech();
+    cargoMech.instance = new CargoMech.instance();
+    // cargoMech = new CargoMech();
     m_oi = new OI();
     
     // chooser.addOption("My Auto", new MyAutoCommand());

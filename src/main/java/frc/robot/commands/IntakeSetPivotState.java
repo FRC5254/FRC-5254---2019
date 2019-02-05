@@ -9,16 +9,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
-import frc.robot.subsystems.HatchMech.KickerState;
+import frc.robot.subsystems.Intake.PivotState;
 
 /**
  * Add your docs here.
  */
-public class HatchMechSetKickerState extends InstantCommand {
+public class IntakeSetPivotState extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public HatchMechSetKickerState(KickerState kickerState) {
-    super(Robot.hatchMech, () -> Robot.hatchMech.setKickerState(kickerState));
+  public IntakeSetPivotState(PivotState state) {
+    super(Robot.intake, () -> Robot.intake.setPivotState(state));
   }
 }

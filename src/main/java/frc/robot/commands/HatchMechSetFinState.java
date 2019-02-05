@@ -20,7 +20,5 @@ public class HatchMechSetFinState extends InstantCommand {
    */
   public HatchMechSetFinState(FinState finState) {
     super(Robot.hatchMech, () -> Robot.hatchMech.setFinState(finState));
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
   }
 }

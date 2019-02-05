@@ -23,6 +23,7 @@ public class HatchMechCollect extends CommandGroup { //TODO combime these sequen
 
     addSequential(new HatchMechSetMechState(FinState.UNCLAMPED, KickerState.IN, SliderState.IN));
     addSequential(new HatchMechSetMechState(FinState.UNCLAMPED, KickerState.IN, SliderState.OUT));
+    
     addSequential(new HatchMechSetMechState(FinState.CLAMPED, KickerState.IN, SliderState.OUT));
     
     addSequential(new HatchMechSetMechState(FinState.CLAMPED, KickerState.IN, SliderState.IN));

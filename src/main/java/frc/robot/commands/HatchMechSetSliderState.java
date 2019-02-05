@@ -20,7 +20,5 @@ public class HatchMechSetSliderState extends InstantCommand {
    */
   public HatchMechSetSliderState(SliderState sliderState) {
     super(Robot.hatchMech, () -> Robot.hatchMech.setSliderState(sliderState));
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
   }
 }

@@ -9,16 +9,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
-import frc.robot.subsystems.HatchMech.KickerState;
 
 /**
  * Add your docs here.
  */
-public class HatchMechSetKickerState extends InstantCommand {
+public class IntakeSetSpeed extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public HatchMechSetKickerState(KickerState kickerState) {
-    super(Robot.hatchMech, () -> Robot.hatchMech.setKickerState(kickerState));
+  public IntakeSetSpeed(double speed) {
+    super(Robot.intake, () -> Robot.intake.setSpeed(speed));
   }
 }

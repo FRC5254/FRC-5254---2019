@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 
-public class DrivetrainDriveWithJoystick extends Command {
-  public DrivetrainDriveWithJoystick() {
+public class DrivetrainCustomDriveWithJoystick extends Command {
+  public DrivetrainCustomDriveWithJoystick() {
     requires(Robot.drivetrain);
 }
 

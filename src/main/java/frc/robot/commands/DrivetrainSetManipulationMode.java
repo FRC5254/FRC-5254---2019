@@ -9,15 +9,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.Drivetrain.ManipulationMode;
 
-public class IntakeActuate extends Command {
+public class DrivetrainSetManipulationMode extends Command {
 
-  boolean direction;
+  ManipulationMode newManipulationMode;
 
-  public IntakeActuate(boolean direction) {
+  public DrivetrainSetManipulationMode(ManipulationMode newManipulationMode) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    this.direction = direction;
+    this.newManipulationMode = newManipulationMode;
   }
 
   // Called just before this Command runs the first time
@@ -28,13 +29,13 @@ public class IntakeActuate extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.intake.actuate(direction);
+    Robot.drivetrain.manipulationMode = newManipulationMode;
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;// TODO set this to true??
+    return false;
   }
 
   // Called once after isFinished returns true
@@ -46,6 +47,5 @@ public class IntakeActuate extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }
