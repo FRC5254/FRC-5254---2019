@@ -37,9 +37,7 @@ public class OI {
   public static final int DRIVER_RIGHT_JOYTICK_X_AXIS = 4;
   public static final int DRIVER_RIGHT_JOYSTICK_Y_AXIS = 5;
 
-  private static OI instance = new OI();
-
-  private OI() {
+  public OI() {
 
     Button aButton = new JoystickButton(driver, 1);
     Button bButton = new JoystickButton(driver, 2);
@@ -65,9 +63,5 @@ public class OI {
     rightJoystickClick.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.CARGO));
 
 
-  }
-
-  public static OI getInstance() {
-    return instance;
   }
 }

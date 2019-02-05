@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
     hatchFloorIntake = HatchFloorIntake.getInstance();
     hatchMech = HatchMech.getInstance();
     
-    m_oi = OI.getInstance(); // This one MUST be last 
+    m_oi = new OI(); // This one MUST be last 
     
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
