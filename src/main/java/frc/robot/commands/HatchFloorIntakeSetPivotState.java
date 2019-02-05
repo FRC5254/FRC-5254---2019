@@ -9,15 +9,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
+import frc.robot.subsystems.HatchFloorIntake.PivotState;
 
 /**
  * Add your docs here.
  */
-public class IntakeSetSpeed extends InstantCommand {
+public class HatchFloorIntakeSetPivotState extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public IntakeSetSpeed(double speed) {
-    super(Robot.intake, () -> Robot.intake.setSpeed(speed));
+  public HatchFloorIntakeSetPivotState(PivotState state) {
+    super(Robot.hatchFloorIntake, () -> Robot.hatchFloorIntake.setPivotState(state));
   }
 }

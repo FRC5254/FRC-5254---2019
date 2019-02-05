@@ -59,8 +59,10 @@ public class HatchMech extends Subsystem {
   private final KickerState defaultKickerState = KickerState.IN;
   private final SliderState defaultSliderState = SliderState.IN;
 
+  private static HatchMech instance = new HatchMech();
 
-  public HatchMech() {
+
+  private HatchMech() {
 
     finSolenoid = new Solenoid(RobotMap.FINGERS_SOLENOID);
     kickerSolenoid = new DoubleSolenoid(RobotMap.HALO_SOLENOID_OUT, RobotMap.HALO_SOLENOID_IN);
@@ -71,6 +73,11 @@ public class HatchMech extends Subsystem {
     sliderState = defaultSliderState;
 
   }
+
+  public static HatchMech getInstance() {
+    return instance;
+  }
+  
   @Override
   public void initDefaultCommand() {
     // No commands here

@@ -13,7 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.CargoMechDriveWithJoystick;;
+import frc.robot.commands.CargoMechDriveWithJoystick;
 
 /**
  * Add your docs here.
@@ -25,7 +25,7 @@ public class CargoMech extends Subsystem {
   private static Victor cargoMotor;
   private static TalonSRX pivotMotor, pivotMotor_2;
 
-  public static CargoMech instance = new CargoMech();
+  private static CargoMech instance = new CargoMech();
 
   private CargoMech() {
 
@@ -34,6 +34,10 @@ public class CargoMech extends Subsystem {
     pivotMotor_2 = new TalonSRX(RobotMap.CARGO_PIVOT_MOTOR_2);
     
     pivotMotor_2.follow(pivotMotor);
+  }
+
+  public static CargoMech getInstance() {
+    return instance;
   }
 
   @Override

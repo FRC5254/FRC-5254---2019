@@ -29,23 +29,24 @@ public class CargoMechDriveWithJoystick extends Command {
   @Override
   protected void execute() { //TODO move most if not all of this into the subsystem
 
-    if(Robot.drivetrain.driverControls == DriverControls.SHAKER_DRIVE){
-    double axis = OI.driver.getRawAxis(OI.DRIVER_LEFT_JOYSTICK_Y_AXIS);
-    if(axis > 0.1 || axis < -0.1) {
-    Robot.cargoMech.setPivotMotor(axis * 0.25);
+    if(Robot.drivetrain.driverControls == DriverControls.GTA_DRIVE){
+      double axis = OI.driver.getRawAxis(OI.DRIVER_LEFT_JOYSTICK_Y_AXIS);
+      if(axis > 0.1 || axis < -0.1) {
+      Robot.cargoMech.setPivotMotor(axis * 0.25);
+     }
     }
 
     if(Robot.drivetrain.driverControls == DriverControls.ARCADE){
       double leftTrigger = OI.driver.getRawAxis(OI.DRIVER_LEFT_TRIGGER);
       double rightTrigger = OI.driver.getRawAxis(OI.DRIVER_RIGHT_TRIGGER);
      
-      if(leftTrigger > 0.1) {
+     if(leftTrigger > 0.1) {
         Robot.cargoMech.setPivotMotor(leftTrigger * 0.25);
       }
+
       if(rightTrigger > 0.1) {
         Robot.cargoMech.setPivotMotor(-rightTrigger * 0.25);
       }
-    }
     }
   }
 

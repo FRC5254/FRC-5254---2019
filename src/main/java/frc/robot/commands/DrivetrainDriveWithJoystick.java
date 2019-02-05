@@ -10,9 +10,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.subsystems.Drivetrain.DriverControls;
 
-public class DrivetrainCustomDriveWithJoystick extends Command {
-  public DrivetrainCustomDriveWithJoystick() {
+public class DrivetrainDriveWithJoystick extends Command {
+  public DrivetrainDriveWithJoystick() {
     requires(Robot.drivetrain);
 }
 
@@ -22,17 +23,19 @@ protected void initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 protected void execute() {
-//    	double throttle = Robot.oi.driver.getRawAxis(1);
-//    	double turn = -Robot.oi.driver.getRawAxis(4);
-//    	Robot.drivetrain.arcadeDrive(throttle, turn);
-  
-  
-  Robot.drivetrain.customDrive(
+  if(Robot.drivetrain.driverControls == DriverControls.ARCADE){
+    double throttle = OI.driver.getRawAxis(OI.DRIVER_LEFT_JOYSTICK_Y_AXIS);
+    double turn = OI.driver.getRawAxis(OI.DRIVER_RIGHT_JOYTICK_X_AXIS);
+
+    Robot.drivetrain.arcadeDrive(throttle, turn);
+  }
+
+  if(Robot.drivetrain.driverControls == DriverControls.GTA_DRIVE)
+    Robot.drivetrain.GTADrive(
       OI.driver.getRawAxis(OI.DRIVER_LEFT_TRIGGER),
       OI.driver.getRawAxis(OI.DRIVER_RIGHT_TRIGGER),
       OI.driver.getRawAxis(OI.DRIVER_RIGHT_JOYTICK_X_AXIS)
-  );
-  
+    );
 }
 
 // Make this return true when this Command no longer needs to run execute()

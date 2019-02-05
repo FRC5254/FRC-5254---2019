@@ -19,6 +19,6 @@ public class DrivetrainSetShiftState extends InstantCommand {
    * Add your docs here.
    */
   public DrivetrainSetShiftState(ShiftState shiftState) {
-    super(Robot.drivetrain, () -> Robot.drivetrain.shift(shiftState));
+    super(Robot.drivetrain, () -> Robot.drivetrain.setShiftState(shiftState));
   }
 }

@@ -15,7 +15,7 @@ import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class Intake extends Subsystem {
+public class HatchFloorIntake extends Subsystem {
 
   public enum PivotState {
     UP(true), DOWN(false);
@@ -33,12 +33,18 @@ public class Intake extends Subsystem {
 
   private final PivotState defaultPivotState = PivotState.UP;
 
-  public Intake() {
+  private static HatchFloorIntake instance = new HatchFloorIntake();
+
+  private HatchFloorIntake() {
     intakeMotor = new Victor(RobotMap.INTAKE_MOTOR);
     intakeSolenoid = new Solenoid(RobotMap.INTAKE_SOLENOID);
 
     pivotState = defaultPivotState;
     intakeMotor.set(0.0);
+  }
+
+  public static HatchFloorIntake getInstance() {
+    return instance;
   }
 
   @Override

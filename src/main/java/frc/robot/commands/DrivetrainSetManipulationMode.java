@@ -7,45 +7,18 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain.ManipulationMode;
 
-public class DrivetrainSetManipulationMode extends Command {
-
-  ManipulationMode newManipulationMode;
-
-  public DrivetrainSetManipulationMode(ManipulationMode newManipulationMode) {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    this.newManipulationMode = newManipulationMode;
-  }
-
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-  }
-
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    Robot.drivetrain.manipulationMode = newManipulationMode;
-  }
-
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
-
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
+/**
+ * Add your docs here.
+ */
+public class DrivetrainSetManipulationMode extends InstantCommand {
+  /**
+   * Add your docs here.
+   */
+  public DrivetrainSetManipulationMode(ManipulationMode newMode) {
+    super(Robot.drivetrain, () -> Robot.drivetrain.setManipulationMode(newMode));
   }
 }
