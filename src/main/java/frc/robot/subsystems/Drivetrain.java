@@ -46,7 +46,7 @@ public class Drivetrain extends Subsystem {
   }
 
   private WPI_TalonSRX tLeft1, tLeft2, tRight1, tRight2;
-  private CANSparkMax sLeft1, sLeft2, sRight1, sRight2;
+  private CANSparkMax sLeft1, sLeft2, sLeft3, sRight1, sRight2, sRight3;
 
   private DifferentialDrive drive;
   private Encoder leftEncoder, rightEncoder;
@@ -64,38 +64,47 @@ public class Drivetrain extends Subsystem {
   private Drivetrain() {
 
     drivetrainMotorContollers = DrivetrainMotorControllers.TALON_SRX;
-    driverControls = DriverControls.ARCADE;// TODO do these go here or earlier?
-    manipulationMode = ManipulationMode.CARGO;
+    driverControls = DriverControls.GTA_DRIVE;// TODO do these go here or earlier?
+    manipulationMode = ManipulationMode.PANEL;
 
     if(drivetrainMotorContollers == DrivetrainMotorControllers.TALON_SRX) { 
-      tLeft1 = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT);
-      tLeft2 = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_2);
-      tRight1 = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT);
-      tRight2 = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_2);
+      tLeft1 = new WPI_TalonSRX(RobotMap.T_DRIVETRAIN_LEFT);
+      tLeft2 = new WPI_TalonSRX(RobotMap.T_DRIVETRAIN_LEFT_2);
+      tRight1 = new WPI_TalonSRX(RobotMap.T_DRIVETRAIN_RIGHT);
+      tRight2 = new WPI_TalonSRX(RobotMap.T_DRIVETRAIN_RIGHT_2);
       
       tLeft2.follow(tLeft1);
       tRight2.follow(tRight1);
 
-      tLeft1.setInverted(false);//TODO invert as necessary
-      tLeft2.setInverted(false);//TODO invert as necessary
+      tLeft1.setInverted(true);//TODO invert as necessary
+      tLeft2.setInverted(true);//TODO invert as necessary
     }
 
     if(drivetrainMotorContollers == DrivetrainMotorControllers.SPARK_MAX){
-      sLeft1 = new CANSparkMax(RobotMap.DRIVETRAIN_LEFT, MotorType.kBrushless);
-      sLeft2 = new CANSparkMax(RobotMap.DRIVETRAIN_LEFT, MotorType.kBrushless);
-      sRight1 = new CANSparkMax(RobotMap.DRIVETRAIN_LEFT, MotorType.kBrushless);
-      sRight2 = new CANSparkMax(RobotMap.DRIVETRAIN_LEFT, MotorType.kBrushless);
+
+      sLeft1 = new CANSparkMax(RobotMap.S_DRIVETRAIN_LEFT, MotorType.kBrushless);
+      sLeft2 = new CANSparkMax(RobotMap.S_DRIVETRAIN_LEFT_2, MotorType.kBrushless);
+      sLeft3 = new CANSparkMax(RobotMap.S_DRIVETRAIN_LEFT_3, MotorType.kBrushless);
+
+      sRight1 = new CANSparkMax(RobotMap.S_DRIVETRAIN_RIGHT, MotorType.kBrushless);
+      sRight2 = new CANSparkMax(RobotMap.S_DRIVETRAIN_RIGHT_2, MotorType.kBrushless);
+      sRight3 = new CANSparkMax(RobotMap.S_DRIVETRAIN_RIGHT_3, MotorType.kBrushless);
+
 
       sLeft2.follow(sLeft1);
-      sRight2.follow(sRight1);
+      sLeft3.follow(sLeft1);
 
-      sLeft1.setInverted(false);//TODO invert as necessary
-      sLeft2.setInverted(false);//TODO invert as necessary
+      sRight2.follow(sRight1);
+      sRight3.follow(sRight1);
+
+      sLeft1.setInverted(true);//TODO invert as necessary
+      sLeft2.setInverted(true);//TODO invert as necessary
+      sLeft3.setInverted(true);
     }
     
     // leftEncoder = new Encoder(RobotMap.encoderLeftA, RobotMap.encoderLeftB);
     // rightEncoder = new Encoder(RobotMap.encoderRightA, RobotMap.encoderRightB);
-    gyro = new ADXRS450_Gyro();
+    // gyro = new ADXRS450_Gyro();
   }
 
   public void initDefaultCommand() {
@@ -112,7 +121,7 @@ public class Drivetrain extends Subsystem {
   }
 
   public void arcadeDrive(double throttle, double turn) {
-   	drive.arcadeDrive(throttle, turn);
+    //  drive.arcadeDrive(throttle, turn);
   }
   
   public void GTADrive(double leftTrigger, double rightTrigger, double turn) {

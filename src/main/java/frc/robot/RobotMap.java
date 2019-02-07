@@ -25,10 +25,17 @@ public class RobotMap {
   // CAN
   public static final int CARGO_PIVOT_MOTOR = 4;
   public static final int CARGO_PIVOT_MOTOR_2 = 9;
-  public static final int DRIVETRAIN_LEFT = 2;
-  public static final int DRIVETRAIN_LEFT_2 = 10;
-  public static final int DRIVETRAIN_RIGHT = 3;
-  public static final int DRIVETRAIN_RIGHT_2 = 6;
+  public static final int T_DRIVETRAIN_LEFT = 2;
+  public static final int T_DRIVETRAIN_LEFT_2 = 10;
+  public static final int T_DRIVETRAIN_RIGHT = 3;
+  public static final int T_DRIVETRAIN_RIGHT_2 = 6;
+  
+  public static final int S_DRIVETRAIN_LEFT = 19;
+  public static final int S_DRIVETRAIN_LEFT_2 = 24;
+  public static final int S_DRIVETRAIN_LEFT_3 = 20;
+  public static final int S_DRIVETRAIN_RIGHT = 16;
+  public static final int S_DRIVETRAIN_RIGHT_2 = 18;
+  public static final int S_DRIVETRAIN_RIGHT_3 = 17;
 
   public static final int LEFT_TRIGGER_X_AXIS = 0; 
 
