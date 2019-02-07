@@ -15,11 +15,17 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.CargoMechSetIntake;
 import frc.robot.commands.CargoMechSetIntakeSpeed;
 import frc.robot.commands.DrivetrainSetManipulationMode;
+import frc.robot.commands.DrivetrainSetShiftState;
 import frc.robot.commands.HatchMechCollect;
 import frc.robot.commands.HatchMechPlace;
 import frc.robot.commands.HatchMechSetFinState;
+import frc.robot.commands.HatchMechSetKickerState;
+import frc.robot.commands.HatchMechSetSliderState;
 import frc.robot.subsystems.Drivetrain.ManipulationMode;
+import frc.robot.subsystems.Drivetrain.ShiftState;
 import frc.robot.subsystems.HatchMech.FinState;
+import frc.robot.subsystems.HatchMech.KickerState;
+import frc.robot.subsystems.HatchMech.SliderState;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -50,15 +56,22 @@ public class OI {
     Button leftJoystickClick = new JoystickButton(driver, 9);
     Button rightJoystickClick = new JoystickButton(driver, 10);
 
-    aButton.whenPressed(new HatchMechCollect());
-    bButton.whenPressed(new HatchMechPlace());
-    xButton.whenPressed(new HatchMechSetFinState(FinState.CLAMPED));
-    // yButton.whenPressed(new HatchMechSlide(true));
-    // yButton.whenReleased(new HatchMechSlide(false));
-    leftBumper.whenPressed(new CargoMechSetIntakeSpeed(0.5));
-    leftBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
-    rightBumper.whenPressed(new CargoMechSetIntakeSpeed(-1.0));
-    rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
+    // aButton.whenPressed(new HatchMechCollect());
+    // bButton.whenPressed(new HatchMechPlace());
+    // xButton.whenPressed(new HatchMechSetFinState(FinState.CLAMPED));
+
+    aButton.whenPressed(new HatchMechSetFinState(FinState.UNCLAMPED));
+    aButton.whenReleased(new HatchMechSetFinState(FinState.CLAMPED));
+    bButton.whenPressed(new HatchMechSetKickerState(KickerState.OUT));
+    bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
+    xButton.whenPressed(new HatchMechSetSliderState(SliderState.OUT));
+    yButton.whenPressed(new HatchMechSetSliderState(SliderState.IN));
+    leftBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
+    rightBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR));
+    // leftBumper.whenPressed(new CargoMechSetIntakeSpeed(0.5));
+    // leftBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
+    // rightBumper.whenPressed(new CargoMechSetIntakeSpeed(-1.0));
+    // rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
     leftJoystickClick.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.PANEL));
     rightJoystickClick.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.CARGO));
 

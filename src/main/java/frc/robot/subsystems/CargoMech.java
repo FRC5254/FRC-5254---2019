@@ -49,7 +49,7 @@ public class CargoMech extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new CargoMechDriveWithJoystick());
+    // setDefaultCommand(new CargoMechDriveWithJoystick());
   }
 
   public void setIntakeMotor(double speed) {

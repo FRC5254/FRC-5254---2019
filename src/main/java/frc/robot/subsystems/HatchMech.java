@@ -21,7 +21,7 @@ public class HatchMech extends Subsystem {
   // here. Call these from Commands.
 
   public enum FinState {
-    CLAMPED(true), UNCLAMPED(false);
+    CLAMPED(false), UNCLAMPED(true);
 
     private boolean state;
     FinState(boolean state) {
@@ -30,7 +30,7 @@ public class HatchMech extends Subsystem {
   }
 
   public enum KickerState {
-    OUT(Value.kForward), IN(Value.kReverse);
+    OUT(Value.kReverse), IN(Value.kForward);
 
     private Value state;
     KickerState(Value state) {
@@ -39,7 +39,7 @@ public class HatchMech extends Subsystem {
   }
 
   public enum SliderState {
-    OUT(Value.kForward), IN(Value.kReverse);
+    OUT(Value.kReverse), IN(Value.kForward);
 
     private Value state;
     SliderState(Value state) {
@@ -80,12 +80,12 @@ public class HatchMech extends Subsystem {
   
   @Override
   public void initDefaultCommand() {
-    // No commands here
+    // Dont put commands here
   }
 
   public void setFinState(FinState newState) {
     if(kickerState == KickerState.OUT && newState == FinState.CLAMPED) {
-      setKickerState(KickerState.IN); //TODO Does this work?
+      setKickerState(KickerState.IN);
     }
 
     finSolenoid.set(newState.state);
