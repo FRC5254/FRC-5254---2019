@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-import static org.junit.Assume.assumeNoException;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -64,14 +62,16 @@ public class OI {
     aButton.whenReleased(new HatchMechSetFinState(FinState.CLAMPED));
     bButton.whenPressed(new HatchMechSetKickerState(KickerState.OUT));
     bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
-    xButton.whenPressed(new HatchMechSetSliderState(SliderState.OUT));
-    yButton.whenPressed(new HatchMechSetSliderState(SliderState.IN));
+    xButton.whenPressed(new HatchMechSetSliderState(SliderState.IN));
+    yButton.whenPressed(new HatchMechSetSliderState(SliderState.OUT));
     leftBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
     rightBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR));
     // leftBumper.whenPressed(new CargoMechSetIntakeSpeed(0.5));
     // leftBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
     // rightBumper.whenPressed(new CargoMechSetIntakeSpeed(-1.0));
     // rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
+    backButton.whenPressed(new HatchMechPlace());
+    startButton.whenPressed(new HatchMechCollect());
     leftJoystickClick.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.PANEL));
     rightJoystickClick.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.CARGO));
 

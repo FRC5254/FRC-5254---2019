@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
@@ -49,13 +50,15 @@ public class Drivetrain extends Subsystem {
   private CANSparkMax sLeft1, sLeft2, sLeft3, sRight1, sRight2, sRight3;
 
   private DifferentialDrive drive;
+  private SpeedControllerGroup driveControllersLeft;
+  private SpeedControllerGroup driveControllerRight;
   private Encoder leftEncoder, rightEncoder;
   private ADXRS450_Gyro gyro;
   
   private static Solenoid shiftingSolenoid;
 
   public ShiftState shiftState;
-  public DrivetrainMotorControllers drivetrainMotorContollers; // TODO Make private?
+  public DrivetrainMotorControllers drivetrainMotorContollers; //TODO Make private?
   public DriverControls driverControls;
   public ManipulationMode manipulationMode;
 
@@ -64,8 +67,8 @@ public class Drivetrain extends Subsystem {
   private Drivetrain() {
 
     drivetrainMotorContollers = DrivetrainMotorControllers.TALON_SRX;
-    driverControls = DriverControls.GTA_DRIVE;// TODO do these go here or earlier?
-    manipulationMode = ManipulationMode.PANEL;
+    driverControls = DriverControls.GTA_DRIVE; //TODO do these go here or earlier?
+    manipulationMode = ManipulationMode.CARGO;
 
     if(drivetrainMotorContollers == DrivetrainMotorControllers.TALON_SRX) { 
       tLeft1 = new WPI_TalonSRX(RobotMap.T_DRIVETRAIN_LEFT);
@@ -76,8 +79,13 @@ public class Drivetrain extends Subsystem {
       tLeft2.follow(tLeft1);
       tRight2.follow(tRight1);
 
-      tLeft1.setInverted(true);//TODO invert as necessary
-      tLeft2.setInverted(true);//TODO invert as necessary
+      tLeft1.setInverted(false);//TODO invert as necessary
+      tLeft2.setInverted(false);//TODO invert as necessary
+
+      if(driverControls == DriverControls.ARCADE){ 
+        driveControllersLeft = new SpeedControllerGroup(tLeft1, tLeft2);
+        driveControllerRight = new SpeedControllerGroup(tRight1, tRight2);
+      }
     }
 
     if(drivetrainMotorContollers == DrivetrainMotorControllers.SPARK_MAX){
@@ -99,9 +107,14 @@ public class Drivetrain extends Subsystem {
 
       sLeft1.setInverted(true);//TODO invert as necessary
       sLeft2.setInverted(true);//TODO invert as necessary
-      sLeft3.setInverted(true);
+      sLeft3.setInverted(true);//TODO invert as necessary
+
+      if(driverControls == DriverControls.ARCADE){ 
+        
+      }
     }
     
+    shiftingSolenoid = new Solenoid(RobotMap.SHIFTER_SOLENOID);
     // leftEncoder = new Encoder(RobotMap.encoderLeftA, RobotMap.encoderLeftB);
     // rightEncoder = new Encoder(RobotMap.encoderRightA, RobotMap.encoderRightB);
     // gyro = new ADXRS450_Gyro();
@@ -130,7 +143,7 @@ public class Drivetrain extends Subsystem {
       turn = 0.0;
     }
 
-    turn = turn * turn * Math.signum(turn); //TODO add negative?
+    turn = turn * turn * Math.signum(turn);
 
     double left = rightTrigger - leftTrigger +  turn;
     double right = rightTrigger - leftTrigger - turn;
@@ -139,21 +152,21 @@ public class Drivetrain extends Subsystem {
     
     if(drivetrainMotorContollers == DrivetrainMotorControllers.TALON_SRX) {
       if(manipulationMode == ManipulationMode.CARGO){
-        tRight1.set(right);
-        tLeft1.set(left);
-      } else if (manipulationMode == ManipulationMode.PANEL) {
-        tRight1.set(-right); 
+        tRight1.set(-right);
         tLeft1.set(-left);
+      } else if (manipulationMode == ManipulationMode.PANEL) {
+        tRight1.set(right); 
+        tLeft1.set(left);
       } else {
         System.out.println("************* this shouldn't happen but it did --- Drivetrain manipulationMode illdefined *************");
       }
     } else if(drivetrainMotorContollers == DrivetrainMotorControllers.SPARK_MAX) {
       if(manipulationMode == ManipulationMode.CARGO) {
-        sRight1.set(right);
-        sLeft1.set(left);
-      } else if(manipulationMode == ManipulationMode.PANEL) {
         sRight1.set(-right);
         sLeft1.set(-left);
+      } else if(manipulationMode == ManipulationMode.PANEL) {
+        sRight1.set(right);
+        sLeft1.set(left);
       } else {
         System.out.println("************* this shouldn't happen but it did --- Drivetrain manipulationMode illdefined *************");
       } 

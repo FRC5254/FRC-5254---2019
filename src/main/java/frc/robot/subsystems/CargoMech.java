@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.CargoMechDriveWithJoystick;
 
 /**
  * Add your docs here.
@@ -56,7 +55,7 @@ public class CargoMech extends Subsystem {
     cargoMotor.set(speed);
   }
 
-  public boolean atTopLimit() {//TODO staic?
+  public boolean atTopLimit() {//TODO remove?
     return topLimitSwitch.get();
   }
 

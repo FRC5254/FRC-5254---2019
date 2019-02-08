@@ -18,16 +18,9 @@ public class HatchMechSetMechState extends CommandGroup {
    * Add your docs here.
    */
   public HatchMechSetMechState(FinState finState, KickerState kickerState, SliderState sliderState) {
-    if(Robot.hatchMech.finState != finState) {
-      addSequential(new HatchMechSetFinState(finState));
-    }
-
-    if (Robot.hatchMech.kickerState != kickerState){
-      addSequential(new HatchMechSetKickerState(kickerState));
-    }
-
-    if(Robot.hatchMech.sliderState != sliderState) {
-      addSequential(new HatchMechSetSliderState(sliderState));
-    }
+   
+    addSequential(new HatchMechSetFinState(finState));
+    addSequential(new HatchMechSetKickerState(kickerState));
+    addSequential(new HatchMechSetSliderState(sliderState));
   }
 }
