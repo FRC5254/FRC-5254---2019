@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -25,6 +28,11 @@ import frc.robot.subsystems.HatchFloorIntake;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  NetworkTable table;
+  NetworkTableEntry tx;
+  NetworkTableEntry ty;
+  NetworkTableEntry ta;
   public static Drivetrain drivetrain;
   public static HatchFloorIntake hatchFloorIntake;
   public static HatchMech hatchMech;
@@ -41,11 +49,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
+    table = NetworkTableInstance.getDefault().getTable("limelight");
+    tx = table.getEntry("tx");
+    ty = table.getEntry("ty");
+    ta = table.getEntry("ta");
+
     cargoMech =  CargoMech.getInstance();
     drivetrain = Drivetrain.getInstance();
     hatchFloorIntake = HatchFloorIntake.getInstance();
     hatchMech = HatchMech.getInstance();
-    
     m_oi = new OI(); // This one MUST be last 
     
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -62,6 +74,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    //Getting Limelight numbers
+    double x = tx.getDouble(0.0);
+    double y = tx.getDouble(0.0);
+    double area = ta.getDouble(0.0);
+
+    // Putting Limelight numbers onto smartdash
+    SmartDashboard.putNumber("LimelightX", x);
+    SmartDashboard.putNumber("limelightY", y);
+    SmartDashboard.putNumber("LimelightArea", area);
   }
 
   /**
