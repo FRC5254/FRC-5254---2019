@@ -82,10 +82,7 @@ public class Drivetrain extends Subsystem {
       tLeft1.setInverted(false);//TODO invert as necessary
       tLeft2.setInverted(false);//TODO invert as necessary
 
-      driveControllersLeft = new SpeedControllerGroup(tLeft1, tLeft2);
-      driveControllersRight = new SpeedControllerGroup(tRight1, tRight2);
-
-      drive = new DifferentialDrive(driveControllersLeft, driveControllersRight);
+      drive = new DifferentialDrive(tLeft1, tRight1);
     }
 
     if(drivetrainMotorContollers == DrivetrainMotorControllers.SPARK_MAX){
@@ -109,10 +106,7 @@ public class Drivetrain extends Subsystem {
       sLeft2.setInverted(true);//TODO invert as necessary
       sLeft3.setInverted(true);//TODO invert as necessary
 
-      driveControllersLeft = new SpeedControllerGroup(sLeft1, sLeft2, sLeft3);
-      driveControllersRight = new SpeedControllerGroup(sRight1, sRight2, sRight3);
-
-      drive = new DifferentialDrive(driveControllersLeft, driveControllersRight);
+      drive = new DifferentialDrive(sLeft1, sRight1);
     }
     
     shiftingSolenoid = new Solenoid(RobotMap.SHIFTER_SOLENOID);
