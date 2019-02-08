@@ -51,7 +51,7 @@ public class Drivetrain extends Subsystem {
 
   private DifferentialDrive drive;
   private SpeedControllerGroup driveControllersLeft;
-  private SpeedControllerGroup driveControllerRight;
+  private SpeedControllerGroup driveControllersRight;
   private Encoder leftEncoder, rightEncoder;
   private ADXRS450_Gyro gyro;
   
@@ -82,10 +82,10 @@ public class Drivetrain extends Subsystem {
       tLeft1.setInverted(false);//TODO invert as necessary
       tLeft2.setInverted(false);//TODO invert as necessary
 
-      if(driverControls == DriverControls.ARCADE){ 
-        driveControllersLeft = new SpeedControllerGroup(tLeft1, tLeft2);
-        driveControllerRight = new SpeedControllerGroup(tRight1, tRight2);
-      }
+      driveControllersLeft = new SpeedControllerGroup(tLeft1, tLeft2);
+      driveControllersRight = new SpeedControllerGroup(tRight1, tRight2);
+
+      drive = new DifferentialDrive(driveControllersLeft, driveControllersRight);
     }
 
     if(drivetrainMotorContollers == DrivetrainMotorControllers.SPARK_MAX){
@@ -109,12 +109,14 @@ public class Drivetrain extends Subsystem {
       sLeft2.setInverted(true);//TODO invert as necessary
       sLeft3.setInverted(true);//TODO invert as necessary
 
-      if(driverControls == DriverControls.ARCADE){ 
-        
-      }
+      driveControllersLeft = new SpeedControllerGroup(sLeft1, sLeft2, sLeft3);
+      driveControllersRight = new SpeedControllerGroup(sRight1, sRight2, sRight3);
+
+      drive = new DifferentialDrive(driveControllersLeft, driveControllersRight);
     }
     
     shiftingSolenoid = new Solenoid(RobotMap.SHIFTER_SOLENOID);
+
     // leftEncoder = new Encoder(RobotMap.encoderLeftA, RobotMap.encoderLeftB);
     // rightEncoder = new Encoder(RobotMap.encoderRightA, RobotMap.encoderRightB);
     // gyro = new ADXRS450_Gyro();
@@ -134,7 +136,7 @@ public class Drivetrain extends Subsystem {
   }
 
   public void arcadeDrive(double throttle, double turn) {
-    //  drive.arcadeDrive(throttle, turn);
+   drive.arcadeDrive(throttle, turn);
   }
   
   public void GTADrive(double leftTrigger, double rightTrigger, double turn) {
