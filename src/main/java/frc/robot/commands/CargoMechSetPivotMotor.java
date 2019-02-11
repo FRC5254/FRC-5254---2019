@@ -8,16 +8,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.subsystems.Drivetrain.DriverControls;
 
-public class CargoMechDriveWithJoystick extends Command {
+public class CargoMechSetPivotMotor extends Command {
 
-  public CargoMechDriveWithJoystick() {
+  double speed;
+  public CargoMechSetPivotMotor(double speed) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.cargoMech);
+    this.speed = speed;
   }
 
   // Called just before this Command runs the first time
@@ -27,27 +27,8 @@ public class CargoMechDriveWithJoystick extends Command {
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() { //TODO move most if not all of this into the subsystem
-
-    if(Robot.drivetrain.driverControls == DriverControls.GTA_DRIVE){
-      double axis = OI.driver.getRawAxis(OI.DRIVER_LEFT_JOYSTICK_Y_AXIS);
-      if(axis > 0.25 || axis < -0.25) {
-      Robot.cargoMech.setPivotMotor(axis);//  * 0.25
-     }
-    }
-
-    if(Robot.drivetrain.driverControls == DriverControls.ARCADE){
-      double leftTrigger = OI.driver.getRawAxis(OI.DRIVER_LEFT_TRIGGER);
-      double rightTrigger = OI.driver.getRawAxis(OI.DRIVER_RIGHT_TRIGGER);
-     
-     if(leftTrigger > 0.1) {
-        Robot.cargoMech.setPivotMotor(leftTrigger * 0.25);
-      }
-
-      if(rightTrigger > 0.1) {
-        Robot.cargoMech.setPivotMotor(-rightTrigger * 0.25);
-      }
-    }
+  protected void execute() {
+    Robot.cargoMech.setPivotMotor(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -65,6 +46,5 @@ public class CargoMechDriveWithJoystick extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

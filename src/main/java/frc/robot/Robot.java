@@ -131,6 +131,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    SmartDashboard.putNumber("armPosition", cargoMech.pivotMotor.getSelectedSensorPosition(0));
+    SmartDashboard.putBoolean("armlimit for", cargoMech.pivotMotor.getSensorCollection().isFwdLimitSwitchClosed());
+    SmartDashboard.putBoolean("amrlimit back", cargoMech.pivotMotor.getSensorCollection().isRevLimitSwitchClosed());
+
+    SmartDashboard.putNumber("gyro", drivetrain.getAngle());
   }
 
   /**

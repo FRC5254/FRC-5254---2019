@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.CargoMechSetIntake;
 import frc.robot.commands.CargoMechSetIntakeSpeed;
+import frc.robot.commands.CargoMechSetToAngle;
+import frc.robot.commands.CargoMechSetPivotMotor;
 import frc.robot.commands.DrivetrainSetManipulationMode;
 import frc.robot.commands.DrivetrainSetShiftState;
 import frc.robot.commands.HatchMechCollect;
@@ -54,27 +56,44 @@ public class OI {
     Button leftJoystickClick = new JoystickButton(driver, 9);
     Button rightJoystickClick = new JoystickButton(driver, 10);
 
-    // aButton.whenPressed(new HatchMechCollect());
-    // bButton.whenPressed(new HatchMechPlace());
-    // xButton.whenPressed(new HatchMechSetFinState(FinState.CLAMPED));
 
-    aButton.whenPressed(new HatchMechSetFinState(FinState.UNCLAMPED));
-    aButton.whenReleased(new HatchMechSetFinState(FinState.CLAMPED));
-    bButton.whenPressed(new HatchMechSetKickerState(KickerState.OUT));
-    bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
-    xButton.whenPressed(new HatchMechSetSliderState(SliderState.IN));
-    yButton.whenPressed(new HatchMechSetSliderState(SliderState.OUT));
-    leftBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
-    rightBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR));
-    // leftBumper.whenPressed(new CargoMechSetIntakeSpeed(0.5));
-    // leftBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
-    // rightBumper.whenPressed(new CargoMechSetIntakeSpeed(-1.0));
-    // rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
-    backButton.whenPressed(new HatchMechPlace());
-    startButton.whenPressed(new HatchMechCollect());
+    if (Robot.drivetrain.manipulationMode == ManipulationMode.CARGO) {
+
+      aButton.whenPressed(new CargoMechSetPivotMotor(0.5));
+      aButton.whenReleased(new CargoMechSetPivotMotor(0.0));
+      bButton.whenPressed(new CargoMechSetPivotMotor(-0.5));
+      bButton.whenReleased(new CargoMechSetPivotMotor(0.0));
+
+      xButton.whenPressed(new CargoMechSetToAngle(45));
+      yButton.whenPressed(new CargoMechSetToAngle(30));
+
+      leftBumper.whenPressed(new CargoMechSetIntakeSpeed(-0.5));
+      leftBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
+
+      rightBumper.whenPressed(new CargoMechSetIntakeSpeed(1.0));
+      rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
+
+    } else if (Robot.drivetrain.manipulationMode == ManipulationMode.PANEL) {
+
+      aButton.whenPressed(new HatchMechSetFinState(FinState.UNCLAMPED));
+      aButton.whenReleased(new HatchMechSetFinState(FinState.CLAMPED));
+      bButton.whenPressed(new HatchMechSetKickerState(KickerState.OUT));
+      bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
+      xButton.whenPressed(new HatchMechSetSliderState(SliderState.IN));
+      yButton.whenPressed(new HatchMechSetSliderState(SliderState.OUT));
+
+      backButton.whenPressed(new HatchMechPlace());
+      startButton.whenPressed(new HatchMechCollect());
+
+      leftBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
+      rightBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR));
+
+    } else {
+      // nothin'
+    }
+
     leftJoystickClick.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.PANEL));
     rightJoystickClick.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.CARGO));
-
-
+    
   }
 }

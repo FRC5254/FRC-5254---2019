@@ -66,7 +66,7 @@ public class Drivetrain extends Subsystem {
   
   private Drivetrain() {
 
-    drivetrainMotorContollers = DrivetrainMotorControllers.TALON_SRX;
+    drivetrainMotorContollers = DrivetrainMotorControllers.SPARK_MAX;
     driverControls = DriverControls.GTA_DRIVE; //TODO do these go here or earlier?
     manipulationMode = ManipulationMode.CARGO;
 
@@ -113,13 +113,16 @@ public class Drivetrain extends Subsystem {
 
     // leftEncoder = new Encoder(RobotMap.encoderLeftA, RobotMap.encoderLeftB);
     // rightEncoder = new Encoder(RobotMap.encoderRightA, RobotMap.encoderRightB);
-    // gyro = new ADXRS450_Gyro();
+    gyro = new ADXRS450_Gyro();
   }
 
   public void initDefaultCommand() {
     setDefaultCommand(new DrivetrainDriveWithJoystick());
  }
 
+ public double getAngle() {
+   return gyro.getAngle();
+ }
  public static Drivetrain getInstance() {
    return instance;
  }
