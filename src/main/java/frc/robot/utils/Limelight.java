@@ -78,6 +78,19 @@ public class Limelight {
         return getValue("tl");
     }
 
+    /**
+     * @return sidelength of shortest side of the fitted bounding box (pixels)
+     */
+    private static double getShortSideLength() {
+        return getValue("tshort");
+    }
+
+    /**
+     * @return sidelength of longest side of the fitted bounding box (pixels)
+     */
+    private static double getLongSideLength() {
+
+    }
     /* Unused 
     * "tshort" - Sidelength of shortest side of the fitted bounding box (pixels)
     * "tlong" - Sidelength of longest side of the fitted bounding box (pixels)
@@ -212,14 +225,72 @@ public class Limelight {
         }
     }
 
-    /* Unused 
-    * "stream" - Sets limelight’s streaming mode
-    * 0 = Standard - Side-by-side streams if a webcam is attached to Limelight
-    * 1 = PiP Main - The secondary camera stream is placed in the lower-right corner of the primary camera stream
-    * 2 = PiP Secondary - The primary camera stream is placed in the lower-right corner of the secondary camera stream
-    *
-    * "snapshot" - Allows users to take snapshots during a match
-    * 0 = Stop taking snapshots
-    * 1 = Take two snapshots per second
+// --- --- --- --- --- --- --- --- --- ---
+    public enum StreamMode {
+        STANDARD(0), PIP_MAIN(1), PIP_SECONDARY(2), UNKNOWN(-1);
+        
+        public final double value;
+        StreamMode(double value) { //TODO double/int?
+            this.value = value;
+        }
+    }
+
+    /**
+    * @return The current LED mode set on the Limelight
     */
+    public static StreamMode getCurrentStreamMode() {
+        double mode = getValue("stream");
+        if (mode == 0) {
+            return StreamMode.STANDARD;
+        } else if (mode == 1) {
+            return StreamMode.PIP_MAIN;
+        } else if (mode == 2) {
+            return StreamMode.PIP_SECONDARY;
+        } else {
+            System.out.println("[Limelight] UNKNOWN StreamMode -- " + mode);
+            return StreamMode.UNKNOWN;
+        }
+    }
+
+    /**
+    * @param mode The LED Mode to set on the Limelight
+    */
+    public static void setStreamMode(StreamMode mode) {
+        if (mode != StreamMode.UNKNOWN) {
+            setValue("stream", mode.value);
+        }
+    }
+// --- --- --- --- --- --- --- --- --- ---
+    public enum SnapshotMode {
+        OFF(0), TWO_PER_SECOND(1), UNKNOWN(-1); //TODO just say "ON"?
+        
+        public final double value;
+        SnapshotMode(double value) { //TODO double/int?
+            this.value = value;
+        }
+    }
+
+    /**
+    * @return The current LED mode set on the Limelight
+    */
+    public static SnapshotMode getCurrentSnapShotMode() {
+        double mode = getValue("snapshot");
+        if (mode == 0) {
+            return SnapshotMode.OFF;
+        } else if (mode == 1) {
+            return SnapshotMode.TWO_PER_SECOND;
+        } else {
+            System.out.println("[Limelight] UNKNOWN SnapshotMode -- " + mode);
+            return SnapshotMode.UNKNOWN;
+        }
+    }
+
+    /**
+    * @param mode The LED Mode to set on the Limelight
+    */
+    public static void setSnapshotMode(SnapshotMode mode) {
+        if (mode != SnapshotMode.UNKNOWN) {
+            setValue("snapshot", mode.value);
+        }
+    }
 }
