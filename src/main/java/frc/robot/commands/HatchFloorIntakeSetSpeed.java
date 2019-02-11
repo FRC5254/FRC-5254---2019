@@ -5,31 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.command.InstantCommand;
+import frc.robot.Robot;
 
 /**
  * Add your docs here.
  */
-public class Climber extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
-  private static Climber instance = new Climber();
-
-  private Climber() {
+public class HatchFloorIntakeSetSpeed extends InstantCommand {
+  /**
+   * Add your docs here.
+   */
+  public HatchFloorIntakeSetSpeed(double speed) {
+    super(Robot.hatchFloorIntake, () -> Robot.hatchFloorIntake.setSpeed(speed));
   }
-
-  public static Climber getInstance() {
-    return instance;
-  }
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
-
-  
 }

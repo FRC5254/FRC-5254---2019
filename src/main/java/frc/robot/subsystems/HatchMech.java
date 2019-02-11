@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.HatchMechHoldPanel;
 
 /**
  * Add your docs here.
@@ -21,46 +20,88 @@ public class HatchMech extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private static DoubleSolenoid haloSolenoid;
-  private static Solenoid fingersSolenoid;
-  private static DoubleSolenoid actuateSolenoid;
+  public enum FinState {
+    CLAMPED(false), UNCLAMPED(true);
 
-  public HatchMech() {
+    private boolean state;
+    FinState(boolean state) {
+      this.state = state;
+    }
+  }
 
-    haloSolenoid = new DoubleSolenoid(RobotMap.HALO_SOLENOID_OUT, RobotMap.HALO_SOLENOID_IN);
-    fingersSolenoid = new Solenoid(RobotMap.FINGERS_SOLENOID);
-    actuateSolenoid = new DoubleSolenoid(RobotMap.ACTUATE_SOLENOID_OUT, RobotMap.ACTUATE_SOLENOID_IN);
+  public enum KickerState {
+    OUT(Value.kReverse), IN(Value.kForward);
+
+    private Value state;
+    KickerState(Value state) {
+      this.state = state;
+    }
+  }
+
+  public enum SliderState {
+    OUT(Value.kReverse), IN(Value.kForward);
+
+    private Value state;
+    SliderState(Value state) {
+      this.state = state;
+    }
+  }
+
+  private static Solenoid finSolenoid;
+  private static DoubleSolenoid kickerSolenoid;
+  private static DoubleSolenoid sliderSolenoid;
+
+  public FinState finState;
+  public KickerState kickerState;
+  public SliderState sliderState;
+
+  private final FinState defaultFinState = FinState.CLAMPED;
+  private final KickerState defaultKickerState = KickerState.IN;
+  private final SliderState defaultSliderState = SliderState.IN;
+
+  private static HatchMech instance = new HatchMech();
+
+
+  private HatchMech() {
+
+    finSolenoid = new Solenoid(RobotMap.FINGERS_SOLENOID);
+    kickerSolenoid = new DoubleSolenoid(RobotMap.HALO_SOLENOID_OUT, RobotMap.HALO_SOLENOID_IN);
+    sliderSolenoid = new DoubleSolenoid(RobotMap.ACTUATE_SOLENOID_OUT, RobotMap.ACTUATE_SOLENOID_IN);
+
+    finState = defaultFinState;
+    kickerState = defaultKickerState;
+    sliderState = defaultSliderState;
 
   }
+
+  public static HatchMech getInstance() {
+    return instance;
+  }
+  
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-    // setDefaultCommand(new HatchMechHoldPanel());
+    // Dont put commands here
   }
 
-  public void halo(boolean direction) {
-
-    if (direction) {
-      haloSolenoid.set(Value.kForward);
-    } else {
-      haloSolenoid.set(Value.kReverse);
+  public void setFinState(FinState newState) {
+    if(kickerState == KickerState.OUT && newState == FinState.CLAMPED) {
+      setKickerState(KickerState.IN);
     }
 
+    finSolenoid.set(newState.state);
+    finState = newState;
   }
 
-  public void fingers(boolean direction) {
-
-    fingersSolenoid.set(direction);
-  }
-
-  public void actuate(boolean direction) {
-
-    if (direction) {
-      actuateSolenoid.set(Value.kForward);
-    } else {
-      actuateSolenoid.set(Value.kReverse);
+  public void setKickerState(KickerState newState) {
+    if(finState == FinState.CLAMPED && newState == KickerState.OUT){
+      setFinState(FinState.UNCLAMPED);
     }
+    kickerSolenoid.set(newState.state);
+    kickerState = newState;
   }
 
+  public void setSliderState(SliderState newState) {
+    sliderSolenoid.set(newState.state);
+    sliderState = newState;
+  }
 }

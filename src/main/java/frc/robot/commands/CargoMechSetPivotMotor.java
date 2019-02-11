@@ -10,15 +10,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class HatchMechClamp extends Command {
+public class CargoMechSetPivotMotor extends Command {
 
-  boolean direction;
-
-  public HatchMechClamp(boolean direction) {
+  double speed;
+  public CargoMechSetPivotMotor(double speed) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-
-    this.direction = direction;
+    requires(Robot.cargoMech);
+    this.speed = speed;
   }
 
   // Called just before this Command runs the first time
@@ -29,13 +28,13 @@ public class HatchMechClamp extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.hatchMech.fingers(direction);
+    Robot.cargoMech.setPivotMotor(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;//TODO
+    return false;
   }
 
   // Called once after isFinished returns true

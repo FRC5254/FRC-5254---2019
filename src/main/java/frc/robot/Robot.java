@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-import java.sql.Driver;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -17,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.CargoMech;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchMech;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.HatchFloorIntake;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,7 +26,7 @@ import frc.robot.subsystems.Intake;
  */
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
-  public static Intake intake;
+  public static HatchFloorIntake hatchFloorIntake;
   public static HatchMech hatchMech;
   public static CargoMech cargoMech;
   public static OI m_oi;
@@ -43,11 +41,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    drivetrain = new Drivetrain();
-    intake = new Intake();
-    hatchMech = new HatchMech();
-    cargoMech = new CargoMech();
-    m_oi = new OI();
+    cargoMech =  CargoMech.getInstance();
+    drivetrain = Drivetrain.getInstance();
+    hatchFloorIntake = HatchFloorIntake.getInstance();
+    hatchMech = HatchMech.getInstance();
+    
+    m_oi = new OI(); // This one MUST be last 
     
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
@@ -132,6 +131,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    SmartDashboard.putNumber("armPosition", cargoMech.pivotMotor.getSelectedSensorPosition(0));
+    SmartDashboard.putBoolean("armlimit for", cargoMech.pivotMotor.getSensorCollection().isFwdLimitSwitchClosed());
+    SmartDashboard.putBoolean("amrlimit back", cargoMech.pivotMotor.getSensorCollection().isRevLimitSwitchClosed());
+
+    SmartDashboard.putNumber("gyro", drivetrain.getAngle());
   }
 
   /**

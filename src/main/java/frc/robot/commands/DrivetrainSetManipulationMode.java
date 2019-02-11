@@ -5,31 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.command.InstantCommand;
+import frc.robot.Robot;
+import frc.robot.subsystems.Drivetrain.ManipulationMode;
 
 /**
  * Add your docs here.
  */
-public class Climber extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
-  private static Climber instance = new Climber();
-
-  private Climber() {
+public class DrivetrainSetManipulationMode extends InstantCommand {
+  /**
+   * Add your docs here.
+   */
+  public DrivetrainSetManipulationMode(ManipulationMode newMode) {
+    super(Robot.drivetrain, () -> Robot.drivetrain.setManipulationMode(newMode));
   }
-
-  public static Climber getInstance() {
-    return instance;
-  }
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
-
-  
 }

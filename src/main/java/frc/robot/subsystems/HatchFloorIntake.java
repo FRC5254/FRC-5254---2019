@@ -15,32 +15,49 @@ import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class Intake extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+public class HatchFloorIntake extends Subsystem {
+
+  public enum PivotState {
+    UP(true), DOWN(false);
+
+    private boolean state;
+    PivotState(boolean state){
+      this.state = state;
+    }
+  }
 
   private static Victor intakeMotor;
   private static Solenoid intakeSolenoid;
 
-  public Intake() {
+  public PivotState pivotState;
 
+  private final PivotState defaultPivotState = PivotState.UP;
+
+  private static HatchFloorIntake instance = new HatchFloorIntake();
+
+  private HatchFloorIntake() {
     intakeMotor = new Victor(RobotMap.INTAKE_MOTOR);
     intakeSolenoid = new Solenoid(RobotMap.INTAKE_SOLENOID);
+
+    pivotState = defaultPivotState;
+    intakeMotor.set(0.0);
+  }
+
+  public static HatchFloorIntake getInstance() {
+    return instance;
   }
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    //Dont add in a command here
   }
 
   public void setSpeed(double speed) {
-
     intakeMotor.set(speed);
   }
 
-  public void actuate(boolean direction) {
-
-    intakeSolenoid.set(direction);
+  public void setPivotState(PivotState newState) {
+    intakeSolenoid.set(newState.state);
+    pivotState = newState;
   }
 }

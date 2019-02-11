@@ -7,7 +7,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -15,8 +14,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
 import frc.robot.commands.DrivetrainDriveWithJoystick;
@@ -24,59 +23,121 @@ import frc.robot.commands.DrivetrainDriveWithJoystick;
 /**
  * Add your docs here.
  */
-public class Drivetrain extends PIDSubsystem {
+public class Drivetrain extends Subsystem {
 
-  private WPI_TalonSRX left1, left2, right1, right2;
+  public enum ShiftState {
+    HIGH_GEAR(true), LOW_GEAR(false);
+
+    private boolean state;
+    ShiftState(boolean state){
+      this.state = state;
+    }
+  }
+
+  public enum DriverControls {
+    ARCADE, GTA_DRIVE;
+  }
+
+  public enum DrivetrainMotorControllers {
+    TALON_SRX, SPARK_MAX
+  }
+
+  public enum ManipulationMode {
+    CARGO, PANEL;
+  }
+
+  private WPI_TalonSRX tLeft1, tLeft2, tRight1, tRight2;
+  private CANSparkMax sLeft1, sLeft2, sLeft3, sRight1, sRight2, sRight3;
+
   private DifferentialDrive drive;
+  private SpeedControllerGroup driveControllersLeft;
+  private SpeedControllerGroup driveControllersRight;
   private Encoder leftEncoder, rightEncoder;
   private ADXRS450_Gyro gyro;
   
   private static Solenoid shiftingSolenoid;
-  
-  public Drivetrain() {
-    super("Drivetrain", 0.0, 0.0, 0.0);
-    left1 = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT);
-    left2 = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_2);
-    right1 = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT);
-    right2 = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_2);
-    
-    
-    left2.follow(left1);
-    right2.follow(right1);
 
-    left1.setInverted(true);
-    left2.setInverted(true);
+  public ShiftState shiftState;
+  public DrivetrainMotorControllers drivetrainMotorContollers; //TODO Make private?
+  public DriverControls driverControls;
+  public ManipulationMode manipulationMode;
+
+  private static Drivetrain instance = new Drivetrain();
+  
+  private Drivetrain() {
+
+    drivetrainMotorContollers = DrivetrainMotorControllers.SPARK_MAX;
+    driverControls = DriverControls.GTA_DRIVE; //TODO do these go here or earlier?
+    manipulationMode = ManipulationMode.CARGO;
+
+    if(drivetrainMotorContollers == DrivetrainMotorControllers.TALON_SRX) { 
+      tLeft1 = new WPI_TalonSRX(RobotMap.T_DRIVETRAIN_LEFT);
+      tLeft2 = new WPI_TalonSRX(RobotMap.T_DRIVETRAIN_LEFT_2);
+      tRight1 = new WPI_TalonSRX(RobotMap.T_DRIVETRAIN_RIGHT);
+      tRight2 = new WPI_TalonSRX(RobotMap.T_DRIVETRAIN_RIGHT_2);
+      
+      tLeft2.follow(tLeft1);
+      tRight2.follow(tRight1);
+
+      tLeft1.setInverted(false);//TODO invert as necessary
+      tLeft2.setInverted(false);//TODO invert as necessary
+
+      drive = new DifferentialDrive(tLeft1, tRight1);
+    }
+
+    if(drivetrainMotorContollers == DrivetrainMotorControllers.SPARK_MAX){
+
+      sLeft1 = new CANSparkMax(RobotMap.S_DRIVETRAIN_LEFT, MotorType.kBrushless);
+      sLeft2 = new CANSparkMax(RobotMap.S_DRIVETRAIN_LEFT_2, MotorType.kBrushless);
+      sLeft3 = new CANSparkMax(RobotMap.S_DRIVETRAIN_LEFT_3, MotorType.kBrushless);
+
+      sRight1 = new CANSparkMax(RobotMap.S_DRIVETRAIN_RIGHT, MotorType.kBrushless);
+      sRight2 = new CANSparkMax(RobotMap.S_DRIVETRAIN_RIGHT_2, MotorType.kBrushless);
+      sRight3 = new CANSparkMax(RobotMap.S_DRIVETRAIN_RIGHT_3, MotorType.kBrushless);
+
+
+      sLeft2.follow(sLeft1);
+      sLeft3.follow(sLeft1);
+
+      sRight2.follow(sRight1);
+      sRight3.follow(sRight1);
+
+      sLeft1.setInverted(true);//TODO invert as necessary
+      sLeft2.setInverted(true);//TODO invert as necessary
+      sLeft3.setInverted(true);//TODO invert as necessary
+
+      drive = new DifferentialDrive(sLeft1, sRight1);
+    }
     
-//    	drive = new DifferentialDrive(left1, right1);
-    
+    shiftingSolenoid = new Solenoid(RobotMap.SHIFTER_SOLENOID);
+
     // leftEncoder = new Encoder(RobotMap.encoderLeftA, RobotMap.encoderLeftB);
     // rightEncoder = new Encoder(RobotMap.encoderRightA, RobotMap.encoderRightB);
-    
     gyro = new ADXRS450_Gyro();
-    setInputRange(0, 360); //our gyro might not be 0 to 360
-    setOutputRange(-1, 1);
-    
-    setAbsoluteTolerance(0.5); //need to test if 0.5 works
-    getPIDController().setContinuous();
-    
-    // shiftingSolenoid = new Solenoid(RobotMap.shiftingSolenoid);
   }
-  
-public void shiftUp() {
-  shiftingSolenoid.set(true);
-}
 
-public void shiftDown() {
-  shiftingSolenoid.set(false);
-}
+  public void initDefaultCommand() {
+    setDefaultCommand(new DrivetrainDriveWithJoystick());
+ }
+
+ public double getAngle() {
+   return gyro.getAngle();
+ }
+ public static Drivetrain getInstance() {
+   return instance;
+ }
+  
+  public void setShiftState(ShiftState newState) {
+  shiftingSolenoid.set(newState.state);
+  shiftState = newState;
+  }
 
   public void arcadeDrive(double throttle, double turn) {
-//    	drive.arcadeDrive(throttle, turn);
+   drive.arcadeDrive(throttle, turn);
   }
   
-  public void customDrive(double leftTrigger, double rightTrigger, double turn) {
+  public void GTADrive(double leftTrigger, double rightTrigger, double turn) {
     
-
     if (-0.1 <= turn && turn <= 0.1) {
       turn = 0.0;
     }
@@ -88,26 +149,32 @@ public void shiftDown() {
     left = Math.min(1.0, Math.max(-1.0, left));
     right = Math.max(-1.0, Math.min(1.0, right));
     
-    
-    right1.set(-right);
-    left1.set(-left);
-    
-  
-  }
-  
-  protected double returnPIDInput() {
-    return gyro.getAngle();
-  }
-  
-  public void initDefaultCommand() {
-    setDefaultCommand(new DrivetrainDriveWithJoystick());
+    if(drivetrainMotorContollers == DrivetrainMotorControllers.TALON_SRX) {
+      if(manipulationMode == ManipulationMode.CARGO){
+        tRight1.set(-right);
+        tLeft1.set(-left);
+      } else if (manipulationMode == ManipulationMode.PANEL) {
+        tRight1.set(right); 
+        tLeft1.set(left);
+      } else {
+        System.out.println("************* this shouldn't happen but it did --- Drivetrain manipulationMode illdefined *************");
+      }
+    } else if(drivetrainMotorContollers == DrivetrainMotorControllers.SPARK_MAX) {
+      if(manipulationMode == ManipulationMode.CARGO) {
+        sRight1.set(-right);
+        sLeft1.set(-left);
+      } else if(manipulationMode == ManipulationMode.PANEL) {
+        sRight1.set(right);
+        sLeft1.set(left);
+      } else {
+        System.out.println("************* this shouldn't happen but it did --- Drivetrain manipulationMode illdefined *************");
+      } 
+    } else {
+      System.out.println("************* this shouldn't happen but it did --- in Drivetrain, drivetrainMotorContollers is illdefined *************");
+    }
   }
 
-@Override
-protected void usePIDOutput(double output) {
-  left1.set(output);
-  right1.set(-output);
-}
-
-
+  public void setManipulationMode(ManipulationMode newMode) {
+    manipulationMode = newMode;
+  }
 }
