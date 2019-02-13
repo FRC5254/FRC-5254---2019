@@ -18,6 +18,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.CargoMech;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchMech;
+import frc.robot.utils.Limelight;
+import frc.robot.utils.Limelight.CamMode;
+import frc.robot.utils.Limelight.LedMode;
+import frc.robot.utils.Limelight.SnapshotMode;
+import frc.robot.utils.Limelight.StreamMode;
 import frc.robot.subsystems.HatchFloorIntake;
 
 /**
@@ -74,15 +79,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    //Getting Limelight numbers
-    double x = tx.getDouble(0.0);
-    double y = tx.getDouble(0.0);
-    double area = ta.getDouble(0.0);
+    //Config Limelight
+    Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
+    Limelight.setLedMode(LedMode.PIPELINE);
+    Limelight.setStreamMode(StreamMode.PIP_MAIN);
+    Limelight.setSnapshotMode(SnapshotMode.TWO_PER_SECOND); 
 
     // Putting Limelight numbers onto smartdash
-    SmartDashboard.putNumber("LimelightX", x);
-    SmartDashboard.putNumber("limelightY", y);
-    SmartDashboard.putNumber("LimelightArea", area);
+    SmartDashboard.putBoolean("Limelight has target?" , Limelight.hasValidTargets());
+    SmartDashboard.putNumber("Limelight X", Limelight.getHorizontalOffset());
+    SmartDashboard.putNumber("limelight Y", Limelight.getVerticalOffset());
+    SmartDashboard.putNumber("Limelight Area", Limelight.getTargetArea());
   }
 
   /**

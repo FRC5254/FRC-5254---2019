@@ -7,8 +7,6 @@
 
 package frc.robot.utils;
 
-import java.nio.channels.Pipe;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -60,7 +58,7 @@ public class Limelight {
     /**
     * @return target area (0% of image to 100% of image)
     */
-    public static double targetArea() {
+    public static double getTargetArea() {
         return getValue("ta");
     }
 
@@ -81,23 +79,37 @@ public class Limelight {
     /**
      * @return sidelength of shortest side of the fitted bounding box (pixels)
      */
-    private static double getShortSideLength() {
+    public static double getShortSideLength() {
         return getValue("tshort");
     }
 
     /**
      * @return sidelength of longest side of the fitted bounding box (pixels)
      */
-    private static double getLongSideLength() {
-
+    public static double getLongSideLength() {
+        return getValue("tlong");
     }
-    /* Unused 
-    * "tshort" - Sidelength of shortest side of the fitted bounding box (pixels)
-    * "tlong" - Sidelength of longest side of the fitted bounding box (pixels)
-    * "thor" - Horizontal sidelength of the rough bounding box (0 - 320 pixels)
-    * "tvert" - Vertical sidelength of the rough bounding box (0 - 320 pixels)
-    * "getpipe" - True active pipeline index of the camera (0 .. 9)
-    */
+
+    /**
+     * @return Horizontal sidelength of the rough bounding box (0 - 320 pixels)
+     */
+    public static double getHorizontalSidelength() {
+        return getValue("thor");
+    }
+
+    /**
+     * @return Vertical sidelength of the rough bounding box (0 - 320 pixels)
+     */
+    public static double getVerticalSidelength() {
+        return getValue("tvert");
+    }
+
+    /**
+     * @return True active pipeline index of the camera (0 .. 9)
+     */
+    public static double getPipeline() {
+        return getValue("getpipe");
+    }
 
 // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -116,7 +128,7 @@ public class Limelight {
     public static LedMode getLedMode() {
         double mode = getValue("ledMode");
         if (mode == 0) {
-            return LedMode.PIPELINE;
+            return LedMode.PIPELINE; // Uses the LED mode set in the pipeliine
         } else if (mode == 1) {
             return LedMode.FORCE_OFF;
         } else if (mode == 2) {
@@ -241,9 +253,9 @@ public class Limelight {
     public static StreamMode getCurrentStreamMode() {
         double mode = getValue("stream");
         if (mode == 0) {
-            return StreamMode.STANDARD;
+            return StreamMode.STANDARD; // Side-by-side streams if a webcam is attached to Limelight
         } else if (mode == 1) {
-            return StreamMode.PIP_MAIN;
+            return StreamMode.PIP_MAIN;  // The secondary camera stream is placed in the lower-right corner of the primary camera stream
         } else if (mode == 2) {
             return StreamMode.PIP_SECONDARY;
         } else {
