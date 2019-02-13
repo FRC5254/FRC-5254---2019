@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain.DriverControls;
+import frc.robot.subsystems.Drivetrain.ManipulationMode;
+import frc.robot.utils.HXboxController;
 
 public class DrivetrainDriveWithJoystick extends Command {
   public DrivetrainDriveWithJoystick() {
@@ -22,20 +24,31 @@ protected void initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
-protected void execute() {
+protected void execute() { 
   if(Robot.drivetrain.driverControls == DriverControls.ARCADE){
-    double throttle = OI.driver.getRawAxis(OI.DRIVER_LEFT_JOYSTICK_Y_AXIS);
-    double turn = OI.driver.getRawAxis(OI.DRIVER_RIGHT_JOYTICK_X_AXIS);
+    double throttle = OI.driver.leftStick.getY();
+    double turn = OI.driver.rightStick.getX();
 
     Robot.drivetrain.arcadeDrive(throttle, turn);
   }
-
-  if(Robot.drivetrain.driverControls == DriverControls.GTA_DRIVE)
-    Robot.drivetrain.GTADrive(
-      OI.driver.getRawAxis(OI.DRIVER_LEFT_TRIGGER),
-      OI.driver.getRawAxis(OI.DRIVER_RIGHT_TRIGGER),
-      OI.driver.getRawAxis(OI.DRIVER_RIGHT_JOYTICK_X_AXIS)
-    );
+  
+  if(Robot.drivetrain.manipulationMode == ManipulationMode.PANEL) {
+    if(Robot.drivetrain.driverControls == DriverControls.GTA_DRIVE) {
+      Robot.drivetrain.GTADrive(
+        OI.driver.triggers.getLeft(),
+        OI.driver.triggers.getRight(),
+        -(OI.driver.leftStick.getX())
+      );
+    }
+  } else if (Robot.drivetrain.manipulationMode == ManipulationMode.CARGO){
+    if(Robot.drivetrain.driverControls == DriverControls.GTA_DRIVE) {
+      Robot.drivetrain.GTADrive(
+        OI.driver.triggers.getLeft(),
+        OI.driver.triggers.getRight(),
+        OI.driver.leftStick.getX()
+      );
+    }
+  } else {}
 }
 
 // Make this return true when this Command no longer needs to run execute()

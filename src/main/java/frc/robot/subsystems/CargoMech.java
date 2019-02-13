@@ -42,17 +42,21 @@ public class CargoMech extends Subsystem {
 
     cargoMotor = new Victor(RobotMap.CARGO_MOTOR);
     pivotMotor = new TalonSRX(RobotMap.CARGO_PIVOT_MOTOR);
+    pivotMotor_2 = new TalonSRX(RobotMap.CARGO_PIVOT_MOTOR_2);
+
+    cargoMotor.setInverted(true);
+
     pivotMotor.configOpenloopRamp(0.0);
     pivotMotor.configClosedloopRamp(0.0);
     pivotMotor.setNeutralMode(NeutralMode.Brake);
     pivotMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-    pivotMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-    pivotMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-    pivotMotor.overrideLimitSwitchesEnable(true);
+    // pivotMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+    // pivotMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+    // pivotMotor.overrideLimitSwitchesEnable(true);
     pivotMotor.configNominalOutputForward(0.0);
     pivotMotor.configNominalOutputReverse(0.0);
-    pivotMotor.configPeakOutputForward(0.25);//TDO chanage back
-    pivotMotor.configPeakOutputReverse(-0.25);
+    pivotMotor.configPeakOutputForward(0.75);//TDO chanage back
+    pivotMotor.configPeakOutputReverse(-0.75);
     pivotMotor.configVoltageCompSaturation(12);
     pivotMotor.enableVoltageCompensation(true);
 
@@ -89,7 +93,6 @@ public class CargoMech extends Subsystem {
   }
 
   public void setToAngle(double angle) {
-    // cargomechPivotMotor.set();
     pivotMotor.set(ControlMode.Position, angle);
   }
 
@@ -101,6 +104,7 @@ public class CargoMech extends Subsystem {
   public double encoderTicksToAngle(double ticks) {
     return ticks / (topEncoderLimit - bottomEncoderLimit) * 90;
   }
+
 
   public boolean isAtAngle() {
     return pivotMotor.getClosedLoopError() < angleToEncoderTicks(2);

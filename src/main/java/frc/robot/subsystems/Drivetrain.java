@@ -26,7 +26,7 @@ import frc.robot.commands.DrivetrainDriveWithJoystick;
 public class Drivetrain extends Subsystem {
 
   public enum ShiftState {
-    HIGH_GEAR(true), LOW_GEAR(false);
+    HIGH_GEAR(false), LOW_GEAR(true);
 
     private boolean state;
     ShiftState(boolean state){
@@ -106,6 +106,7 @@ public class Drivetrain extends Subsystem {
       sLeft2.setInverted(true);//TODO invert as necessary
       sLeft3.setInverted(true);//TODO invert as necessary
 
+  
       drive = new DifferentialDrive(sLeft1, sRight1);
     }
     
@@ -138,7 +139,7 @@ public class Drivetrain extends Subsystem {
   
   public void GTADrive(double leftTrigger, double rightTrigger, double turn) {
     
-    if (-0.1 <= turn && turn <= 0.1) {
+    if (-0.2 <= turn && turn <= 0.2) {
       turn = 0.0;
     }
 
@@ -151,21 +152,21 @@ public class Drivetrain extends Subsystem {
     
     if(drivetrainMotorContollers == DrivetrainMotorControllers.TALON_SRX) {
       if(manipulationMode == ManipulationMode.CARGO){
-        tRight1.set(-right);
-        tLeft1.set(-left);
-      } else if (manipulationMode == ManipulationMode.PANEL) {
-        tRight1.set(right); 
+        tRight1.set(right);
         tLeft1.set(left);
+      } else if (manipulationMode == ManipulationMode.PANEL) {
+        tRight1.set(-right); 
+        tLeft1.set(-left);
       } else {
         System.out.println("************* this shouldn't happen but it did --- Drivetrain manipulationMode illdefined *************");
       }
     } else if(drivetrainMotorContollers == DrivetrainMotorControllers.SPARK_MAX) {
       if(manipulationMode == ManipulationMode.CARGO) {
-        sRight1.set(-right);
-        sLeft1.set(-left);
-      } else if(manipulationMode == ManipulationMode.PANEL) {
         sRight1.set(right);
         sLeft1.set(left);
+      } else if(manipulationMode == ManipulationMode.PANEL) {
+        sRight1.set(-right);
+        sLeft1.set(-left);
       } else {
         System.out.println("************* this shouldn't happen but it did --- Drivetrain manipulationMode illdefined *************");
       } 
