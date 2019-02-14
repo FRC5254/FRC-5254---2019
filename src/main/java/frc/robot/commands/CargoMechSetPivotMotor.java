@@ -31,9 +31,9 @@ public class CargoMechSetPivotMotor extends Command {
   protected void execute() {
     Robot.cargoMech.setPivotMotor(speed);
 
-    if (Robot.cargoMech.atTopLimit() || Robot.cargoMech.atBottomLimit()) {
-      OI.operator.setRumble(0.25, 0.25);
-    }
+    // if (Robot.cargoMech.atTopLimit() || Robot.cargoMech.atBottomLimit()) {
+    //   OI.operator.setRumble(0.25, 0.25);
+    // }
   }
 
   // Make this return true when this Command no longer needs to run execute()

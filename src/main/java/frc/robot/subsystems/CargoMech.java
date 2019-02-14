@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -49,16 +50,19 @@ public class CargoMech extends Subsystem {
     pivotMotor.configOpenloopRamp(0.0);
     pivotMotor.configClosedloopRamp(0.0);
     pivotMotor.setNeutralMode(NeutralMode.Brake);
-    pivotMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-    // pivotMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-    // pivotMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-    // pivotMotor.overrideLimitSwitchesEnable(true);
+    pivotMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10); // from example code
+		pivotMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);// sets the encoder to the mag encode on GB
+    pivotMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+    pivotMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+    pivotMotor.overrideLimitSwitchesEnable(true);
     pivotMotor.configNominalOutputForward(0.0);
     pivotMotor.configNominalOutputReverse(0.0);
     pivotMotor.configPeakOutputForward(0.75);//TDO chanage back
     pivotMotor.configPeakOutputReverse(-0.75);
     pivotMotor.configVoltageCompSaturation(12);
     pivotMotor.enableVoltageCompensation(true);
+
+    // pivotMotor.setSelectedSensorPosition(0, 0, 10); //zero encoder?
 
     pivotMotor.config_kP(0, 0.5);
     pivotMotor.configAllowableClosedloopError(0, (int) (angleToEncoderTicks(2)));
