@@ -53,18 +53,18 @@ public class CargoMech extends Subsystem {
     pivotMotor.overrideLimitSwitchesEnable(true);
     pivotMotor.configNominalOutputForward(0.0);
     pivotMotor.configNominalOutputReverse(0.0);
-    pivotMotor.configPeakOutputForward(0.75);//TDO chanage back
+    pivotMotor.configPeakOutputForward(0.75);//TODO chanage back
     pivotMotor.configPeakOutputReverse(-0.75);
     pivotMotor.configVoltageCompSaturation(12);
     pivotMotor.enableVoltageCompensation(true);
 
-    // pivotMotor.setSelectedSensorPosition(0, 0, 10); //zero encoder?
+    pivotMotor.setSelectedSensorPosition(0, 0, 10); //zeros encoder
 
     pivotMotor.config_kP(0, 0.5);
     pivotMotor.configAllowableClosedloopError(0, (int) (angleToEncoderTicks(2)));
 
     pivotMotor_2.follow(pivotMotor);
-    // pivotMotor_2.setInverted(true);
+    // pivotMotor_2.setInverted(true); TODO make sure all polarities in the code are correct for mechanism
   }
 
   public static CargoMech getInstance() {
@@ -78,6 +78,10 @@ public class CargoMech extends Subsystem {
 
   public void setIntakeMotor(double speed) {
     cargoMotor.set(speed);
+  }
+
+  public void zeroEncoder() {
+    pivotMotor.setSelectedSensorPosition(0, 0, 10);
   }
 
   public boolean atTopLimit() {

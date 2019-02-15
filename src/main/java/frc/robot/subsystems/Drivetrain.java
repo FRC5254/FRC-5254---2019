@@ -43,7 +43,7 @@ public class Drivetrain extends Subsystem {
   private WPI_TalonSRX tLeft1, tLeft2, tRight1, tRight2;
   private CANSparkMax sLeft1, sLeft2, sLeft3, sRight1, sRight2, sRight3;
 
-  private Encoder leftEncoder, rightEncoder; // TODO are we using the encoder on the GB or the motors?
+  private Encoder leftEncoder, rightEncoder;
   private ADXRS450_Gyro gyro;
   
   private static Solenoid shiftingSolenoid;
@@ -92,6 +92,9 @@ public class Drivetrain extends Subsystem {
       sLeft1.setInverted(true);
       sLeft2.setInverted(true);
       sLeft3.setInverted(true);
+
+      sLeft1.setSmartCurrentLimit(55);
+      sRight1.setSmartCurrentLimit(55);
     }
     
     shiftingSolenoid = new Solenoid(RobotMap.SHIFTER_SOLENOID);
