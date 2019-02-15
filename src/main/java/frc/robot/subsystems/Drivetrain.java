@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
 import frc.robot.commands.DrivetrainDriveWithJoystick;
+import frc.robot.utils.Limelight;
 
 /**
  * Add your docs here.
@@ -118,12 +119,35 @@ public class Drivetrain extends Subsystem {
 
   public void initDefaultCommand() {
     setDefaultCommand(new DrivetrainDriveWithJoystick());
- }
+  }
 
- public static Drivetrain getInstance() {
-   return instance;
- }
+  public static Drivetrain getInstance() {
+    return instance;
+  }
   
+  public void LineUp() {
+    // TODO should I use use float?
+    float Kp = -0.1f;
+    float min_command = 0.05f;
+
+    float horizontalOffset = (float)(Limelight.getHorizontalOffset());// TODO is this okay?
+    float adjust = 0.0f;
+    if(horizontalOffset > 1.0) {
+      adjust = Kp * horizontalOffset - min_command;
+    } else if(horizontalOffset < 1.0) {
+      adjust = Kp * horizontalOffset + min_command;
+    }
+
+    double left;
+    double right;
+
+    left += adjust;
+    right -= adjust;
+
+    sLeft1.set(left);
+    sRight1.set(right);
+  }
+
   public void setShiftState(ShiftState newState) {
   shiftingSolenoid.set(newState.state);
   shiftState = newState;

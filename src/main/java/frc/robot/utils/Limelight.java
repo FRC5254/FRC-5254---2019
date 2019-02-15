@@ -111,6 +111,13 @@ public class Limelight {
         return getValue("getpipe");
     }
 
+    /**
+     * @return Results of a 3D position solution, 6 numbers: Translation (x,y,y) Rotation(pitch,yaw,roll)
+     */
+    public static double getCamtran() {
+        return getValue("camtran"); //TODO this wont return 6 mubers will it?
+    }
+
 // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     public enum LedMode {

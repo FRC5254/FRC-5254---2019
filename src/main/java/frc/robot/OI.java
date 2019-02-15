@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.DrivetrainLineUp;
 import frc.robot.commands.DrivetrainSetManipulationMode;
 import frc.robot.commands.DrivetrainSetShiftState;
 import frc.robot.commands.HatchMechCollect;
@@ -52,16 +53,9 @@ public class OI {
     Button leftJoystickClick = new JoystickButton(driver, 9);
     Button rightJoystickClick = new JoystickButton(driver, 10);
 
-    // aButton.whenPressed(new HatchMechCollect());
-    // bButton.whenPressed(new HatchMechPlace());
-    // xButton.whenPressed(new HatchMechSetFinState(FinState.CLAMPED));
-
-    aButton.whenPressed(new HatchMechSetFinState(FinState.UNCLAMPED));
-    aButton.whenReleased(new HatchMechSetFinState(FinState.CLAMPED));
-    bButton.whenPressed(new HatchMechSetKickerState(KickerState.OUT));
-    bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
-    xButton.whenPressed(new HatchMechSetSliderState(SliderState.IN));
-    yButton.whenPressed(new HatchMechSetSliderState(SliderState.OUT));
+    aButton.whenPressed(new DrivetrainLineUp());
+    aButton.whenReleased(new DrivetrainLineUp());
+    // bButton.whenPressed(new DrivetrainSquareUp());
     leftBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
     rightBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR));
     // leftBumper.whenPressed(new CargoMechSetIntakeSpeed(0.5));
