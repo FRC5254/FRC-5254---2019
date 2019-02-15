@@ -15,7 +15,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -31,12 +30,9 @@ public class CargoMech extends Subsystem {
   private static Victor cargoMotor;
   public static TalonSRX pivotMotor, pivotMotor_2;
 
-  private DigitalInput topLimitSwitch;
-  private DigitalInput bottomLimitSwitch;
-
   private static CargoMech instance = new CargoMech();
 
-  private static final int topEncoderLimit = 10; //TODO real values
+  private static final int topEncoderLimit = 10; //TODO get real values
   private static final int bottomEncoderLimit = -10;
 
   private CargoMech() {

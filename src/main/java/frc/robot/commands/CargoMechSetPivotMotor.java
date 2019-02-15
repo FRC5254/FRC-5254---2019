@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI;
 import frc.robot.Robot;
 
 public class CargoMechSetPivotMotor extends Command {
@@ -17,7 +16,7 @@ public class CargoMechSetPivotMotor extends Command {
   public CargoMechSetPivotMotor(double speed) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.cargoMech);
+    requires(Robot.cargoMech); //TODO how to make it so we can both intake and lift w/ pivot motor?
     this.speed = speed;
   }
 
@@ -30,16 +29,16 @@ public class CargoMechSetPivotMotor extends Command {
   @Override
   protected void execute() {
     Robot.cargoMech.setPivotMotor(speed);
-
-    // if (Robot.cargoMech.atTopLimit() || Robot.cargoMech.atBottomLimit()) {
-    //   OI.operator.setRumble(0.25, 0.25);
-    // }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    if(speed < 0) {
+      return Robot.cargoMech.atBottomLimit();
+    } else {
+      return Robot.cargoMech.atTopLimit();
+    }
   }
 
   // Called once after isFinished returns true

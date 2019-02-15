@@ -30,7 +30,7 @@ public class HatchMech extends Subsystem {
   }
 
   public enum KickerState {
-    OUT(Value.kForward), IN(Value.kReverse);
+    OUT(Value.kReverse), IN(Value.kForward);
 
     private Value state;
     KickerState(Value state) {
@@ -39,7 +39,7 @@ public class HatchMech extends Subsystem {
   }
 
   public enum SliderState {
-    OUT(Value.kForward), IN(Value.kReverse);
+    OUT(Value.kReverse), IN(Value.kForward);
 
     private Value state;
     SliderState(Value state) {

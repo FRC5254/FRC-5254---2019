@@ -8,7 +8,6 @@
 package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.commands.HatchMechCollect;
 import frc.robot.utils.HXboxController.XboxAxis;
 
 /**

@@ -20,7 +20,7 @@ public class RobotMap {
 
   // PWM
   public static final int INTAKE_MOTOR = 4;
-  public static final int CARGO_MOTOR = 0;// TODO
+  public static final int CARGO_MOTOR = 0;
 
   // CAN
   public static final int CARGO_PIVOT_MOTOR = 11;//4

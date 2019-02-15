@@ -10,7 +10,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.subsystems.Drivetrain.DriverControls;
 
 public class CargoMechDriveWithJoystick extends Command {
 
@@ -38,10 +37,6 @@ public class CargoMechDriveWithJoystick extends Command {
     } else {
       Robot.cargoMech.setPivotMotor(0.0);
     }
-
-    // if (Robot.cargoMech.atTopLimit() || Robot.cargoMech.atBottomLimit()) {
-    //   OI.operator.setRumble(0.25, 0.25);
-    // }
   }
 
   // Make this return true when this Command no longer needs to run execute()

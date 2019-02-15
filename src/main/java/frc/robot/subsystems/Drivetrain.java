@@ -14,9 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
 import frc.robot.commands.DrivetrainDriveWithJoystick;
 
@@ -34,10 +32,6 @@ public class Drivetrain extends Subsystem {
     }
   }
 
-  public enum DriverControls {
-    ARCADE, GTA_DRIVE;
-  }
-
   public enum DrivetrainMotorControllers {
     TALON_SRX, SPARK_MAX
   }
@@ -49,17 +43,13 @@ public class Drivetrain extends Subsystem {
   private WPI_TalonSRX tLeft1, tLeft2, tRight1, tRight2;
   private CANSparkMax sLeft1, sLeft2, sLeft3, sRight1, sRight2, sRight3;
 
-  private DifferentialDrive drive;
-  private SpeedControllerGroup driveControllersLeft;
-  private SpeedControllerGroup driveControllersRight;
-  private Encoder leftEncoder, rightEncoder;
+  private Encoder leftEncoder, rightEncoder; // TODO are we using the encoder on the GB or the motors?
   private ADXRS450_Gyro gyro;
   
   private static Solenoid shiftingSolenoid;
 
   public ShiftState shiftState;
-  public DrivetrainMotorControllers drivetrainMotorContollers; //TODO Make private?
-  public DriverControls driverControls;
+  private DrivetrainMotorControllers drivetrainMotorContollers;
   public ManipulationMode manipulationMode;
 
   private static Drivetrain instance = new Drivetrain();
@@ -67,7 +57,6 @@ public class Drivetrain extends Subsystem {
   private Drivetrain() {
 
     drivetrainMotorContollers = DrivetrainMotorControllers.SPARK_MAX;
-    driverControls = DriverControls.GTA_DRIVE; //TODO do these go here or earlier?
     manipulationMode = ManipulationMode.CARGO;
 
     if(drivetrainMotorContollers == DrivetrainMotorControllers.TALON_SRX) { 
@@ -79,10 +68,8 @@ public class Drivetrain extends Subsystem {
       tLeft2.follow(tLeft1);
       tRight2.follow(tRight1);
 
-      tLeft1.setInverted(false);//TODO invert as necessary
-      tLeft2.setInverted(false);//TODO invert as necessary
-
-      drive = new DifferentialDrive(tLeft1, tRight1);
+      tLeft1.setInverted(false);
+      tLeft2.setInverted(false);
     }
 
     if(drivetrainMotorContollers == DrivetrainMotorControllers.SPARK_MAX){
@@ -102,18 +89,16 @@ public class Drivetrain extends Subsystem {
       sRight2.follow(sRight1);
       sRight3.follow(sRight1);
 
-      sLeft1.setInverted(true);//TODO invert as necessary
-      sLeft2.setInverted(true);//TODO invert as necessary
-      sLeft3.setInverted(true);//TODO invert as necessary
-
-  
-      drive = new DifferentialDrive(sLeft1, sRight1);
+      sLeft1.setInverted(true);
+      sLeft2.setInverted(true);
+      sLeft3.setInverted(true);
     }
     
     shiftingSolenoid = new Solenoid(RobotMap.SHIFTER_SOLENOID);
 
     // leftEncoder = new Encoder(RobotMap.encoderLeftA, RobotMap.encoderLeftB);
     // rightEncoder = new Encoder(RobotMap.encoderRightA, RobotMap.encoderRightB);
+    
     gyro = new ADXRS450_Gyro();
   }
 
@@ -131,10 +116,6 @@ public class Drivetrain extends Subsystem {
   public void setShiftState(ShiftState newState) {
   shiftingSolenoid.set(newState.state);
   shiftState = newState;
-  }
-
-  public void arcadeDrive(double throttle, double turn) {
-   drive.arcadeDrive(throttle, turn);
   }
   
   public void GTADrive(double leftTrigger, double rightTrigger, double turn) {

@@ -7,16 +7,10 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.CargoMechSetIntakeSpeed;
-import frc.robot.commands.CargoMechSetToAngle;
 import frc.robot.commands.CargoMechSetPivotMotor;
 import frc.robot.commands.DrivetrainSetManipulationMode;
 import frc.robot.commands.DrivetrainSetShiftState;
-import frc.robot.commands.HatchMechCollect;
-import frc.robot.commands.HatchMechPlace;
 import frc.robot.commands.HatchMechSetFinState;
 import frc.robot.commands.HatchMechSetKickerState;
 import frc.robot.commands.HatchMechSetSliderState;
@@ -45,8 +39,8 @@ public class OI {
     driver.leftBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR));
     driver.rightBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
 
-    driver.ljc.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.PANEL));
-    driver.rjc.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.CARGO));
+    driver.bButton.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.PANEL));
+    driver.aButton.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.CARGO));
 
     // Operator
     operator.leftTriggerButton.configureThreshold(0.01);
@@ -71,11 +65,11 @@ public class OI {
 
     operator.rightBumper.whenPressed(new CargoMechSetIntakeSpeed(0.5));
     operator.rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
-    operator.leftBumper.whenPressed(new CargoMechSetIntakeSpeed(-1.0));
+    operator.leftBumper.whenPressed(new CargoMechSetIntakeSpeed(-0.75));
     operator.leftBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
 
-    // operator.ljc.whenPressed(new CargoMechSetPivotMotor(1.0));
-    // operator.rjc.whenPressed(new CargoMechSetPivotMotor(-1.0));
+    operator.startButton.whenPressed(new CargoMechSetPivotMotor(1.0));
+    operator.backButton.whenPressed(new CargoMechSetPivotMotor(-1.0));
 
       // operator.dpad.up.whenPressed(new HatchMechCollect());
   }
