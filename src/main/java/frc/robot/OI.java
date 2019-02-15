@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.DrivetrainDriveWithJoystick;
 import frc.robot.commands.DrivetrainLineUp;
 import frc.robot.commands.DrivetrainSetManipulationMode;
 import frc.robot.commands.DrivetrainSetShiftState;
@@ -54,7 +55,7 @@ public class OI {
     Button rightJoystickClick = new JoystickButton(driver, 10);
 
     aButton.whenPressed(new DrivetrainLineUp());
-    aButton.whenReleased(new DrivetrainLineUp());
+    aButton.whenReleased(new DrivetrainDriveWithJoystick());//TODO insant command?
     // bButton.whenPressed(new DrivetrainSquareUp());
     leftBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
     rightBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR));

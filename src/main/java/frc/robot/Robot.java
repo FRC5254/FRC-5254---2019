@@ -53,12 +53,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-
-    table = NetworkTableInstance.getDefault().getTable("limelight");
-    tx = table.getEntry("tx");
-    ty = table.getEntry("ty");
-    ta = table.getEntry("ta");
-
     cargoMech =  CargoMech.getInstance();
     drivetrain = Drivetrain.getInstance();
     hatchFloorIntake = HatchFloorIntake.getInstance();
@@ -82,8 +76,7 @@ public class Robot extends TimedRobot {
     //Config Limelight
     Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
     Limelight.setLedMode(LedMode.PIPELINE);
-    Limelight.setStreamMode(StreamMode.PIP_MAIN);
-    Limelight.setSnapshotMode(SnapshotMode.TWO_PER_SECOND); 
+    Limelight.setStreamMode(StreamMode.STANDARD);
 
     // Putting Limelight numbers onto smartdash
     SmartDashboard.putBoolean("Limelight has target?" , Limelight.hasValidTargets());

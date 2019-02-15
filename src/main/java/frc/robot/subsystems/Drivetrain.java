@@ -126,26 +126,20 @@ public class Drivetrain extends Subsystem {
   }
   
   public void LineUp() {
-    // TODO should I use use float?
-    float Kp = -0.1f;
-    float min_command = 0.05f;
+    // TODO tune these numbers
+    double Kp = -0.1f;
+    double min_command = 0.05f;
 
-    float horizontalOffset = (float)(Limelight.getHorizontalOffset());// TODO is this okay?
-    float adjust = 0.0f;
+    double horizontalOffset = (Limelight.getHorizontalOffset());// TODO is this okay?
+    double adjust = 0.0f;
     if(horizontalOffset > 1.0) {
       adjust = Kp * horizontalOffset - min_command;
     } else if(horizontalOffset < 1.0) {
       adjust = Kp * horizontalOffset + min_command;
     }
 
-    double left;
-    double right;
-
-    left += adjust;
-    right -= adjust;
-
-    sLeft1.set(left);
-    sRight1.set(right);
+    sLeft1.set(adjust);// TODO test polarity
+    sRight1.set(-adjust);
   }
 
   public void setShiftState(ShiftState newState) {
