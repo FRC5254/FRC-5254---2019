@@ -37,7 +37,7 @@ public class HatchFloorIntake extends Subsystem {
 
   private HatchFloorIntake() {
     intakeMotor = new Victor(RobotMap.INTAKE_MOTOR);
-    intakeSolenoid = new Solenoid(RobotMap.INTAKE_SOLENOID);
+    //TODO add pisont init here
 
     pivotState = defaultPivotState;
     intakeMotor.set(0.0);

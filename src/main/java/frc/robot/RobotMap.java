@@ -10,17 +10,14 @@ package frc.robot;
 public class RobotMap {
 
   // Solemoids
-  public static final int SHIFTER_SOLENOID = 1;
-  public static final int ACTUATE_SOLENOID_OUT = 2;
-  public static final int ACTUATE_SOLENOID_IN = 3;
-  public static final int HALO_SOLENOID_IN = 4;
-  public static final int HALO_SOLENOID_OUT = 5;
-  public static final int INTAKE_SOLENOID = 6;
-  public static final int FINGERS_SOLENOID = 7;
+  public static final int SHIFTER_SOLENOID = 5;
+  public static final int SLIDER_SOLENOID = 0;
+  public static final int HALO_SOLENOID = 7;
+  public static final int FINGERS_SOLENOID = 6;
 
   // PWM
   public static final int INTAKE_MOTOR = 4;
-  public static final int CARGO_MOTOR = 0;
+  public static final int CARGO_MOTOR = 14;
 
   // CAN
   public static final int CARGO_PIVOT_MOTOR = 11;//4

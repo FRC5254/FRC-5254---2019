@@ -36,11 +36,13 @@ public class OI {
     operator = new HXboxController(1);
 
     // Driver
-    driver.leftBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR));
-    driver.rightBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
+    driver.xButton.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR));
+    driver.xButton.whenReleased(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
 
     driver.bButton.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.PANEL));
     driver.aButton.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.CARGO));
+
+    
 
     // Operator
     operator.leftTriggerButton.configureThreshold(0.01);

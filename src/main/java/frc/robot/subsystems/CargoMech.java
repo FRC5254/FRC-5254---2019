@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -27,7 +28,7 @@ public class CargoMech extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private static Victor cargoMotor;
+  private static VictorSPX cargoMotor;
   public static TalonSRX pivotMotor, pivotMotor_2;
 
   private static CargoMech instance = new CargoMech();
@@ -37,7 +38,7 @@ public class CargoMech extends Subsystem {
 
   private CargoMech() {
 
-    cargoMotor = new Victor(RobotMap.CARGO_MOTOR);
+    cargoMotor = new VictorSPX(RobotMap.CARGO_MOTOR);
     pivotMotor = new TalonSRX(RobotMap.CARGO_PIVOT_MOTOR);
     pivotMotor_2 = new TalonSRX(RobotMap.CARGO_PIVOT_MOTOR_2);
 
@@ -77,7 +78,7 @@ public class CargoMech extends Subsystem {
   }
 
   public void setIntakeMotor(double speed) {
-    cargoMotor.set(speed);
+    cargoMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void zeroEncoder() {
