@@ -39,6 +39,12 @@ public class OI {
     driver.xButton.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR));
     driver.xButton.whenReleased(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
 
+    driver.rightBumper.whenPressed(new CargoMechSetIntakeSpeed(-1.0));
+    driver.rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
+
+    driver.leftBumper.whenPressed(new HatchMechSetKickerState(KickerState.OUT));
+    driver.leftBumper.whenReleased(new HatchMechSetKickerState(KickerState.IN));
+
     driver.bButton.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.PANEL));
     driver.aButton.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.CARGO));
 
@@ -65,7 +71,7 @@ public class OI {
     // operator.backButton.whenPressed(new HatchMechPlace());
     // operator.startButton.whenPressed(new HatchMechCollect());
 
-    operator.rightBumper.whenPressed(new CargoMechSetIntakeSpeed(0.5));
+    operator.rightBumper.whenPressed(new CargoMechSetIntakeSpeed(0.65));
     operator.rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
     operator.leftBumper.whenPressed(new CargoMechSetIntakeSpeed(-0.75));
     operator.leftBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));

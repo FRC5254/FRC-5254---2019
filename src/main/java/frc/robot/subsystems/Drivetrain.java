@@ -57,7 +57,7 @@ public class Drivetrain extends Subsystem {
   private Drivetrain() {
 
     drivetrainMotorContollers = DrivetrainMotorControllers.SPARK_MAX;
-    manipulationMode = ManipulationMode.CARGO;
+    manipulationMode = ManipulationMode.PANEL;
 
     if(drivetrainMotorContollers == DrivetrainMotorControllers.TALON_SRX) { 
       tLeft1 = new WPI_TalonSRX(RobotMap.T_DRIVETRAIN_LEFT);
@@ -93,8 +93,13 @@ public class Drivetrain extends Subsystem {
       sLeft2.setInverted(true);
       sLeft3.setInverted(true);
 
-      sLeft1.setSmartCurrentLimit(55);
-      sRight1.setSmartCurrentLimit(55);
+      // sleft1.setOpenLoopRampRate(0.2);
+      // sRight1.setOpenLoopRampRate(0.2);
+      // sLeft1.setRampRate(0.2);
+      // sRight1.setRampRate(0.2);
+
+      sLeft1.setSmartCurrentLimit(30);
+      sRight1.setSmartCurrentLimit(30);
     }
     
     shiftingSolenoid = new Solenoid(RobotMap.SHIFTER_SOLENOID);

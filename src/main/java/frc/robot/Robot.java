@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -15,6 +16,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.CargoMech;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchMech;
+import frc.robot.utils.Limelight;
+import frc.robot.utils.Limelight.CamMode;
+import frc.robot.utils.Limelight.LedMode;
+import frc.robot.utils.Limelight.StreamMode;
 import frc.robot.subsystems.HatchFloorIntake;
 
 /**
@@ -120,6 +125,14 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    
+    //TODO move
+    Limelight.setLedMode(LedMode.FORCE_OFF);
+    Limelight.setCamMode(CamMode.DRIVER_CAM);
+    Limelight.setStreamMode(StreamMode.STANDARD);
+
+    CameraServer.getInstance().startAutomaticCapture(0);
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

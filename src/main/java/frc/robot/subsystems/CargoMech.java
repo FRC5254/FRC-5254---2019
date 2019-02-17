@@ -48,18 +48,18 @@ public class CargoMech extends Subsystem {
     pivotMotor.configClosedloopRamp(0.0);
     pivotMotor.setNeutralMode(NeutralMode.Brake);
     pivotMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10); // from example code
-		pivotMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);// sets the encoder to the mag encode on GB
+		pivotMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);// sets the encoder to the mag encode on GB
     pivotMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     pivotMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     pivotMotor.overrideLimitSwitchesEnable(true);
     pivotMotor.configNominalOutputForward(0.0);
     pivotMotor.configNominalOutputReverse(0.0);
-    pivotMotor.configPeakOutputForward(0.75);//TODO chanage back
-    pivotMotor.configPeakOutputReverse(-0.75);
+    pivotMotor.configPeakOutputForward(0.85);//TODO chanage back
+    pivotMotor.configPeakOutputReverse(-0.85);
     pivotMotor.configVoltageCompSaturation(12);
     pivotMotor.enableVoltageCompensation(true);
 
-    pivotMotor.setSelectedSensorPosition(0, 0, 10); //zeros encoder
+    // pivotMotor.setSelectedSensorPosition(0, 0, 10); //zeros encoder
 
     pivotMotor.config_kP(0, 0.5);
     pivotMotor.configAllowableClosedloopError(0, (int) (angleToEncoderTicks(2)));
@@ -82,7 +82,7 @@ public class CargoMech extends Subsystem {
   }
 
   public void zeroEncoder() {
-    pivotMotor.setSelectedSensorPosition(0, 0, 10);
+    // pivotMotor.setSelectedSensorPosition(0, 0, 10);
   }
 
   public boolean atTopLimit() {
@@ -119,6 +119,10 @@ public class CargoMech extends Subsystem {
     return encoderTicksToAngle(pivotMotor.getSelectedSensorPosition(0));
   }
   public void setPivotMotor(double speed) {
-      pivotMotor.set(ControlMode.PercentOutput, speed);
+    // if (getPosition() > -400) {
+    //   speed = speed * 0.5;
+    // }
+
+    pivotMotor.set(ControlMode.PercentOutput, speed );
   }
 }
