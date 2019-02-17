@@ -39,5 +39,10 @@ public class RobotMap {
 
   public static final int LEFT_TRIGGER_X_AXIS = 0; 
 
+  //Limelight
+  public static final double TURN_K = 0.01;
+  public static final double THROTTLE_K = 0.10;
+  public static final double DESIRED_TARGET_AREA = 10;
+  public static final double MAX_TRHOTTLE = 0.5;
   
 }

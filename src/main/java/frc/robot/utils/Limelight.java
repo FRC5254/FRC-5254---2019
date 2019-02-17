@@ -10,6 +10,7 @@ package frc.robot.utils;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
@@ -39,6 +40,10 @@ public class Limelight {
     */
     public static boolean hasValidTargets() {
         return getValue("tv") == 1;
+    }
+
+    public static double getTargetValue() {
+        return getValue("tv");
     }
 
     /**
@@ -118,6 +123,33 @@ public class Limelight {
         return getValue("camtran"); //TODO this wont return 6 mubers will it?
     }
 
+// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    public void updateTracking() {
+        final double turnK = RobotMap.TURN_K;
+        final double throttleK = RobotMap.THROTTLE_K;
+        final double desiredTargetArea = RobotMap.DESIRED_TARGET_AREA;
+        final double maxThrottle = RobotMap.MAX_TRHOTTLE;
+
+        double targetValue = getTargetValue();
+        double horizontalOffset = getHorizontalOffset();
+        double verticalOffset = getVerticalOffset();
+        double targetArea = getTargetArea();
+
+        double limeTurn;
+        double limeThrottle;
+
+        if (hasValidTargets()) {
+            limeThrottle = 0.0;
+            limeTurn = 0.0;
+            return;
+        } else {
+            limeTurn = horizontalOffset * turnK;
+            limeThrottle = (desiredTargetArea - targetArea) * throttleK;
+        }
+
+        
+
+    }
 // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     public enum LedMode {
