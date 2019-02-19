@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.OI;
 import frc.robot.RobotMap;
 
 /**
@@ -85,7 +86,9 @@ public class Climber extends Subsystem {
   }
 
   public void setSpeed(double speed) {
+    if (OI.driver.rightBumper.get()) { // TODO do the double button thing
     climbMotor1.set(ControlMode.PercentOutput, speed);
+    }
   }
   
 }
