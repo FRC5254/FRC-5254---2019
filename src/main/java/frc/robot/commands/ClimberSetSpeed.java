@@ -13,11 +13,11 @@ import frc.robot.Robot;
 /**
  * Add your docs here.
  */
-public class HatchFloorIntakeSetSpeed extends InstantCommand {
+public class ClimberSetSpeed extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public HatchFloorIntakeSetSpeed(double speed) {
-    super(Robot.hatchFloorIntake, () -> Robot.hatchFloorIntake.setSpeed(speed));
+  public ClimberSetSpeed(double speed) {
+    super(Robot.climber, () -> Robot.climber.setSpeed(speed));
   }
 }

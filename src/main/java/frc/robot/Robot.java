@@ -14,13 +14,13 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.CargoMech;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchMech;
 import frc.robot.utils.Limelight;
 import frc.robot.utils.Limelight.CamMode;
 import frc.robot.utils.Limelight.LedMode;
 import frc.robot.utils.Limelight.StreamMode;
-import frc.robot.subsystems.HatchFloorIntake;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,9 +31,9 @@ import frc.robot.subsystems.HatchFloorIntake;
  */
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
-  public static HatchFloorIntake hatchFloorIntake;
   public static HatchMech hatchMech;
   public static CargoMech cargoMech;
+  public static Climber climber;
   public static OI m_oi;
 
   Command m_autonomousCommand;
@@ -48,8 +48,8 @@ public class Robot extends TimedRobot {
 
     cargoMech =  CargoMech.getInstance();
     drivetrain = Drivetrain.getInstance();
-    hatchFloorIntake = HatchFloorIntake.getInstance();
     hatchMech = HatchMech.getInstance();
+    climber = Climber.getInstance();
     
     m_oi = new OI(); // This one MUST be last 
     

@@ -9,11 +9,14 @@ package frc.robot;
 
 import frc.robot.commands.CargoMechSetIntakeSpeed;
 import frc.robot.commands.CargoMechSetPivotMotor;
+import frc.robot.commands.ClimberSetMode;
+import frc.robot.commands.ClimberSetSpeed;
 import frc.robot.commands.DrivetrainSetManipulationMode;
 import frc.robot.commands.DrivetrainSetShiftState;
 import frc.robot.commands.HatchMechSetFinState;
 import frc.robot.commands.HatchMechSetKickerState;
 import frc.robot.commands.HatchMechSetSliderState;
+import frc.robot.subsystems.Climber.ClimberMode;
 import frc.robot.subsystems.Drivetrain.ManipulationMode;
 import frc.robot.subsystems.Drivetrain.ShiftState;
 import frc.robot.subsystems.HatchMech.FinState;
@@ -39,11 +42,17 @@ public class OI {
     driver.xButton.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR));
     driver.xButton.whenReleased(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
 
-    driver.rightBumper.whenPressed(new CargoMechSetIntakeSpeed(-1.0));
-    driver.rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
+    // driver.rightBumper.whenPressed(new CargoMechSetIntakeSpeed(-1.0));
+    // driver.rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
 
-    driver.leftBumper.whenPressed(new HatchMechSetKickerState(KickerState.OUT));
-    driver.leftBumper.whenReleased(new HatchMechSetKickerState(KickerState.IN));
+    // driver.leftBumper.whenPressed(new HatchMechSetKickerState(KickerState.OUT));
+    // driver.leftBumper.whenReleased(new HatchMechSetKickerState(KickerState.IN));
+
+    driver.leftBumper.whenPressed(new ClimberSetSpeed(1.0));
+    driver.leftBumper.whenReleased(new ClimberSetSpeed(0.0));
+
+    driver.rightBumper.whenPressed(new ClimberSetSpeed(-1.0));
+    driver.rightBumper.whenReleased(new ClimberSetSpeed(0.0));
 
     driver.bButton.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.PANEL));
     driver.aButton.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.CARGO));
@@ -76,9 +85,11 @@ public class OI {
     operator.leftBumper.whenPressed(new CargoMechSetIntakeSpeed(-0.75));
     operator.leftBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
 
-    operator.startButton.whenPressed(new CargoMechSetPivotMotor(1.0));
-    operator.backButton.whenPressed(new CargoMechSetPivotMotor(-1.0));
+    // operator.startButton.whenPressed(new CargoMechSetPivotMotor(1.0));
+    // operator.backButton.whenPressed(new CargoMechSetPivotMotor(-1.0));
 
-      // operator.dpad.up.whenPressed(new HatchMechCollect());
+    operator.startButton.whenPressed(new ClimberSetMode(ClimberMode.CLIMB_MODE));
+
+    // operator.dpad.up.whenPressed(new HatchMechCollect());
   }
 }
