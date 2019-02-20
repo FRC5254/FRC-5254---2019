@@ -20,7 +20,7 @@ public class RobotMap {
   public static final int INTAKE_MOTOR = 4;
 
   // DIO
-  public static final int CLIMBER_BUTTON = 0;
+  public static final int CLIMBER_BUTTON = 9;
 
   // CAN
   public static final int CARGO_MOTOR = 14;

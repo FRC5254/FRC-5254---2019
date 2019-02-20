@@ -26,7 +26,7 @@ public class Climber extends Subsystem {
   private static TalonSRX climbMotor1;
   private static TalonSRX climbMotor2;
 
-  private static DigitalInput bottomLimit;
+  public static DigitalInput limit;
 
   private static ClimberMode climbMode;
   private static ClimberMode defaultClimbMode = ClimberMode.SECURED_MODE;
@@ -39,7 +39,7 @@ public class Climber extends Subsystem {
     climbMotor1 = new TalonSRX(RobotMap.CLIMB_MOTOR_1);
     climbMotor2 = new TalonSRX(RobotMap.CLIMB_MOTOR_1);
 
-    bottomLimit = new DigitalInput(RobotMap.CLIMBER_BUTTON);
+    limit = new DigitalInput(RobotMap.CLIMBER_BUTTON);
 
     climbMode = defaultClimbMode;
 
@@ -60,8 +60,6 @@ public class Climber extends Subsystem {
     // It makes PID tuning and preformance of the mechanism more consistent
     climbMotor1.configVoltageCompSaturation(12);
     climbMotor1.enableVoltageCompensation(true);
-
-    
   }
 
   public static Climber getInstance() {
@@ -87,8 +85,15 @@ public class Climber extends Subsystem {
 
   public void setSpeed(double speed) {
     if (OI.driver.rightBumper.get()) { // TODO do the double button thing
-    climbMotor1.set(ControlMode.PercentOutput, speed);
+      if (limit.get() && (speed > 0.0)) {// TODO what happens when things are set to 0.0?
+        climbMotor1.set(ControlMode.PercentOutput, 0.0);
+      } else if (limit.get() && (speed < 0.0)) {
+        climbMotor1.set(ControlMode.PercentOutput, speed);
+      } else {
+        climbMotor1.set(ControlMode.PercentOutput, speed);
+      }
     }
   }
+
   
 }

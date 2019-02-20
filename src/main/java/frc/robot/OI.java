@@ -11,6 +11,7 @@ import frc.robot.commands.CargoMechSetIntakeSpeed;
 import frc.robot.commands.CargoMechSetPivotMotor;
 import frc.robot.commands.ClimberSetMode;
 import frc.robot.commands.ClimberSetSpeed;
+import frc.robot.commands.ClimberSetSpeed1;
 import frc.robot.commands.DrivetrainSetManipulationMode;
 import frc.robot.commands.DrivetrainSetShiftState;
 import frc.robot.commands.HatchMechPlace;
@@ -49,8 +50,8 @@ public class OI {
     driver.xButton.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR)); //shift
     driver.xButton.whenReleased(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
     driver.yButton.whenPressed(new ClimberSetMode(ClimberMode.CLIMB_MODE)); // Pistions for climber
-    driver.leftBumper.whenPressed(new ClimberSetSpeed(1.0)); // Climb
-    driver.leftBumper.whenReleased(new ClimberSetSpeed(0.0)); // note safety is on right bumper the command does nothing until thats pressed
+    driver.leftBumper.whenPressed(new ClimberSetSpeed1(-1.0)); // Climb
+    driver.leftBumper.whenReleased(new ClimberSetSpeed1(0.0)); // note safety is on right bumper the command does nothing until thats pressed
 
     // Udes for testing on monday
     // driver.aButton.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.CARGO));
@@ -79,3 +80,4 @@ public class OI {
     // operator.startButton.whenPressed(new ClimberSetMode(ClimberMode.CLIMB_MODE));
   }
 }
+
