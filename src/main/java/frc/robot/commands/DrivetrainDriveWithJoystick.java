@@ -10,7 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.subsystems.Drivetrain.DriverControls;
+import frc.robot.subsystems.Drivetrain.ManipulationMode;
 
 public class DrivetrainDriveWithJoystick extends Command {
   public DrivetrainDriveWithJoystick() {
@@ -22,20 +22,20 @@ protected void initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
-protected void execute() {
-  if(Robot.drivetrain.driverControls == DriverControls.ARCADE){
-    double throttle = OI.driver.getRawAxis(OI.DRIVER_LEFT_JOYSTICK_Y_AXIS);
-    double turn = OI.driver.getRawAxis(OI.DRIVER_RIGHT_JOYTICK_X_AXIS);
-
-    Robot.drivetrain.arcadeDrive(throttle, turn);
-  }
-
-  if(Robot.drivetrain.driverControls == DriverControls.GTA_DRIVE)
+protected void execute() { 
+  if(Robot.drivetrain.manipulationMode == ManipulationMode.PANEL) {
     Robot.drivetrain.GTADrive(
-      OI.driver.getRawAxis(OI.DRIVER_LEFT_TRIGGER),
-      OI.driver.getRawAxis(OI.DRIVER_RIGHT_TRIGGER),
-      OI.driver.getRawAxis(OI.DRIVER_RIGHT_JOYTICK_X_AXIS)
+      OI.driver.triggers.getLeft(),
+      OI.driver.triggers.getRight(),
+      -(OI.driver.leftStick.getX()*0.675)
     );
+  } else if (Robot.drivetrain.manipulationMode == ManipulationMode.CARGO){
+    Robot.drivetrain.GTADrive(
+      OI.driver.triggers.getLeft(),
+      OI.driver.triggers.getRight(),
+      (OI.driver.leftStick.getX()*0.675)
+    );
+  } else {}
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -45,7 +45,6 @@ protected boolean isFinished() {
 
 // Called once after isFinished returns true
 protected void end() {
-  Robot.drivetrain.arcadeDrive(0, 0);
 }
 
 // Called when another command which requires one or more of the same

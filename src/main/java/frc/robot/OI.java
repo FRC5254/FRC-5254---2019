@@ -7,25 +7,25 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.CargoMechSetIntake;
 import frc.robot.commands.CargoMechSetIntakeSpeed;
-import frc.robot.commands.CargoMechSetToAngle;
 import frc.robot.commands.CargoMechSetPivotMotor;
+import frc.robot.commands.ClimberSetMode;
+import frc.robot.commands.ClimberSetSpeed;
+import frc.robot.commands.ClimberSetSpeed1;
 import frc.robot.commands.DrivetrainSetManipulationMode;
 import frc.robot.commands.DrivetrainSetShiftState;
-import frc.robot.commands.HatchMechCollect;
 import frc.robot.commands.HatchMechPlace;
 import frc.robot.commands.HatchMechSetFinState;
 import frc.robot.commands.HatchMechSetKickerState;
 import frc.robot.commands.HatchMechSetSliderState;
+import frc.robot.subsystems.Climber.ClimberMode;
 import frc.robot.subsystems.Drivetrain.ManipulationMode;
 import frc.robot.subsystems.Drivetrain.ShiftState;
 import frc.robot.subsystems.HatchMech.FinState;
 import frc.robot.subsystems.HatchMech.KickerState;
 import frc.robot.subsystems.HatchMech.SliderState;
+import frc.robot.utils.DoubleButton;
+import frc.robot.utils.HXboxController;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -33,67 +33,51 @@ import frc.robot.subsystems.HatchMech.SliderState;
  */
 public class OI {
 
-  public static Joystick driver = new Joystick(0);
-  public static Joystick operator = new Joystick(1);
-
-  public static final int DRIVER_LEFT_JOYSTICK_X_AXIS = 0;
-  public static final int DRIVER_LEFT_JOYSTICK_Y_AXIS = 1;
-  public static final int DRIVER_LEFT_TRIGGER = 2;
-  public static final int DRIVER_RIGHT_TRIGGER = 3;
-  public static final int DRIVER_RIGHT_JOYTICK_X_AXIS = 4;
-  public static final int DRIVER_RIGHT_JOYSTICK_Y_AXIS = 5;
+  public static HXboxController driver; 
+  public static HXboxController operator;
 
   public OI() {
 
-    Button aButton = new JoystickButton(driver, 1);
-    Button bButton = new JoystickButton(driver, 2);
-    Button xButton = new JoystickButton(driver, 3);
-    Button yButton = new JoystickButton(driver, 4);
-    Button leftBumper = new JoystickButton(driver, 5);
-    Button rightBumper = new JoystickButton(driver, 6);
-    Button backButton = new JoystickButton(driver, 7);
-    Button startButton = new JoystickButton(driver, 8);
-    Button leftJoystickClick = new JoystickButton(driver, 9);
-    Button rightJoystickClick = new JoystickButton(driver, 10);
+    driver = new HXboxController(0);
+    operator = new HXboxController(1);
 
+    // Driver
+    // Proposing
+    driver.aButton.whenPressed(new CargoMechSetIntakeSpeed(-1.0)); // Shoot ball
+    driver.aButton.whenReleased(new CargoMechSetIntakeSpeed(0.0));
+    driver.bButton.whenPressed(new HatchMechSetKickerState(KickerState.OUT));// Place hatch
+    driver.bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
+    driver.xButton.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR)); //shift
+    driver.xButton.whenReleased(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
+    driver.yButton.whenPressed(new ClimberSetMode(ClimberMode.CLIMB_MODE)); // Pistions for climber
+    driver.leftBumper.whenPressed(new ClimberSetSpeed1(-1.0)); // Climb
+    driver.leftBumper.whenReleased(new ClimberSetSpeed1(0.0)); // note safety is on right bumper the command does nothing until thats pressed
 
-    if (Robot.drivetrain.manipulationMode == ManipulationMode.CARGO) {
+    // Udes for testing on monday
+    // driver.aButton.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.CARGO));
+    // driver.bButton.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.PANEL));
+    // driver.xButton.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR));
+    // driver.xButton.whenReleased(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
 
-      aButton.whenPressed(new CargoMechSetPivotMotor(0.5));
-      aButton.whenReleased(new CargoMechSetPivotMotor(0.0));
-      bButton.whenPressed(new CargoMechSetPivotMotor(-0.5));
-      bButton.whenReleased(new CargoMechSetPivotMotor(0.0));
+    // driver.leftBumper.whenPressed(new ClimberSetSpeed(1.0));
+    // driver.leftBumper.whenReleased(new ClimberSetSpeed(0.0));
 
-      xButton.whenPressed(new CargoMechSetToAngle(45));
-      yButton.whenPressed(new CargoMechSetToAngle(30));
-
-      leftBumper.whenPressed(new CargoMechSetIntakeSpeed(-0.5));
-      leftBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
-
-      rightBumper.whenPressed(new CargoMechSetIntakeSpeed(1.0));
-      rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
-
-    } else if (Robot.drivetrain.manipulationMode == ManipulationMode.PANEL) {
-
-      aButton.whenPressed(new HatchMechSetFinState(FinState.UNCLAMPED));
-      aButton.whenReleased(new HatchMechSetFinState(FinState.CLAMPED));
-      bButton.whenPressed(new HatchMechSetKickerState(KickerState.OUT));
-      bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
-      xButton.whenPressed(new HatchMechSetSliderState(SliderState.IN));
-      yButton.whenPressed(new HatchMechSetSliderState(SliderState.OUT));
-
-      backButton.whenPressed(new HatchMechPlace());
-      startButton.whenPressed(new HatchMechCollect());
-
-      leftBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
-      rightBumper.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR));
-
-    } else {
-      // nothin'
-    }
-
-    leftJoystickClick.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.PANEL));
-    rightJoystickClick.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.CARGO));
+    // Operator
+    operator.aButton.whenPressed(new HatchMechSetFinState(FinState.UNCLAMPED)); // Fins unclamp when pressed
+    operator.aButton.whenReleased(new HatchMechSetFinState(FinState.CLAMPED));
+    operator.bButton.whenPressed(new HatchMechSetKickerState(KickerState.OUT)); // Kicker out whne pressed
+    operator.bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
+    operator.xButton.whenPressed(new HatchMechSetSliderState(SliderState.IN)); // Slider in
+    operator.yButton.whenPressed(new HatchMechSetSliderState(SliderState.OUT)); // Slider out
+    operator.startButton.whenPressed(new CargoMechSetPivotMotor(1.0)); // Cargo down (TODO should invert motors so polarity reflects intaking and outtaking)
+    operator.backButton.whenPressed(new CargoMechSetPivotMotor(-1.0)); //Cargo up
+    operator.rightBumper.whenPressed(new CargoMechSetIntakeSpeed(0.65)); // Intake when Pressed
+    operator.rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
+    operator.leftBumper.whenPressed(new CargoMechSetIntakeSpeed(-0.75)); // Outtake when pressed
+    operator.leftBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
     
+    // Used for testing on monday
+    // operator.startButton.whenPressed(new ClimberSetMode(ClimberMode.CLIMB_MODE));
   }
 }
+

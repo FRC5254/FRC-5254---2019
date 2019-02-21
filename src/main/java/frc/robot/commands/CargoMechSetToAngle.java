@@ -18,7 +18,6 @@ public class CargoMechSetToAngle extends Command {
   public CargoMechSetToAngle(double angle) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-   
     requires(Robot.cargoMech);
 
     this.angle = angle;

@@ -30,26 +30,26 @@ public class HatchMech extends Subsystem {
   }
 
   public enum KickerState {
-    OUT(Value.kReverse), IN(Value.kForward);
+    OUT(true), IN(false);
 
-    private Value state;
-    KickerState(Value state) {
+    private boolean state;
+    KickerState(boolean state) {
       this.state = state;
     }
   }
 
   public enum SliderState {
-    OUT(Value.kReverse), IN(Value.kForward);
+    OUT(true), IN(false);
 
-    private Value state;
-    SliderState(Value state) {
+    private boolean state;
+    SliderState(boolean state) {
       this.state = state;
     }
   }
 
   private static Solenoid finSolenoid;
-  private static DoubleSolenoid kickerSolenoid;
-  private static DoubleSolenoid sliderSolenoid;
+  private static Solenoid kickerSolenoid;
+  private static Solenoid sliderSolenoid;
 
   public FinState finState;
   public KickerState kickerState;
@@ -65,8 +65,8 @@ public class HatchMech extends Subsystem {
   private HatchMech() {
 
     finSolenoid = new Solenoid(RobotMap.FINGERS_SOLENOID);
-    kickerSolenoid = new DoubleSolenoid(RobotMap.HALO_SOLENOID_OUT, RobotMap.HALO_SOLENOID_IN);
-    sliderSolenoid = new DoubleSolenoid(RobotMap.ACTUATE_SOLENOID_OUT, RobotMap.ACTUATE_SOLENOID_IN);
+    kickerSolenoid = new Solenoid(RobotMap.HALO_SOLENOID);
+    sliderSolenoid = new Solenoid(RobotMap.SLIDER_SOLENOID);
 
     finState = defaultFinState;
     kickerState = defaultKickerState;

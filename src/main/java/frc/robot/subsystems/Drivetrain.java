@@ -14,9 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
 import frc.robot.commands.DrivetrainDriveWithJoystick;
 
@@ -26,16 +24,12 @@ import frc.robot.commands.DrivetrainDriveWithJoystick;
 public class Drivetrain extends Subsystem {
 
   public enum ShiftState {
-    HIGH_GEAR(true), LOW_GEAR(false);
+    HIGH_GEAR(false), LOW_GEAR(true);
 
     private boolean state;
     ShiftState(boolean state){
       this.state = state;
     }
-  }
-
-  public enum DriverControls {
-    ARCADE, GTA_DRIVE;
   }
 
   public enum DrivetrainMotorControllers {
@@ -49,17 +43,13 @@ public class Drivetrain extends Subsystem {
   private WPI_TalonSRX tLeft1, tLeft2, tRight1, tRight2;
   private CANSparkMax sLeft1, sLeft2, sLeft3, sRight1, sRight2, sRight3;
 
-  private DifferentialDrive drive;
-  private SpeedControllerGroup driveControllersLeft;
-  private SpeedControllerGroup driveControllersRight;
   private Encoder leftEncoder, rightEncoder;
   private ADXRS450_Gyro gyro;
   
   private static Solenoid shiftingSolenoid;
 
   public ShiftState shiftState;
-  public DrivetrainMotorControllers drivetrainMotorContollers; //TODO Make private?
-  public DriverControls driverControls;
+  private DrivetrainMotorControllers drivetrainMotorContollers;
   public ManipulationMode manipulationMode;
 
   private static Drivetrain instance = new Drivetrain();
@@ -67,8 +57,7 @@ public class Drivetrain extends Subsystem {
   private Drivetrain() {
 
     drivetrainMotorContollers = DrivetrainMotorControllers.SPARK_MAX;
-    driverControls = DriverControls.GTA_DRIVE; //TODO do these go here or earlier?
-    manipulationMode = ManipulationMode.CARGO;
+    manipulationMode = ManipulationMode.PANEL;
 
     if(drivetrainMotorContollers == DrivetrainMotorControllers.TALON_SRX) { 
       tLeft1 = new WPI_TalonSRX(RobotMap.T_DRIVETRAIN_LEFT);
@@ -79,10 +68,8 @@ public class Drivetrain extends Subsystem {
       tLeft2.follow(tLeft1);
       tRight2.follow(tRight1);
 
-      tLeft1.setInverted(false);//TODO invert as necessary
-      tLeft2.setInverted(false);//TODO invert as necessary
-
-      drive = new DifferentialDrive(tLeft1, tRight1);
+      tLeft1.setInverted(false);
+      tLeft2.setInverted(false);
     }
 
     if(drivetrainMotorContollers == DrivetrainMotorControllers.SPARK_MAX){
@@ -102,17 +89,24 @@ public class Drivetrain extends Subsystem {
       sRight2.follow(sRight1);
       sRight3.follow(sRight1);
 
-      sLeft1.setInverted(true);//TODO invert as necessary
-      sLeft2.setInverted(true);//TODO invert as necessary
-      sLeft3.setInverted(true);//TODO invert as necessary
+      sLeft1.setInverted(true);
+      sLeft2.setInverted(true);
+      sLeft3.setInverted(true);
 
-      drive = new DifferentialDrive(sLeft1, sRight1);
+      // sleft1.setOpenLoopRampRate(0.2);
+      // sRight1.setOpenLoopRampRate(0.2);
+      // sLeft1.setRampRate(0.2);
+      // sRight1.setRampRate(0.2);
+
+      sLeft1.setSmartCurrentLimit(30);
+      sRight1.setSmartCurrentLimit(30);
     }
     
     shiftingSolenoid = new Solenoid(RobotMap.SHIFTER_SOLENOID);
 
     // leftEncoder = new Encoder(RobotMap.encoderLeftA, RobotMap.encoderLeftB);
     // rightEncoder = new Encoder(RobotMap.encoderRightA, RobotMap.encoderRightB);
+    
     gyro = new ADXRS450_Gyro();
   }
 
@@ -131,14 +125,10 @@ public class Drivetrain extends Subsystem {
   shiftingSolenoid.set(newState.state);
   shiftState = newState;
   }
-
-  public void arcadeDrive(double throttle, double turn) {
-   drive.arcadeDrive(throttle, turn);
-  }
   
   public void GTADrive(double leftTrigger, double rightTrigger, double turn) {
     
-    if (-0.1 <= turn && turn <= 0.1) {
+    if (-0.2 <= turn && turn <= 0.2) {
       turn = 0.0;
     }
 
@@ -151,21 +141,21 @@ public class Drivetrain extends Subsystem {
     
     if(drivetrainMotorContollers == DrivetrainMotorControllers.TALON_SRX) {
       if(manipulationMode == ManipulationMode.CARGO){
-        tRight1.set(-right);
-        tLeft1.set(-left);
-      } else if (manipulationMode == ManipulationMode.PANEL) {
-        tRight1.set(right); 
+        tRight1.set(right);
         tLeft1.set(left);
+      } else if (manipulationMode == ManipulationMode.PANEL) {
+        tRight1.set(-right); 
+        tLeft1.set(-left);
       } else {
         System.out.println("************* this shouldn't happen but it did --- Drivetrain manipulationMode illdefined *************");
       }
     } else if(drivetrainMotorContollers == DrivetrainMotorControllers.SPARK_MAX) {
       if(manipulationMode == ManipulationMode.CARGO) {
-        sRight1.set(-right);
-        sLeft1.set(-left);
-      } else if(manipulationMode == ManipulationMode.PANEL) {
         sRight1.set(right);
         sLeft1.set(left);
+      } else if(manipulationMode == ManipulationMode.PANEL) {
+        sRight1.set(-right);
+        sLeft1.set(-left);
       } else {
         System.out.println("************* this shouldn't happen but it did --- Drivetrain manipulationMode illdefined *************");
       } 

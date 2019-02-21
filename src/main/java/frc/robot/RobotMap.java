@@ -10,21 +10,23 @@ package frc.robot;
 public class RobotMap {
 
   // Solemoids
-  public static final int SHIFTER_SOLENOID = 1;
-  public static final int ACTUATE_SOLENOID_OUT = 2;
-  public static final int ACTUATE_SOLENOID_IN = 3;
-  public static final int HALO_SOLENOID_IN = 4;
-  public static final int HALO_SOLENOID_OUT = 5;
-  public static final int INTAKE_SOLENOID = 6;
-  public static final int FINGERS_SOLENOID = 7;
+  public static final int SHIFTER_SOLENOID = 5;
+  public static final int FINGERS_SOLENOID = 6;
+  public static final int HALO_SOLENOID = 7;
+  public static final int SLIDER_SOLENOID = 0;
+  public static final int CLIMBER_SOLENOID = 1;
 
   // PWM
   public static final int INTAKE_MOTOR = 4;
-  public static final int CARGO_MOTOR = 0;// TODO
+
+  // DIO
+  public static final int CLIMBER_BUTTON = 9;
 
   // CAN
+  public static final int CARGO_MOTOR = 14;
   public static final int CARGO_PIVOT_MOTOR = 11;//4
   public static final int CARGO_PIVOT_MOTOR_2 = 12; //9
+
   public static final int T_DRIVETRAIN_LEFT = 2;
   public static final int T_DRIVETRAIN_LEFT_2 = 10;
   public static final int T_DRIVETRAIN_RIGHT = 3;
@@ -37,7 +39,6 @@ public class RobotMap {
   public static final int S_DRIVETRAIN_RIGHT_2 = 18;
   public static final int S_DRIVETRAIN_RIGHT_3 = 17;
 
-  public static final int LEFT_TRIGGER_X_AXIS = 0; 
-
-  
+  public static final int CLIMB_MOTOR_1 = 9;
+  public static final int CLIMB_MOTOR_2 = 4;
 }
