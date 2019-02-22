@@ -5,20 +5,22 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.easypath;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import frc.robot.Robot;
-import frc.robot.subsystems.Drivetrain.ManipulationMode;
+public class Coordinate {
 
-/**
- * Add your docs here.
- */
-public class DrivetrainSetManipulationMode extends InstantCommand {
-  /**
-   * Add your docs here.
-   */
-  public DrivetrainSetManipulationMode(ManipulationMode newMode) {
-    super(Robot.drivetrain, () -> Robot.drivetrain.setManipulationMode(newMode));
+    private double x, y;
+  
+    public Coordinate(double x, double y) {
+      this.x = x;
+      this.y = y;
+    }
+  
+    public double getX() {
+      return x;
+    }
+  
+    public double getY() {
+      return y;
+    }
   }
-}

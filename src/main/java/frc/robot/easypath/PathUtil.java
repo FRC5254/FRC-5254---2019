@@ -9,7 +9,6 @@ package frc.robot.easypath;
 
 import java.util.function.Supplier;
 
-import javafx.geometry.Point2D; // TODO import doesnt work
 import java.util.function.Function;
 
 public class PathUtil {
@@ -109,10 +108,10 @@ public class PathUtil {
       double endX, double endY
   ) {
     return createFromPoints(
-        new Point2D(startX, startY),
-        new Point2D(point1X, point1Y),
-        new Point2D(point2X, point2Y),
-        new Point2D(endX, endY)
+        new Coordinate(startX, startY),
+        new Coordinate(point1X, point1Y),
+        new Coordinate(point2X, point2Y),
+        new Coordinate(endX, endY)
     );
   }
 
@@ -129,11 +128,12 @@ public class PathUtil {
    * @param end A Point2D object representing the ending point
    * @return a Path with the shape of the Bezier curve described by the 4 points given
    */
-  public static Path createFromPoints(Point2D start, Point2D point1, Point2D point2, Point2D end) {
+  public static Path createFromPoints(Coordinate start, Coordinate point1, Coordinate point2,
+      Coordinate end) {
     Function<Double, Double> yDeriv = calculateParameterizedDerivative(start, point1, point2, end,
-        Point2D::getY);
+        Coordinate::getY);
     Function<Double, Double> xDeriv = calculateParameterizedDerivative(start, point1, point2, end,
-        Point2D::getX);
+        Coordinate::getX);
 
     return new Path(t -> yDeriv.apply(t) / xDeriv.apply(t), calculateLength(xDeriv, yDeriv));
   }
@@ -150,8 +150,9 @@ public class PathUtil {
    * or Point2D::getY
    * @return A function representing either the X or Y parameterized derivative
    */
-  private static Function<Double, Double> calculateParameterizedDerivative(Point2D start,
-      Point2D point1, Point2D point2, Point2D end, Function<Point2D, Double> getParameter) {
+  private static Function<Double, Double> calculateParameterizedDerivative(Coordinate start,
+      Coordinate point1, Coordinate point2, Coordinate end,
+      Function<Coordinate, Double> getParameter) {
     double startCoord = getParameter.apply(start);
     double endCoord = getParameter.apply(end);
     double point1Coord = getParameter.apply(point1);

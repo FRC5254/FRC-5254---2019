@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.easypath.EasyPathConfig;
+import frc.robot.easypath.PathUtil;
 import frc.robot.subsystems.CargoMech;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -34,6 +36,9 @@ public class Robot extends TimedRobot {
   public static HatchMech hatchMech;
   public static CargoMech cargoMech;
   public static Climber climber;
+
+  public static EasyPathConfig config;
+
   public static OI m_oi;
 
   Command m_autonomousCommand;
@@ -50,8 +55,17 @@ public class Robot extends TimedRobot {
     drivetrain = Drivetrain.getInstance();
     hatchMech = HatchMech.getInstance();
     climber = Climber.getInstance();
-    
+
+    config = new EasyPathConfig(
+      drivetrain, 
+      drivetrain::setLeftRightSpeeds,
+      () -> PathUtil.defaultLengthDrivenEstimator(drivetrain::getLeftDistance, drivetrain::getRightDistance),
+      drivetrain::getAngle,
+      drivetrain::reset,
+      0.07
+    );
     m_oi = new OI(); // This one MUST be last 
+
     
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
