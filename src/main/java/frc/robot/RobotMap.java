@@ -45,4 +45,9 @@ public class RobotMap {
 
   public static final int CLIMB_MOTOR_1 = 9;
   public static final int CLIMB_MOTOR_2 = 4;
+
+  // Misc
+  public static final int WHEEL_DIAMETER = 6;
+  public static final int GEAR_RATIO = 0; // TODO
+  public static final int PULSE_PER_REV = 256;
 }

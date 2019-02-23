@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.easypath.EasyPath;
 import frc.robot.easypath.EasyPathConfig;
 import frc.robot.easypath.PathUtil;
 import frc.robot.subsystems.CargoMech;
@@ -64,6 +65,11 @@ public class Robot extends TimedRobot {
       drivetrain::reset,
       0.07
     );
+    config.setSwapDrivingDirection(false);
+    config.setSwapTurningDirection(false);
+
+    EasyPath.configure(config);
+
     m_oi = new OI(); // This one MUST be last 
 
     

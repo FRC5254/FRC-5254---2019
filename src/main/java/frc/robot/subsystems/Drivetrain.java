@@ -44,6 +44,7 @@ public class Drivetrain extends Subsystem {
   private CANSparkMax sLeft1, sLeft2, sLeft3, sRight1, sRight2, sRight3;
 
   private Encoder leftEncoder, rightEncoder;
+  private double distancePerPulse;
   private ADXRS450_Gyro gyro;
   
   private static Solenoid shiftingSolenoid;
@@ -105,19 +106,17 @@ public class Drivetrain extends Subsystem {
     gyro = new ADXRS450_Gyro();
     leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_1, RobotMap.LEFT_ENCODER_2, true, Encoder.EncodingType.k4X); // TODO need last two variables?
     rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_1, RobotMap.RIGHT_ENCODER_2, true, Encoder.EncodingType.k4X);
-  
+
+    distancePerPulse = Math.PI * RobotMap.WHEEL_DIAMETER / RobotMap.PULSE_PER_REV / RobotMap.GEAR_RATIO;
+
     leftEncoder.reset();
-    leftEncoder.setMaxPeriod(0.1);
-    leftEncoder.setMinRate(1.0);
     // leftEncoder.setReverseDirection(false); Dont need, does this in config
-    leftEncoder.setSamplesToAverage(7);
-    leftEncoder.setDistancePerPulse(1.0); // TODO
+    leftEncoder.setSamplesToAverage(7); // "whatever works for you"
+    leftEncoder.setDistancePerPulse(distancePerPulse);
 
     rightEncoder.reset();
-    rightEncoder.setMaxPeriod(0.1);
-    rightEncoder.setMinRate(1.0);
     rightEncoder.setSamplesToAverage(7);
-    rightEncoder.setDistancePerPulse(1.0); // TODO
+    rightEncoder.setDistancePerPulse(distancePerPulse);
   }
 
   public void initDefaultCommand() {
@@ -164,7 +163,7 @@ public class Drivetrain extends Subsystem {
   public void reset() {
    leftEncoder.reset();
    rightEncoder.reset();
-   // gyro.reset();
+   gyro.reset();
   }
 
   public double getLeftDistance() {
