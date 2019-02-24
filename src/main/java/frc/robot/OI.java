@@ -9,6 +9,7 @@ package frc.robot;
 
 import frc.robot.commands.CargoMechSetIntakeSpeed;
 import frc.robot.commands.CargoMechSetPivotMotor;
+import frc.robot.commands.CargoMechSetToAngle;
 import frc.robot.commands.ClimberSetMode;
 import frc.robot.commands.ClimberSetSpeed;
 import frc.robot.commands.ClimberSetSpeed1;
@@ -68,13 +69,15 @@ public class OI {
     operator.bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
     operator.xButton.whenPressed(new HatchMechSetSliderState(SliderState.IN)); // Slider in
     operator.yButton.whenPressed(new HatchMechSetSliderState(SliderState.OUT)); // Slider out
-    operator.startButton.whenPressed(new CargoMechSetPivotMotor(1.0)); // Cargo down (TODO should invert motors so polarity reflects intaking and outtaking)
-    operator.backButton.whenPressed(new CargoMechSetPivotMotor(-1.0)); //Cargo up
+    // operator.startButton.whenPressed(new CargoMechSetPivotMotor(1.0)); // Cargo down (TODO should invert motors so polarity reflects intaking and outtaking)
+    // operator.backButton.whenPressed(new CargoMechSetPivotMotor(-1.0)); //Cargo up
     operator.rightBumper.whenPressed(new CargoMechSetIntakeSpeed(0.65)); // Intake when Pressed
     operator.rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
     operator.leftBumper.whenPressed(new CargoMechSetIntakeSpeed(-0.75)); // Outtake when pressed
     operator.leftBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
-    
+
+    operator.startButton.whenPressed(new CargoMechSetToAngle(10));
+    operator.backButton.whenPressed(new CargoMechSetToAngle(80));
     // Used for testing on monday
     // operator.startButton.whenPressed(new ClimberSetMode(ClimberMode.CLIMB_MODE));
   }

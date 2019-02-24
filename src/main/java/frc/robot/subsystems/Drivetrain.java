@@ -43,7 +43,7 @@ public class Drivetrain extends Subsystem {
   private WPI_TalonSRX tLeft1, tLeft2, tRight1, tRight2;
   private CANSparkMax sLeft1, sLeft2, sLeft3, sRight1, sRight2, sRight3;
 
-  private Encoder leftEncoder, rightEncoder;
+  public Encoder leftEncoder, rightEncoder;
   private double distancePerPulse;
   private ADXRS450_Gyro gyro;
   
@@ -105,7 +105,7 @@ public class Drivetrain extends Subsystem {
 
     gyro = new ADXRS450_Gyro();
     leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_1, RobotMap.LEFT_ENCODER_2, true, Encoder.EncodingType.k4X); // TODO need last two variables?
-    rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_1, RobotMap.RIGHT_ENCODER_2, true, Encoder.EncodingType.k4X);
+    rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_1, RobotMap.RIGHT_ENCODER_2, false, Encoder.EncodingType.k4X);
 
     distancePerPulse = Math.PI * RobotMap.WHEEL_DIAMETER / RobotMap.PULSE_PER_REV / RobotMap.GEAR_RATIO;
 

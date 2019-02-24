@@ -20,10 +20,10 @@ import frc.robot.subsystems.CargoMech;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchMech;
-import frc.robot.utils.Limelight;
-import frc.robot.utils.Limelight.CamMode;
-import frc.robot.utils.Limelight.LedMode;
-import frc.robot.utils.Limelight.StreamMode;
+import frc.robot.utils.limelight;
+import frc.robot.utils.limelight.CamMode;
+import frc.robot.utils.limelight.LedMode;
+import frc.robot.utils.limelight.StreamMode;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -147,9 +147,9 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     
     //TODO move
-    Limelight.setLedMode(LedMode.FORCE_OFF);
-    Limelight.setCamMode(CamMode.DRIVER_CAM);
-    Limelight.setStreamMode(StreamMode.STANDARD);
+    limelight.setLedMode(LedMode.FORCE_OFF);
+    limelight.setCamMode(CamMode.DRIVER_CAM);
+    limelight.setStreamMode(StreamMode.STANDARD);
 
     CameraServer.getInstance().startAutomaticCapture(0);
 
@@ -165,7 +165,10 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    SmartDashboard.putBoolean("climberthing", climber.limit.get());
+    SmartDashboard.putNumber("encoder left", drivetrain.leftEncoder.getDistance());
+    SmartDashboard.putNumber("encoder right", drivetrain.rightEncoder.getDistance());
+    SmartDashboard.putNumber("Cargo Arm tick", cargoMech.getPosition());
+    SmartDashboard.putNumber("Cargo Arm angle", cargoMech.getAngle());
     SmartDashboard.putBoolean("armlimit for", cargoMech.pivotMotor.getSensorCollection().isFwdLimitSwitchClosed());
     SmartDashboard.putBoolean("amrlimit back", cargoMech.pivotMotor.getSensorCollection().isRevLimitSwitchClosed());
 

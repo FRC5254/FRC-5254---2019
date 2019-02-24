@@ -21,11 +21,11 @@ protected void initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
-protected void execute() {
+protected void execute() { 
     Robot.drivetrain.GTADrive(
       OI.driver.triggers.getLeft(),
       OI.driver.triggers.getRight(),
-      (OI.driver.leftStick.getX()*0.675)
+      -(OI.driver.leftStick.getX()*0.675)
     );
 }
 
