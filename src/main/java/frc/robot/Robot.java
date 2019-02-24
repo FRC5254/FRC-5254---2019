@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -20,10 +23,12 @@ import frc.robot.subsystems.CargoMech;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchMech;
-import frc.robot.utils.limelight;
-import frc.robot.utils.limelight.CamMode;
-import frc.robot.utils.limelight.LedMode;
-import frc.robot.utils.limelight.StreamMode;
+import frc.robot.utils.Limelight;
+import frc.robot.utils.Limelight.CamMode;
+import frc.robot.utils.Limelight.LedMode;
+import frc.robot.utils.Limelight.SnapshotMode;
+import frc.robot.utils.Limelight.StreamMode;
+import frc.robot.subsystems.HatchFloorIntake;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,6 +38,11 @@ import frc.robot.utils.limelight.StreamMode;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  NetworkTable table;
+  NetworkTableEntry tx;
+  NetworkTableEntry ty;
+  NetworkTableEntry ta;
   public static Drivetrain drivetrain;
   public static HatchMech hatchMech;
   public static CargoMech cargoMech;
@@ -51,7 +61,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-
     cargoMech =  CargoMech.getInstance();
     drivetrain = Drivetrain.getInstance();
     hatchMech = HatchMech.getInstance();
@@ -69,7 +78,7 @@ public class Robot extends TimedRobot {
     config.setSwapTurningDirection(false);
 
     EasyPath.configure(config);
-
+    
     m_oi = new OI(); // This one MUST be last 
 
     
@@ -87,6 +96,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    //Config Limelight
+    Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
+    Limelight.setLedMode(LedMode.PIPELINE);
+    Limelight.setStreamMode(StreamMode.STANDARD);
+
+    // Putting Limelight numbers onto smartdash
+    SmartDashboard.putBoolean("Limelight has target?" , Limelight.hasValidTargets());
+    SmartDashboard.putNumber("Limelight X", Limelight.getHorizontalOffset());
+    SmartDashboard.putNumber("limelight Y", Limelight.getVerticalOffset());
+    SmartDashboard.putNumber("Limelight Area", Limelight.getTargetArea());
   }
 
   /**

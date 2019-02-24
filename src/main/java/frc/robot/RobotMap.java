@@ -43,6 +43,12 @@ public class RobotMap {
   public static final int CLIMB_MOTOR_1 = 9; //not on bot yet
   public static final int CLIMB_MOTOR_2 = 4; //not on bot yet
 
+  //Limelight
+  public static final double TURN_K = 0.01;
+  public static final double THROTTLE_K = 0.10;
+  public static final double DESIRED_TARGET_AREA = 10;
+  public static final double MAX_TRHOTTLE = 0.5;
+
   // Misc
   public static final int WHEEL_DIAMETER = 6;
   public static final double GEAR_RATIO = 9.07; // TODO
