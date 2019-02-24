@@ -110,6 +110,16 @@ public class Drivetrain extends Subsystem {
 
 // Vision lineup
 
+  public double EstimateDistance() {
+    double h1 = 31.25;
+    double h2 = 28.5;
+    double a1 = 41.0;
+    double a2 = 0.0;
+
+    double distance = (h1-h2)/ Math.tan(a1+a2);
+    return distance - 4;
+  }
+
   public void TurnUp() {
     // TODO tune these numbers
     double Kp = -0.1;
@@ -135,21 +145,52 @@ public class Drivetrain extends Subsystem {
     sRight1.set(-adjust);
   }
 
+  /*
+   * Instead of actually calculating the distance, 
+   * you can use the limelight cross-hair. 
+   * Just position your robot at your idea distance from the target and calibrate 
+   * the y-position of the cross-hair. 
+   * Now your y-angle will report as 0.0 when your robot is at the corect distance. 
+   * Using this trick, you don’t ever have to actually calculate the actual distance.
+  */
+
   public void ThrottleUp() {
     // TODO tune these numbers
-    double Kp = -0.1;
-    double min_command = 0.05;
-
-    double verticalOffset = (Limelight.getVerticalOffset());// TODO is this okay?
-    double adjust = 0.0;
+    double KpDistance = -0.1;
     
-    if(verticalOffset > 1.0) {
-      adjust = Kp * verticalOffset - min_command;
-    } else if(verticalOffset < 1.0) {
-      adjust = Kp * verticalOffset + min_command;
-    }
+    double distance_error = Limelight.getVerticalOffset();
+
+    double adjust = KpDistance * distance_error;
 
     sLeft1.set(adjust);// TODO test polarity
+    sRight1.set(adjust);
+  }
+
+  public void LineUp() {
+    // TODO tune these numbers
+    double KpAim = -0.1;
+    double KpDistance = -0.1;
+    double min_aim_command = 0.05;
+    
+    double horoff = Limelight.getHorizontalOffset();
+    double veroff = Limelight.getVerticalOffset();
+    
+    double heading_error = -horoff;
+    double distance_error = -veroff;
+    double steering_adjust = 0.0;
+    
+    if (horoff > 1.0) {
+      steering_adjust = KpAim*heading_error - min_aim_command;
+    } else if (horoff < 1.0) {
+      steering_adjust = KpAim*heading_error + min_aim_command;
+    }
+    
+    double distance_adjust = KpDistance * distance_error;
+    
+    double adjust = steering_adjust + distance_adjust;
+
+    sLeft1.set(adjust);
     sRight1.set(-adjust);
+  
   }
 }
