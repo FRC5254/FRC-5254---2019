@@ -10,39 +10,47 @@ package frc.robot;
 public class RobotMap {
 
   // Solemoids
-  public static final int SHIFTER_SOLENOID = 1;
-  public static final int ACTUATE_SOLENOID_OUT = 2;
-  public static final int ACTUATE_SOLENOID_IN = 3;
-  public static final int HALO_SOLENOID_IN = 4;
-  public static final int HALO_SOLENOID_OUT = 5;
-  public static final int INTAKE_SOLENOID = 6;
-  public static final int FINGERS_SOLENOID = 7;
+  public static final int SHIFTER_SOLENOID = 5;
+  public static final int FINGERS_SOLENOID = 6;
+  public static final int HALO_SOLENOID = 7;
+  public static final int SLIDER_SOLENOID = 0;
+  public static final int CLIMBER_SOLENOID = 1;
 
-  // PWM
-  public static final int INTAKE_MOTOR = 4;
-  public static final int CARGO_MOTOR = 1;// TODO
+  // DIO
+  public static final int LEFT_ENCODER_1 = 0;
+  public static final int LEFT_ENCODER_2 = 1;
+  public static final int RIGHT_ENCODER_1 = 2;
+  public static final int RIGHT_ENCODER_2 = 3;
+  public static final int CLIMBER_BUTTON = 9; //not on bot yet
 
   // CAN
-  public static final int CARGO_PIVOT_MOTOR = 4;
-  public static final int CARGO_PIVOT_MOTOR_2 = 9;
+  public static final int CARGO_MOTOR = 14; //null
+  public static final int CARGO_PIVOT_MOTOR = 11;//2
+  public static final int CARGO_PIVOT_MOTOR_2 = 12; //10
+
   public static final int T_DRIVETRAIN_LEFT = 2;
   public static final int T_DRIVETRAIN_LEFT_2 = 10;
   public static final int T_DRIVETRAIN_RIGHT = 3;
   public static final int T_DRIVETRAIN_RIGHT_2 = 6;
   
-  public static final int S_DRIVETRAIN_LEFT = 19;
-  public static final int S_DRIVETRAIN_LEFT_2 = 24;
-  public static final int S_DRIVETRAIN_LEFT_3 = 20;
-  public static final int S_DRIVETRAIN_RIGHT = 16;
-  public static final int S_DRIVETRAIN_RIGHT_2 = 18;
-  public static final int S_DRIVETRAIN_RIGHT_3 = 17;
+  public static final int S_DRIVETRAIN_LEFT = 19; // null
+  public static final int S_DRIVETRAIN_LEFT_2 = 24; //null
+  public static final int S_DRIVETRAIN_LEFT_3 = 20; // 23
+  public static final int S_DRIVETRAIN_RIGHT = 16; // 21
+  public static final int S_DRIVETRAIN_RIGHT_2 = 18; // 15
+  public static final int S_DRIVETRAIN_RIGHT_3 = 17; //22
 
-  public static final int LEFT_TRIGGER_X_AXIS = 0; 
+  public static final int CLIMB_MOTOR_1 = 9; //not on bot yet
+  public static final int CLIMB_MOTOR_2 = 4; //not on bot yet
 
   //Limelight
   public static final double TURN_K = 0.01;
   public static final double THROTTLE_K = 0.10;
   public static final double DESIRED_TARGET_AREA = 10;
   public static final double MAX_TRHOTTLE = 0.5;
-  
+
+  // Misc
+  public static final int WHEEL_DIAMETER = 6;
+  public static final double GEAR_RATIO = 9.07; // TODO
+  public static final int PULSE_PER_REV = 256;
 }

@@ -10,12 +10,17 @@ package frc.robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.easypath.EasyPath;
+import frc.robot.easypath.EasyPathConfig;
+import frc.robot.easypath.PathUtil;
 import frc.robot.subsystems.CargoMech;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchMech;
 import frc.robot.utils.Limelight;
@@ -39,9 +44,12 @@ public class Robot extends TimedRobot {
   NetworkTableEntry ty;
   NetworkTableEntry ta;
   public static Drivetrain drivetrain;
-  public static HatchFloorIntake hatchFloorIntake;
   public static HatchMech hatchMech;
   public static CargoMech cargoMech;
+  public static Climber climber;
+
+  public static EasyPathConfig config;
+
   public static OI m_oi;
 
   Command m_autonomousCommand;
@@ -55,9 +63,24 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     cargoMech =  CargoMech.getInstance();
     drivetrain = Drivetrain.getInstance();
-    hatchFloorIntake = HatchFloorIntake.getInstance();
     hatchMech = HatchMech.getInstance();
+    climber = Climber.getInstance();
+
+    config = new EasyPathConfig(
+      drivetrain, 
+      drivetrain::setLeftRightSpeeds,
+      () -> PathUtil.defaultLengthDrivenEstimator(drivetrain::getLeftDistance, drivetrain::getRightDistance),
+      drivetrain::getAngle,
+      drivetrain::reset,
+      0.07
+    );
+    config.setSwapDrivingDirection(false);
+    config.setSwapTurningDirection(false);
+
+    EasyPath.configure(config);
+    
     m_oi = new OI(); // This one MUST be last 
+
     
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
@@ -141,6 +164,14 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    
+    //TODO move
+    limelight.setLedMode(LedMode.FORCE_OFF);
+    limelight.setCamMode(CamMode.DRIVER_CAM);
+    limelight.setStreamMode(StreamMode.STANDARD);
+
+    CameraServer.getInstance().startAutomaticCapture(0);
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -152,6 +183,15 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    SmartDashboard.putNumber("encoder left", drivetrain.leftEncoder.getDistance());
+    SmartDashboard.putNumber("encoder right", drivetrain.rightEncoder.getDistance());
+    SmartDashboard.putNumber("Cargo Arm tick", cargoMech.getPosition());
+    SmartDashboard.putNumber("Cargo Arm angle", cargoMech.getAngle());
+    SmartDashboard.putBoolean("armlimit for", cargoMech.pivotMotor.getSensorCollection().isFwdLimitSwitchClosed());
+    SmartDashboard.putBoolean("amrlimit back", cargoMech.pivotMotor.getSensorCollection().isRevLimitSwitchClosed());
+
+    SmartDashboard.putNumber("gyro", drivetrain.getAngle());
   }
 
   /**

@@ -13,7 +13,7 @@ import frc.robot.subsystems.HatchMech.FinState;
 import frc.robot.subsystems.HatchMech.KickerState;
 import frc.robot.subsystems.HatchMech.SliderState;
 
-public class HatchMechCollect extends CommandGroup { //TODO combime these sequentials after intial testing
+public class HatchMechCollect extends CommandGroup { //TODO combime/shorten time on these sequentials after intial testing
   /**
    * Add your docs here.
    */

@@ -9,16 +9,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
-import frc.robot.subsystems.HatchFloorIntake.PivotState;
+import frc.robot.subsystems.Climber.ClimberMode;
 
 /**
  * Add your docs here.
  */
-public class HatchFloorIntakeSetPivotState extends InstantCommand {
+public class ClimberSetMode extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public HatchFloorIntakeSetPivotState(PivotState state) {
-    super(Robot.hatchFloorIntake, () -> Robot.hatchFloorIntake.setPivotState(state));
+  public ClimberSetMode(ClimberMode mode) {
+    super(Robot.climber, () -> Robot.climber.setMode(mode));
   }
 }

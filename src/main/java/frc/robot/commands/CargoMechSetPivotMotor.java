@@ -10,13 +10,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class HatchFloorIntakeSet extends Command {
+public class CargoMechSetPivotMotor extends Command {
 
   double speed;
-
-  public HatchFloorIntakeSet(double speed) {
+  public CargoMechSetPivotMotor(double speed) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(Robot.cargoMech); //TODO how to make it so we can both intake and lift w/ pivot motor?
     this.speed = speed;
   }
 
@@ -28,24 +28,30 @@ public class HatchFloorIntakeSet extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.hatchFloorIntake.setSpeed(speed);
+    Robot.cargoMech.setPivotMotor(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    if(speed < 0) {
+      return Robot.cargoMech.atBottomLimit();
+    } else {
+      return Robot.cargoMech.atTopLimit();
+    }
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    if(Robot.cargoMech.atBottomLimit()) {
+      Robot.cargoMech.zeroEncoder();
+    }
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

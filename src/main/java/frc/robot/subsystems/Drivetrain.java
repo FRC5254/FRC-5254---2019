@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
 import frc.robot.commands.DrivetrainDriveWithJoystick;
 import frc.robot.utils.Limelight;
@@ -25,7 +24,7 @@ import frc.robot.utils.Limelight;
 public class Drivetrain extends Subsystem {
 
   public enum ShiftState {
-    HIGH_GEAR(true), LOW_GEAR(false);
+    HIGH_GEAR(false), LOW_GEAR(true);
 
     private boolean state;
     ShiftState(boolean state){
@@ -36,6 +35,7 @@ public class Drivetrain extends Subsystem {
   private CANSparkMax sLeft1, sLeft2, sLeft3, sRight1, sRight2, sRight3;
 
   private Encoder leftEncoder, rightEncoder;
+
   private ADXRS450_Gyro gyro;
   
   private static Solenoid shiftingSolenoid;
@@ -49,6 +49,7 @@ public class Drivetrain extends Subsystem {
     sLeft1 = new CANSparkMax(RobotMap.S_DRIVETRAIN_LEFT, MotorType.kBrushless);
     sLeft2 = new CANSparkMax(RobotMap.S_DRIVETRAIN_LEFT_2, MotorType.kBrushless);
     sLeft3 = new CANSparkMax(RobotMap.S_DRIVETRAIN_LEFT_3, MotorType.kBrushless);
+
 
     sRight1 = new CANSparkMax(RobotMap.S_DRIVETRAIN_RIGHT, MotorType.kBrushless);
     sRight2 = new CANSparkMax(RobotMap.S_DRIVETRAIN_RIGHT_2, MotorType.kBrushless);
@@ -65,12 +66,30 @@ public class Drivetrain extends Subsystem {
     sLeft2.setInverted(true);
     sLeft3.setInverted(true);
 
-    
+    // sleft1.setOpenLoopRampRate(0.2);
+    // sRight1.setOpenLoopRampRate(0.2);
+    // sLeft1.setRampRate(0.2);
+    // sRight1.setRampRate(0.2);
+
+    sLeft1.setSmartCurrentLimit(30);
+    sRight1.setSmartCurrentLimit(30);
+      
     shiftingSolenoid = new Solenoid(RobotMap.SHIFTER_SOLENOID);
 
-    // leftEncoder = new Encoder(RobotMap.encoderLeftA, RobotMap.encoderLeftB);
-    // rightEncoder = new Encoder(RobotMap.encoderRightA, RobotMap.encoderRightB);
-    // gyro = new ADXRS450_Gyro();
+    gyro = new ADXRS450_Gyro();
+    leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_1, RobotMap.LEFT_ENCODER_2, true, Encoder.EncodingType.k4X); // TODO need last two variables?
+    rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_1, RobotMap.RIGHT_ENCODER_2, false, Encoder.EncodingType.k4X);
+
+    distancePerPulse = Math.PI * RobotMap.WHEEL_DIAMETER / RobotMap.PULSE_PER_REV / RobotMap.GEAR_RATIO;
+
+    leftEncoder.reset();
+    // leftEncoder.setReverseDirection(false); Dont need, does this in config
+    leftEncoder.setSamplesToAverage(7); // "whatever works for you"
+    leftEncoder.setDistancePerPulse(distancePerPulse);
+
+    rightEncoder.reset();
+    rightEncoder.setSamplesToAverage(7);
+    rightEncoder.setDistancePerPulse(distancePerPulse);
   }
 
   public void initDefaultCommand() {
@@ -86,14 +105,9 @@ public class Drivetrain extends Subsystem {
     shiftState = newState;
   }
 
-  public void setDrive(double left, double right) {
-    sLeft1.set(left);
-    sRight1.set(right);
-  }
-
   public void GTADrive(double leftTrigger, double rightTrigger, double turn) {
     
-    if (-0.1 <= turn && turn <= 0.1) {
+    if (-0.2 <= turn && turn <= 0.2) {
       turn = 0.0;
     }
 
@@ -132,6 +146,7 @@ public class Drivetrain extends Subsystem {
     if (targetValue == 0.0) {
       // safe speed to seek target TODO
       adjust = 0.3;
+
     } else {
 
       if(horizontalOffset > 1.0) {
@@ -144,7 +159,7 @@ public class Drivetrain extends Subsystem {
     sLeft1.set(adjust);// TODO test polarity
     sRight1.set(-adjust);
   }
-
+  
   /*
    * Instead of actually calculating the distance, 
    * you can use the limelight cross-hair. 
@@ -192,5 +207,26 @@ public class Drivetrain extends Subsystem {
     sLeft1.set(adjust);
     sRight1.set(-adjust);
   
+  public double getAngle() {
+    return gyro.getAngle();
+  }
+ 
+  public void reset() {
+   leftEncoder.reset();
+   rightEncoder.reset();
+   gyro.reset();
+  }
+
+  public double getLeftDistance() {
+    return leftEncoder.getDistance();
+  }
+
+  public double getRightDistance() {
+    return rightEncoder.getDistance();
+  }
+
+  public void setLeftRightSpeeds(double leftSpeed, double rightSpeed) {
+    sLeft1.set(leftSpeed); 
+    sRight1.set(rightSpeed);
   }
 }

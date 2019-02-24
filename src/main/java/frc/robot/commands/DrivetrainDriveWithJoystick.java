@@ -21,12 +21,13 @@ protected void initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
-protected void execute() {
-  Robot.drivetrain.GTADrive(
-    OI.driver.getRawAxis(OI.DRIVER_LEFT_TRIGGER),
-    OI.driver.getRawAxis(OI.DRIVER_RIGHT_TRIGGER),
-    OI.driver.getRawAxis(OI.DRIVER_RIGHT_JOYTICK_X_AXIS)
-  );
+
+protected void execute() { 
+    Robot.drivetrain.GTADrive(
+      OI.driver.triggers.getLeft(),
+      OI.driver.triggers.getRight(),
+      -(OI.driver.leftStick.getX()*0.675)
+    );
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -36,7 +37,6 @@ protected boolean isFinished() {
 
 // Called once after isFinished returns true
 protected void end() {
-  Robot.drivetrain.setDrive(0.0, 0.0);
 }
 
 // Called when another command which requires one or more of the same
