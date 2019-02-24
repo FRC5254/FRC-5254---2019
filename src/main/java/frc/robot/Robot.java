@@ -17,10 +17,10 @@ import frc.robot.subsystems.CargoMech;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchMech;
-import frc.robot.utils.Limelight;
-import frc.robot.utils.Limelight.CamMode;
-import frc.robot.utils.Limelight.LedMode;
-import frc.robot.utils.Limelight.StreamMode;
+import frc.robot.utils.limelight;
+import frc.robot.utils.limelight.CamMode;
+import frc.robot.utils.limelight.LedMode;
+import frc.robot.utils.limelight.StreamMode;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -127,9 +127,9 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     
     //TODO move
-    Limelight.setLedMode(LedMode.FORCE_OFF);
-    Limelight.setCamMode(CamMode.DRIVER_CAM);
-    Limelight.setStreamMode(StreamMode.STANDARD);
+    limelight.setLedMode(LedMode.FORCE_OFF);
+    limelight.setCamMode(CamMode.DRIVER_CAM);
+    limelight.setStreamMode(StreamMode.STANDARD);
 
     CameraServer.getInstance().startAutomaticCapture(0);
 

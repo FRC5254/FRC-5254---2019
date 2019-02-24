@@ -14,7 +14,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 /**
  * Add your docs here.
  */
-public class Limelight {
+public class limelight {
 
     private static NetworkTable getTable() {
         return NetworkTableInstance.getDefault().getTable("limelight");
