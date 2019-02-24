@@ -43,21 +43,20 @@ public class Drivetrain extends Subsystem {
   private WPI_TalonSRX tLeft1, tLeft2, tRight1, tRight2;
   private CANSparkMax sLeft1, sLeft2, sLeft3, sRight1, sRight2, sRight3;
 
-  private Encoder leftEncoder, rightEncoder;
+  public Encoder leftEncoder, rightEncoder;
+  private double distancePerPulse;
   private ADXRS450_Gyro gyro;
   
   private static Solenoid shiftingSolenoid;
 
   public ShiftState shiftState;
   private DrivetrainMotorControllers drivetrainMotorContollers;
-  public ManipulationMode manipulationMode;
 
   private static Drivetrain instance = new Drivetrain();
   
   private Drivetrain() {
 
     drivetrainMotorContollers = DrivetrainMotorControllers.SPARK_MAX;
-    manipulationMode = ManipulationMode.PANEL;
 
     if(drivetrainMotorContollers == DrivetrainMotorControllers.TALON_SRX) { 
       tLeft1 = new WPI_TalonSRX(RobotMap.T_DRIVETRAIN_LEFT);
@@ -104,22 +103,29 @@ public class Drivetrain extends Subsystem {
     
     shiftingSolenoid = new Solenoid(RobotMap.SHIFTER_SOLENOID);
 
-    // leftEncoder = new Encoder(RobotMap.encoderLeftA, RobotMap.encoderLeftB);
-    // rightEncoder = new Encoder(RobotMap.encoderRightA, RobotMap.encoderRightB);
-    
     gyro = new ADXRS450_Gyro();
+    leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_1, RobotMap.LEFT_ENCODER_2, true, Encoder.EncodingType.k4X); // TODO need last two variables?
+    rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_1, RobotMap.RIGHT_ENCODER_2, false, Encoder.EncodingType.k4X);
+
+    distancePerPulse = Math.PI * RobotMap.WHEEL_DIAMETER / RobotMap.PULSE_PER_REV / RobotMap.GEAR_RATIO;
+
+    leftEncoder.reset();
+    // leftEncoder.setReverseDirection(false); Dont need, does this in config
+    leftEncoder.setSamplesToAverage(7); // "whatever works for you"
+    leftEncoder.setDistancePerPulse(distancePerPulse);
+
+    rightEncoder.reset();
+    rightEncoder.setSamplesToAverage(7);
+    rightEncoder.setDistancePerPulse(distancePerPulse);
   }
 
   public void initDefaultCommand() {
     setDefaultCommand(new DrivetrainDriveWithJoystick());
- }
+  }
 
- public double getAngle() {
-   return gyro.getAngle();
- }
- public static Drivetrain getInstance() {
+  public static Drivetrain getInstance() {
    return instance;
- }
+  }
   
   public void setShiftState(ShiftState newState) {
   shiftingSolenoid.set(newState.state);
@@ -140,31 +146,36 @@ public class Drivetrain extends Subsystem {
     right = Math.max(-1.0, Math.min(1.0, right));
     
     if(drivetrainMotorContollers == DrivetrainMotorControllers.TALON_SRX) {
-      if(manipulationMode == ManipulationMode.CARGO){
-        tRight1.set(right);
-        tLeft1.set(left);
-      } else if (manipulationMode == ManipulationMode.PANEL) {
-        tRight1.set(-right); 
-        tLeft1.set(-left);
-      } else {
-        System.out.println("************* this shouldn't happen but it did --- Drivetrain manipulationMode illdefined *************");
-      }
+      tRight1.set(right);
+      tLeft1.set(left);
     } else if(drivetrainMotorContollers == DrivetrainMotorControllers.SPARK_MAX) {
-      if(manipulationMode == ManipulationMode.CARGO) {
-        sRight1.set(right);
-        sLeft1.set(left);
-      } else if(manipulationMode == ManipulationMode.PANEL) {
-        sRight1.set(-right);
-        sLeft1.set(-left);
-      } else {
-        System.out.println("************* this shouldn't happen but it did --- Drivetrain manipulationMode illdefined *************");
-      } 
+      sRight1.set(right);
+      sLeft1.set(left);
     } else {
       System.out.println("************* this shouldn't happen but it did --- in Drivetrain, drivetrainMotorContollers is illdefined *************");
     }
   }
 
-  public void setManipulationMode(ManipulationMode newMode) {
-    manipulationMode = newMode;
+  public double getAngle() {
+    return gyro.getAngle();
+  }
+ 
+  public void reset() {
+   leftEncoder.reset();
+   rightEncoder.reset();
+   gyro.reset();
+  }
+
+  public double getLeftDistance() {
+    return leftEncoder.getDistance();
+  }
+
+  public double getRightDistance() {
+    return rightEncoder.getDistance();
+  }
+
+  public void setLeftRightSpeeds(double leftSpeed, double rightSpeed) {
+    sLeft1.set(leftSpeed); 
+    sRight1.set(rightSpeed);
   }
 }

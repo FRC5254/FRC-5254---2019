@@ -17,6 +17,10 @@ public class RobotMap {
   public static final int CLIMBER_SOLENOID = 1;
 
   // DIO
+  public static final int LEFT_ENCODER_1 = 0;
+  public static final int LEFT_ENCODER_2 = 1;
+  public static final int RIGHT_ENCODER_1 = 2;
+  public static final int RIGHT_ENCODER_2 = 3;
   public static final int CLIMBER_BUTTON = 9; //not on bot yet
 
   // CAN
@@ -38,4 +42,9 @@ public class RobotMap {
 
   public static final int CLIMB_MOTOR_1 = 9; //not on bot yet
   public static final int CLIMB_MOTOR_2 = 4; //not on bot yet
+
+  // Misc
+  public static final int WHEEL_DIAMETER = 6;
+  public static final double GEAR_RATIO = 9.07; // TODO
+  public static final int PULSE_PER_REV = 256;
 }
