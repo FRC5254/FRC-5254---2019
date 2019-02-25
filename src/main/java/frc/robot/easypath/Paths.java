@@ -69,14 +69,19 @@ public class Paths {
                 else return 0.25;
             }
         );
+
+        public static final Path CENETER_RIGHT_HATCH_TO_RIGHT_CARGO_STATION = new Path(t -> 
+		/* {"start":{"x":216,"y":173},"mid1":{"x":104,"y":173},"mid2":{"x":145,"y":329},"end":{"x":67,"y":261}} */
+		(-1140 * Math.pow(t, 2) + 936 * t + 0) / (-816 * Math.pow(t, 2) + 918 * t + -336),
+		206.058);
             
     }
 
 // Left
     public static class FROM_LEFT {
     // to Center
-    public static final FollowPath CENTER_LEFT_HATCH = new FollowPath(
-        , speedFunction)
+    // public static final FollowPath CENTER_LEFT_HATCH = new FollowPath(
+    //     , speedFunction)
     // to Left
     // to Right
     }

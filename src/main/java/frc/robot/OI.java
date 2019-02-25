@@ -13,13 +13,14 @@ import frc.robot.commands.CargoMechSetToAngle;
 import frc.robot.commands.ClimberSetMode;
 import frc.robot.commands.ClimberSetSpeed;
 import frc.robot.commands.ClimberSetSpeed1;
+import frc.robot.commands.DrivetrainDriveWithJoystick;
+import frc.robot.commands.DrivetrainLineUp;
 import frc.robot.commands.DrivetrainSetShiftState;
 import frc.robot.commands.HatchMechPlace;
 import frc.robot.commands.HatchMechSetFinState;
 import frc.robot.commands.HatchMechSetKickerState;
 import frc.robot.commands.HatchMechSetSliderState;
 import frc.robot.subsystems.Climber.ClimberMode;
-import frc.robot.subsystems.Drivetrain.ManipulationMode;
 import frc.robot.subsystems.Drivetrain.ShiftState;
 import frc.robot.subsystems.HatchMech.FinState;
 import frc.robot.subsystems.HatchMech.KickerState;
@@ -43,8 +44,8 @@ public class OI {
 
     // Driver
     // Proposing
-    driver.aButton.whenPressed(new CargoMechSetIntakeSpeed(-1.0)); // Shoot ball
-    driver.aButton.whenReleased(new CargoMechSetIntakeSpeed(0.0));
+    // driver.aButton.whenPressed(new CargoMechSetIntakeSpeed(-1.0)); // Shoot ball
+    // driver.aButton.whenReleased(new CargoMechSetIntakeSpeed(0.0));
     driver.bButton.whenPressed(new HatchMechSetKickerState(KickerState.OUT));// Place hatch
     driver.bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
     driver.xButton.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR)); //shift
@@ -67,6 +68,8 @@ public class OI {
     // Operator
     operator.aButton.whenPressed(new HatchMechSetFinState(FinState.UNCLAMPED)); // Fins unclamp when pressed
     operator.aButton.whenReleased(new HatchMechSetFinState(FinState.CLAMPED));
+    driver.aButton.whenPressed(new DrivetrainLineUp());
+    driver.aButton.whenReleased(new DrivetrainDriveWithJoystick());
     operator.bButton.whenPressed(new HatchMechSetKickerState(KickerState.OUT)); // Kicker out whne pressed
     operator.bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
     operator.xButton.whenPressed(new HatchMechSetSliderState(SliderState.IN)); // Slider in
@@ -78,10 +81,12 @@ public class OI {
     operator.leftBumper.whenPressed(new CargoMechSetIntakeSpeed(-0.75)); // Outtake when pressed
     operator.leftBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
 
-    operator.startButton.whenPressed(new CargoMechSetToAngle(10));
-    operator.backButton.whenPressed(new CargoMechSetToAngle(80));
+    operator.startButton.whenPressed(new CargoMechSetToAngle(0));
+    operator.backButton.whenPressed(new CargoMechSetToAngle(90));
     // Used for testing on monday
     // operator.startButton.whenPressed(new ClimberSetMode(ClimberMode.CLIMB_MODE));
+
+    operator.dpad.up.whenPressed(new CargoMechSetToAngle(45)); // TODO this doesnt work
   }
 }
 

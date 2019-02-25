@@ -1,3 +1,4 @@
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -51,6 +52,6 @@ public class RobotMap {
 
   // Misc
   public static final int WHEEL_DIAMETER = 6;
-  public static final double GEAR_RATIO = 9.07; // TODO
+  public static final double GEAR_RATIO = 7.98; // TODO
   public static final int PULSE_PER_REV = 256;
 }

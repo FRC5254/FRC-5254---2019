@@ -8,12 +8,13 @@
 package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
 import frc.robot.utils.HXboxController.XboxAxis;
 
 /**
  * Add your docs here.
  */
-public class HAxisButton {
+public class HAxisButton extends Button {
 
     static enum ThresholdType {
         EXACT, LESS_THAN, GREATER_THAN, POV; // TODO add a UNKNOWN param?
@@ -35,7 +36,7 @@ public class HAxisButton {
         this(joystick, axis.value, targetValue, thresholdType);
     }
 
-    public boolean getThreshold() {
+    public boolean get() {
         switch(this.thresholdType) {
             case EXACT:
                 System.out.println("axis value: " + joystick.getRawAxis(this.axis));

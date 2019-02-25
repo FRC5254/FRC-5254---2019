@@ -10,11 +10,12 @@ package frc.robot.utils;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
-public class limelight {
+public class Limelight {
 
     private static NetworkTable getTable() {
         return NetworkTableInstance.getDefault().getTable("limelight");
@@ -39,6 +40,10 @@ public class limelight {
     */
     public static boolean hasValidTargets() {
         return getValue("tv") == 1;
+    }
+
+    public static double getTargetValue() {
+        return getValue("tv");
     }
 
     /**
@@ -114,10 +119,39 @@ public class limelight {
     /**
      * @return Results of a 3D position solution, 6 numbers: Translation (x,y,y) Rotation(pitch,yaw,roll)
      */
-    public static double getCamtran() {
-        return getValue("camtran"); //TODO this wont return 6 mubers will it?
+    public static Double[] getCamtran() {
+        return getEntry("camtran").getDoubleArray(new Double[] {});
+
+        // return getValue("camtran"); //TODO this wont return 6 mubers will it
     }
 
+// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    public void updateTracking() {
+        final double turnK = RobotMap.TURN_K;
+        final double throttleK = RobotMap.THROTTLE_K;
+        final double desiredTargetArea = RobotMap.DESIRED_TARGET_AREA;
+        final double maxThrottle = RobotMap.MAX_TRHOTTLE;
+
+        double targetValue = getTargetValue();
+        double horizontalOffset = getHorizontalOffset();
+        double verticalOffset = getVerticalOffset();
+        double targetArea = getTargetArea();
+
+        double limeTurn;
+        double limeThrottle;
+
+        if (hasValidTargets()) {
+            limeThrottle = 0.0;
+            limeTurn = 0.0;
+            return;
+        } else {
+            limeTurn = horizontalOffset * turnK;
+            limeThrottle = (desiredTargetArea - targetArea) * throttleK;
+        }
+
+        
+
+    }
 // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     public enum LedMode {
@@ -184,8 +218,7 @@ public class limelight {
     }
 
     /**
-    * @param mode The cam Mode to set on the Limelight
-    * Sets limelight’s operation mode
+    * @param mode The LED Mode to set on the Limelight
     */
     public static void setCamMode(CamMode mode) {
         if (mode != CamMode.UNKNOWN) {
@@ -314,4 +347,3 @@ public class limelight {
         }
     }
 }
-

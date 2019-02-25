@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.DrivetrainDriveWithJoystick;
 import frc.robot.utils.Limelight;
@@ -80,7 +81,7 @@ public class Drivetrain extends Subsystem {
     leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_1, RobotMap.LEFT_ENCODER_2, true, Encoder.EncodingType.k4X); // TODO need last two variables?
     rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_1, RobotMap.RIGHT_ENCODER_2, false, Encoder.EncodingType.k4X);
 
-    distancePerPulse = Math.PI * RobotMap.WHEEL_DIAMETER / RobotMap.PULSE_PER_REV / RobotMap.GEAR_RATIO;
+    double distancePerPulse = Math.PI * RobotMap.WHEEL_DIAMETER / RobotMap.PULSE_PER_REV / RobotMap.GEAR_RATIO;
 
     leftEncoder.reset();
     // leftEncoder.setReverseDirection(false); Dont need, does this in config
@@ -183,30 +184,42 @@ public class Drivetrain extends Subsystem {
 
   public void LineUp() {
     // TODO tune these numbers
-    double KpAim = -0.1;
-    double KpDistance = -0.1;
-    double min_aim_command = 0.05;
+    double KpAim = 0.1 / 27;
+    double KpDistance = -0.0;
+    double min_aim_command = 0.00;
+    double zoom = 0.075;
     
     double horoff = Limelight.getHorizontalOffset();
     double veroff = Limelight.getVerticalOffset();
     
-    double heading_error = -horoff;
-    double distance_error = -veroff;
+    double heading_error = horoff;
+    double distance_error = veroff;
     double steering_adjust = 0.0;
     
+    SmartDashboard.putNumber("LineUp headingError", heading_error);
+
     if (horoff > 1.0) {
       steering_adjust = KpAim*heading_error - min_aim_command;
     } else if (horoff < 1.0) {
       steering_adjust = KpAim*heading_error + min_aim_command;
     }
     
+    SmartDashboard.putNumber("LineUp distanceError", distance_error);
     double distance_adjust = KpDistance * distance_error;
     
     double adjust = steering_adjust + distance_adjust;
 
-    sLeft1.set(adjust);
-    sRight1.set(-adjust);
+    SmartDashboard.putNumber("LineUp Left", zoom + adjust);
+    SmartDashboard.putNumber("LineUp Right", zoom - adjust);
+
+    sLeft1.set(zoom + adjust);
+    sRight1.set(zoom - adjust);
+  }
   
+  public boolean LineUpIsFinished() {
+    double veroff = Limelight.getVerticalOffset();
+    return veroff < 8; // 9?
+  }
   public double getAngle() {
     return gyro.getAngle();
   }

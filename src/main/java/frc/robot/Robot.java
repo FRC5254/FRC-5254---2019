@@ -16,9 +16,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.autos.CenterCargoRight;
 import frc.robot.easypath.EasyPath;
 import frc.robot.easypath.EasyPathConfig;
+import frc.robot.easypath.FollowPath;
 import frc.robot.easypath.PathUtil;
+import frc.robot.easypath.Paths;
 import frc.robot.subsystems.CargoMech;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -28,7 +31,6 @@ import frc.robot.utils.Limelight.CamMode;
 import frc.robot.utils.Limelight.LedMode;
 import frc.robot.utils.Limelight.SnapshotMode;
 import frc.robot.utils.Limelight.StreamMode;
-import frc.robot.subsystems.HatchFloorIntake;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -72,10 +74,11 @@ public class Robot extends TimedRobot {
       () -> PathUtil.defaultLengthDrivenEstimator(drivetrain::getLeftDistance, drivetrain::getRightDistance),
       drivetrain::getAngle,
       drivetrain::reset,
-      0.07
+      0.037
+      // 0.015
     );
-    config.setSwapDrivingDirection(false);
-    config.setSwapTurningDirection(false);
+    config.setSwapDrivingDirection(true);
+    config.setSwapTurningDirection(false); //false for cargo mech 
 
     EasyPath.configure(config);
     
@@ -106,6 +109,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Limelight X", Limelight.getHorizontalOffset());
     SmartDashboard.putNumber("limelight Y", Limelight.getVerticalOffset());
     SmartDashboard.putNumber("Limelight Area", Limelight.getTargetArea());
+
+    // Double[] camtran = Limelight.getCamtran(); // TODO enable high res mode
+    // SmartDashboard.putNumber("translationX", camtran[0]);
+    // SmartDashboard.putNumber("translationy1", camtran[1]);
+    // SmartDashboard.putNumber("translationy2", camtran[2]);
+    // SmartDashboard.putNumber("pitch", camtran[3]);
+    // SmartDashboard.putNumber("yaw", camtran[4]);
+    // SmartDashboard.putNumber("roll", camtran[5]);
   }
 
   /**
@@ -135,7 +146,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+    // m_autonomousCommand = m_chooser.getSelected();
+    m_autonomousCommand = new CenterCargoRight();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -155,6 +167,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+
+    SmartDashboard.putNumber("encoder left", drivetrain.getLeftDistance());
+    SmartDashboard.putNumber("encoder right", drivetrain.getRightDistance());
+    SmartDashboard.putNumber("gyro", drivetrain.getAngle());
+
     Scheduler.getInstance().run();
   }
 
@@ -166,9 +183,9 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     
     //TODO move
-    limelight.setLedMode(LedMode.FORCE_OFF);
-    limelight.setCamMode(CamMode.DRIVER_CAM);
-    limelight.setStreamMode(StreamMode.STANDARD);
+    Limelight.setLedMode(LedMode.PIPELINE);
+    Limelight.setCamMode(CamMode.VISION_CAM);
+    Limelight.setStreamMode(StreamMode.STANDARD);
 
     CameraServer.getInstance().startAutomaticCapture(0);
 
@@ -184,8 +201,6 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    SmartDashboard.putNumber("encoder left", drivetrain.leftEncoder.getDistance());
-    SmartDashboard.putNumber("encoder right", drivetrain.rightEncoder.getDistance());
     SmartDashboard.putNumber("Cargo Arm tick", cargoMech.getPosition());
     SmartDashboard.putNumber("Cargo Arm angle", cargoMech.getAngle());
     SmartDashboard.putBoolean("armlimit for", cargoMech.pivotMotor.getSensorCollection().isFwdLimitSwitchClosed());

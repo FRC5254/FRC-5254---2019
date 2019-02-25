@@ -154,6 +154,12 @@ public class FollowPath extends Command {
    */
   @Override
   protected void initialize() {
+    // if (speedFunction.apply(0.0) > 0) {
+    //   EasyPath.getConfig().setSwapTurningDirection(true);
+    // } else {
+    //   EasyPath.getConfig().setSwapTurningDirection(false);
+    // }
+
     EasyPath.getConfig().getResetEncodersAndGyroFunction().run();
   }
 
