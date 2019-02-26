@@ -77,7 +77,7 @@ public class OI {
     // operator.startButton.whenPressed(new CargoMechSetPivotMotor(1.0)); // Cargo down (TODO should invert motors so polarity reflects intaking and outtaking)
     // operator.backButton.whenPressed(new CargoMechSetPivotMotor(-1.0)); //Cargo up
     operator.rightBumper.whenPressed(new CargoMechSetIntakeSpeed(0.65)); // Intake when Pressed
-    operator.rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
+    // operator.rightBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
     operator.leftBumper.whenPressed(new CargoMechSetIntakeSpeed(-0.75)); // Outtake when pressed
     operator.leftBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
 

@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.autos.CenterCargoRight;
+import frc.robot.autos.CenterCargoRight;
 import frc.robot.easypath.EasyPath;
 import frc.robot.easypath.EasyPathConfig;
 import frc.robot.easypath.FollowPath;
@@ -147,7 +147,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // m_autonomousCommand = m_chooser.getSelected();
-    m_autonomousCommand = new CenterCargoRight();
+    m_autonomousCommand = new CenterCargoRight(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENETER_RIGHT_HATCH_TO_RIGHT_CARGO_STATION);
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -200,6 +200,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    SmartDashboard.putNumber("Intake current", cargoMech.getIntakeCurrent());
 
     SmartDashboard.putNumber("Cargo Arm tick", cargoMech.getPosition());
     SmartDashboard.putNumber("Cargo Arm angle", cargoMech.getAngle());

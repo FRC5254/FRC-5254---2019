@@ -25,7 +25,7 @@ public class RobotMap {
   public static final int CLIMBER_BUTTON = 9; //not on bot yet
 
   // CAN
-  public static final int CARGO_MOTOR = 14; //null
+  public static final int CARGO_MOTOR = 8; //spx is 14
   public static final int CARGO_PIVOT_MOTOR = 11;//2
   public static final int CARGO_PIVOT_MOTOR_2 = 12; //10
 

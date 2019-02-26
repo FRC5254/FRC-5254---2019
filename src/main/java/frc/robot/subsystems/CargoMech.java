@@ -30,23 +30,25 @@ public class CargoMech extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private static VictorSPX cargoMotor;
-  public static TalonSRX pivotMotor, pivotMotor_2;
+  public static TalonSRX cargoMotor, pivotMotor, pivotMotor_2;
 
   private static CargoMech instance = new CargoMech();
 
   private static final int topEncoderLimit = 0; //TODO get real values
   private static final int bottomEncoderLimit = 2850;
 
+  private static final int intakeStallLimit = 25;
+
   
   private final double errorThreshold = Math.abs(angleToEncoderTicks(2) - angleToEncoderTicks(0));
 
   private CargoMech() {
 
-    cargoMotor = new VictorSPX(RobotMap.CARGO_MOTOR);
+    cargoMotor = new TalonSRX(RobotMap.CARGO_MOTOR);
     pivotMotor = new TalonSRX(RobotMap.CARGO_PIVOT_MOTOR);
     pivotMotor_2 = new TalonSRX(RobotMap.CARGO_PIVOT_MOTOR_2);
 
+    // carogmoe
     cargoMotor.setInverted(true);
 
     pivotMotor.configOpenloopRamp(0.0);
@@ -102,7 +104,18 @@ public class CargoMech extends Subsystem {
     return pivotMotor.getSensorCollection().isRevLimitSwitchClosed();
   }
 
-  public double getPosition() {
+  public boolean ballIntook() {
+    return getIntakeCurrent() > intakeStallLimit;
+  }
+
+  public double getIntakeCurrent() {
+    return cargoMotor.getOutputCurrent();
+  }
+
+  // public double getIntakeControllerCrrent() {
+  //   return cargoMotor.getOutputCurrent();
+  // } 
+ public double getPosition() {
     return pivotMotor.getSelectedSensorPosition(0);
   }
 
