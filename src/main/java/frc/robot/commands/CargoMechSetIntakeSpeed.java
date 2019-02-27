@@ -16,7 +16,7 @@ public class CargoMechSetIntakeSpeed extends Command {
   public CargoMechSetIntakeSpeed(double speed) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.cargoMech);
+    // requires(Robot.cargoMech);
     this.speed = speed;
   }
 
@@ -37,7 +37,7 @@ public class CargoMechSetIntakeSpeed extends Command {
     if(speed > 0) {
       return Robot.cargoMech.ballIntook();
     } else {
-      return false;
+      return false; //TODO test
     }
   }
 

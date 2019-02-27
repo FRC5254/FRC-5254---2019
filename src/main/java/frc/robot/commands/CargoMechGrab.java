@@ -5,13 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.utils;
+package frc.robot.commands;
 
-/**
- * Add your docs here.
- *  TODO change to level 1 line up and level 2 line up enums?
- */
-public enum AutoLineup {
-    // CENTER_LEFT, CENTER_RIGHT, LEVEL_1_LEFT, LEVEL_1_RIGHT, LEVEL_2_LEFT, LEVEL_2_RIGHT;
-    CENTER, LEFT, RIGHT;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.Robot;
+
+public class CargoMechGrab extends CommandGroup {
+  /**
+   * Add your docs here.
+   */
+  public CargoMechGrab(double speed, double angle) {
+    requires(Robot.cargoMech);
+
+    addParallel(new CargoMechSetIntakeSpeed(speed));
+    addSequential(new CargoMechSetToAngle(angle));
+  }
 }

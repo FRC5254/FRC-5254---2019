@@ -16,7 +16,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.autos.CenterCargoRight;
+import frc.robot.autos.CenterHatchCargoDepo;
+import frc.robot.autos.CenterHatchFeederStation;
+import frc.robot.autos.CenterHatchPlace;
+import frc.robot.autos.CrossHabline;
 import frc.robot.easypath.EasyPath;
 import frc.robot.easypath.EasyPathConfig;
 import frc.robot.easypath.FollowPath;
@@ -31,7 +34,6 @@ import frc.robot.utils.Limelight.CamMode;
 import frc.robot.utils.Limelight.LedMode;
 import frc.robot.utils.Limelight.SnapshotMode;
 import frc.robot.utils.Limelight.StreamMode;
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -81,6 +83,11 @@ public class Robot extends TimedRobot {
     config.setSwapTurningDirection(false); //false for cargo mech 
 
     EasyPath.configure(config);
+
+    //Config Limelight
+    Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
+    Limelight.setLedMode(LedMode.PIPELINE);
+    Limelight.setStreamMode(StreamMode.STANDARD);
     
     m_oi = new OI(); // This one MUST be last 
 
@@ -99,17 +106,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    //Config Limelight
-    Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
-    Limelight.setLedMode(LedMode.PIPELINE);
-    Limelight.setStreamMode(StreamMode.STANDARD);
-
-    // Putting Limelight numbers onto smartdash
-    SmartDashboard.putBoolean("Limelight has target?" , Limelight.hasValidTargets());
-    SmartDashboard.putNumber("Limelight X", Limelight.getHorizontalOffset());
-    SmartDashboard.putNumber("limelight Y", Limelight.getVerticalOffset());
-    SmartDashboard.putNumber("Limelight Area", Limelight.getTargetArea());
-
     // Double[] camtran = Limelight.getCamtran(); // TODO enable high res mode
     // SmartDashboard.putNumber("translationX", camtran[0]);
     // SmartDashboard.putNumber("translationy1", camtran[1]);
@@ -147,14 +143,23 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // m_autonomousCommand = m_chooser.getSelected();
-    m_autonomousCommand = new CenterCargoRight(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENETER_RIGHT_HATCH_TO_RIGHT_CARGO_STATION);
 
+    // m_autonomousCommand = new CrossHabline(0.0, Paths.LEVEL_1_CROSS_HABLINE);// TODO why do two paths show up?
+    // m_autonomousCommand = new CrossHabline(0.0, Paths.LEVEL_2_CROSS_HABLINE);
+
+    // m_autonomousCommand = new CenterHatchPlace(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE);
+    // m_autonomousCommand = new PanelPlace(Paths.CENTER_BACK_ROCKET, 0.25);
+    
+    m_autonomousCommand = new CenterHatchCargoDepo(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_CARGO_DEPO);
+    // m_autonomousCommand = new CenterHatchCargoDepo(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_LEFT_HATCH_TO_LEFT_CARGO_DEPO);
+
+    // m_autonomousCommand = new CenterHatchFeederStation();
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
      * = new MyAutoCommand(); break; case "Default Auto": default:
      * autonomousCommand = new ExampleCommand(); break; }
-     */
+    */
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

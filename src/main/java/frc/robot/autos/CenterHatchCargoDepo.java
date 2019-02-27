@@ -9,6 +9,7 @@ package frc.robot.autos;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
+import frc.robot.commands.CargoMechGrab;
 import frc.robot.commands.CargoMechSetIntakeSpeed;
 import frc.robot.commands.CargoMechSetToAngle;
 import frc.robot.commands.DrivetrainLineUp2;
@@ -22,13 +23,12 @@ import frc.robot.easypath.Paths;
 import frc.robot.subsystems.HatchMech.FinState;
 import frc.robot.subsystems.HatchMech.KickerState;
 import frc.robot.subsystems.HatchMech.SliderState;
-import frc.robot.utils.AutoLineup;
 
-public class CenterCargoRight extends CommandGroup {
+public class CenterHatchCargoDepo extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public CenterCargoRight(Path crossHabline, Path driveToPlace, Path driveToCargo) {
+  public CenterHatchCargoDepo(Path crossHabline, Path driveToPlace, Path driveToCargo) {
 
     addSequential(new FollowPath(crossHabline, 0.25));
     addSequential(new FollowPath(driveToPlace, 0.25));
@@ -37,9 +37,11 @@ public class CenterCargoRight extends CommandGroup {
     addSequential(new HatchMechSetFinState(FinState.UNCLAMPED));
     addSequential(new HatchMechSetKickerState(KickerState.OUT));
     addSequential(new WaitCommand(1));
-    addParallel(new CargoMechSetToAngle(0.0));
+    addParallel(new CargoMechGrab(0.5, 0.0));
     addSequential(new FollowPath(driveToCargo, -0.25)); // TODO variation in visionlineup can really wonk this...
-    addParallel(new CargoMechSetIntakeSpeed(0.5), 0.5);
-
+    addParallel(new CargoMechGrab(0.0, 90.0));
+    addSequential(new FollowPath(Paths.RIGHT_CARGO_DEPO_TO_CLOSE_CARGOSHIP, 0.25));
+    addSequential(new FollowPath(Paths.RIGHT_CURVE_TO_CARGOSHIP, -0.25));
+    addParallel(new CargoMechGrab(1.0, 90.0));
   }
 }

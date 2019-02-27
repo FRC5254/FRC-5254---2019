@@ -9,29 +9,24 @@ package frc.robot.autos;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.DrivetrainLineUp2;
-import frc.robot.commands.HatchMechPlace;
 import frc.robot.commands.HatchMechSetFinState;
 import frc.robot.commands.HatchMechSetKickerState;
 import frc.robot.commands.HatchMechSetSliderState;
 import frc.robot.easypath.FollowPath;
 import frc.robot.easypath.Path;
-import frc.robot.easypath.PathUtil;
+import frc.robot.subsystems.HatchMech.SliderState;
 import frc.robot.subsystems.HatchMech.FinState;
 import frc.robot.subsystems.HatchMech.KickerState;
-import frc.robot.subsystems.HatchMech.SliderState;
 
-public class CenterHatchPlace extends CommandGroup {
+public class CenterFarRocketHatch extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public CenterHatchPlace(Path crossHabline, Path centerHatch) {
-    addSequential(new FollowPath(crossHabline, 0.5));
-    addSequential(new FollowPath(centerHatch, 0.25));
+  public CenterFarRocketHatch(Path path) {
+    addSequential(new FollowPath(path, 0.25));
     addSequential(new DrivetrainLineUp2());
-    // addSequential(new HatchMechSetSliderState(SliderState.OUT)); // TODO setMechState? or place command?
-    // addSequential(new HatchMechSetFinState(FinState.UNCLAMPED));
-    // addSequential(new HatchMechSetKickerState(KickerState.OUT));
-    addSequential(new HatchMechPlace());
-    // addSequential(new FollowPath(PathUtil.createStraightPath(15), -0.25));
+    addSequential(new HatchMechSetSliderState(SliderState.OUT)); // TODO setMechState? or place command?
+    addSequential(new HatchMechSetFinState(FinState.UNCLAMPED));
+    addSequential(new HatchMechSetKickerState(KickerState.OUT));
   }
 }

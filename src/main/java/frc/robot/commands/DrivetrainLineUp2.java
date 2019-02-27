@@ -37,12 +37,13 @@ public class DrivetrainLineUp2 extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.drivetrain.setLeftRightSpeeds(0,0);
+    Robot.drivetrain.setLeftRightSpeeds(0.0, 0.0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }
