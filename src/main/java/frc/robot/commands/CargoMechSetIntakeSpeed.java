@@ -16,7 +16,7 @@ public class CargoMechSetIntakeSpeed extends Command {
   public CargoMechSetIntakeSpeed(double speed) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    // requires(Robot.cargoMech);
+    requires(Robot.cargoMechIntake);
     this.speed = speed;
   }
 
@@ -28,14 +28,16 @@ public class CargoMechSetIntakeSpeed extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.cargoMech.setIntakeMotor(speed);
+    Robot.cargoMechIntake.setIntakeMotor(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     if(speed > 0) {
-      return Robot.cargoMech.ballIntook();
+      return Robot.cargoMechIntake.ballIntook();
+    } else if (speed == 0) {
+      return true;
     } else {
       return false; //TODO test
     }
@@ -44,7 +46,7 @@ public class CargoMechSetIntakeSpeed extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.cargoMech.setIntakeMotor(0.0);
+    Robot.cargoMechIntake.setIntakeMotor(0.0);
   }
 
   // Called when another command which requires one or more of the same

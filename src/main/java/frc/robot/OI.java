@@ -54,6 +54,7 @@ public class OI {
     driver.leftBumper.whenPressed(new ClimberSetSpeed1(-1.0)); // Climb
     driver.leftBumper.whenReleased(new ClimberSetSpeed1(0.0)); // note safety is on right bumper the command does nothing until thats pressed
 
+    
 
     // Used for testing on monday
     // driver.aButton.whenPressed(new DrivetrainSetManipulationMode(ManipulationMode.CARGO));

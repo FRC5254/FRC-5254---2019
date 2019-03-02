@@ -9,7 +9,6 @@ package frc.robot.autos;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
-import frc.robot.commands.CargoMechGrab;
 import frc.robot.commands.CargoMechSetIntakeSpeed;
 import frc.robot.commands.CargoMechSetToAngle;
 import frc.robot.commands.DrivetrainLineUp2;
@@ -37,11 +36,14 @@ public class CenterHatchCargoDepo extends CommandGroup {
     addSequential(new HatchMechSetFinState(FinState.UNCLAMPED));
     addSequential(new HatchMechSetKickerState(KickerState.OUT));
     addSequential(new WaitCommand(1));
-    addParallel(new CargoMechGrab(0.5, 0.0));
+    // addParallel(new CargoMechGrab(0.5, 0.0));
+    addParallel(new CargoMechSetToAngle(0.0));
+    
     addSequential(new FollowPath(driveToCargo, -0.25)); // TODO variation in visionlineup can really wonk this...
-    addParallel(new CargoMechGrab(0.0, 90.0));
+    addSequential(new CargoMechSetIntakeSpeed(0.65));
+    addParallel(new CargoMechSetToAngle(90.0));
     addSequential(new FollowPath(Paths.RIGHT_CARGO_DEPO_TO_CLOSE_CARGOSHIP, 0.25));
     addSequential(new FollowPath(Paths.RIGHT_CURVE_TO_CARGOSHIP, -0.25));
-    addParallel(new CargoMechGrab(1.0, 90.0));
+    addParallel(new CargoMechSetIntakeSpeed(-0.75));
   }
 }
