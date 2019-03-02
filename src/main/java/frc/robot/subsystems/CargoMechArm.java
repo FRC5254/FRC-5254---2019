@@ -26,30 +26,22 @@ import frc.robot.commands.CargoMechDriveWithJoystick;
 /**
  * Add your docs here.
  */
-public class CargoMech extends Subsystem {
+public class CargoMechArm extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public static TalonSRX cargoMotor, pivotMotor, pivotMotor_2;
+  public static TalonSRX pivotMotor, pivotMotor_2;
 
-  private static CargoMech instance = new CargoMech();
+  private static CargoMechArm instance = new CargoMechArm();
 
   private static final int topEncoderLimit = 0; //TODO get real values
   private static final int bottomEncoderLimit = 2850;
-
-  private static final int intakeStallLimit = 25;
-
   
   private final double errorThreshold = Math.abs(angleToEncoderTicks(2) - angleToEncoderTicks(0));
 
-  private CargoMech() {
-
-    cargoMotor = new TalonSRX(RobotMap.CARGO_MOTOR);
+  private CargoMechArm() {
     pivotMotor = new TalonSRX(RobotMap.CARGO_PIVOT_MOTOR);
     pivotMotor_2 = new TalonSRX(RobotMap.CARGO_PIVOT_MOTOR_2);
-
-    // carogmoe
-    cargoMotor.setInverted(true);
 
     pivotMotor.configOpenloopRamp(0.0);
     pivotMotor.configClosedloopRamp(0.0);
@@ -79,17 +71,13 @@ public class CargoMech extends Subsystem {
     // pivotMotor_2.setInverted(true); TODO make sure all polarities in the code are correct for mechanism
   }
 
-  public static CargoMech getInstance() {
+  public static CargoMechArm getInstance() {
     return instance;
   }
 
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new CargoMechDriveWithJoystick());
-  }
-
-  public void setIntakeMotor(double speed) {
-    cargoMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void zeroEncoder() {
@@ -103,18 +91,7 @@ public class CargoMech extends Subsystem {
   public boolean atBottomLimit() {
     return pivotMotor.getSensorCollection().isRevLimitSwitchClosed();
   }
-
-  public boolean ballIntook() {
-    return getIntakeCurrent() > intakeStallLimit;
-  }
-
-  public double getIntakeCurrent() {
-    return cargoMotor.getOutputCurrent();
-  }
-
-  // public double getIntakeControllerCrrent() {
-  //   return cargoMotor.getOutputCurrent();
-  // } 
+  
  public double getPosition() {
     return pivotMotor.getSelectedSensorPosition(0);
   }

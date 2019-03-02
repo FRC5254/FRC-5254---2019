@@ -52,9 +52,9 @@ public class Paths {
 
     // -------- To Right Cargo Depo --------
     public static final Path CENTER_RIGHT_HATCH_TO_RIGHT_CARGO_DEPO = new Path(t -> 
-    /* {"start":{"x":216,"y":173},"mid1":{"x":104,"y":173},"mid2":{"x":145,"y":329},"end":{"x":67,"y":261}} */
-    (-1140 * Math.pow(t, 2) + 936 * t + 0) / (-816 * Math.pow(t, 2) + 918 * t + -336),
-    206.058);
+    /* {"start":{"x":216,"y":173},"mid1":{"x":104,"y":173},"mid2":{"x":135,"y":310},"end":{"x":72,"y":253}} */
+    (-993 * Math.pow(t, 2) + 822 * t + 0) / (-711 * Math.pow(t, 2) + 858 * t + -336),
+    191.059);
 
     public static final Path RIGHT_CARGO_DEPO_TO_CLOSE_CARGOSHIP = new Path(t -> 
     /* {"start":{"x":50,"y":263},"mid1":{"x":50,"y":341},"mid2":{"x":165,"y":374},"end":{"x":239,"y":432}} */

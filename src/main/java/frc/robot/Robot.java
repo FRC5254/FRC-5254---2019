@@ -25,7 +25,8 @@ import frc.robot.easypath.EasyPathConfig;
 import frc.robot.easypath.FollowPath;
 import frc.robot.easypath.PathUtil;
 import frc.robot.easypath.Paths;
-import frc.robot.subsystems.CargoMech;
+import frc.robot.subsystems.CargoMechArm;
+import frc.robot.subsystems.CargoMechIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchMech;
@@ -34,6 +35,7 @@ import frc.robot.utils.Limelight.CamMode;
 import frc.robot.utils.Limelight.LedMode;
 import frc.robot.utils.Limelight.SnapshotMode;
 import frc.robot.utils.Limelight.StreamMode;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -49,7 +51,8 @@ public class Robot extends TimedRobot {
   NetworkTableEntry ta;
   public static Drivetrain drivetrain;
   public static HatchMech hatchMech;
-  public static CargoMech cargoMech;
+  public static CargoMechArm cargoMechArm;
+  public static CargoMechIntake cargoMechIntake;
   public static Climber climber;
 
   public static EasyPathConfig config;
@@ -65,7 +68,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    cargoMech =  CargoMech.getInstance();
+    cargoMechArm =  CargoMechArm.getInstance();
+    cargoMechIntake = CargoMechIntake.getInstance();
     drivetrain = Drivetrain.getInstance();
     hatchMech = HatchMech.getInstance();
     climber = Climber.getInstance();
@@ -206,12 +210,12 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    SmartDashboard.putNumber("Intake current", cargoMech.getIntakeCurrent());
+    SmartDashboard.putNumber("Intake current", cargoMechIntake.getIntakeCurrent());
 
-    SmartDashboard.putNumber("Cargo Arm tick", cargoMech.getPosition());
-    SmartDashboard.putNumber("Cargo Arm angle", cargoMech.getAngle());
-    SmartDashboard.putBoolean("armlimit for", cargoMech.pivotMotor.getSensorCollection().isFwdLimitSwitchClosed());
-    SmartDashboard.putBoolean("amrlimit back", cargoMech.pivotMotor.getSensorCollection().isRevLimitSwitchClosed());
+    SmartDashboard.putNumber("Cargo Arm tick", cargoMechArm.getPosition());
+    SmartDashboard.putNumber("Cargo Arm angle", cargoMechArm.getAngle());
+    SmartDashboard.putBoolean("armlimit for", cargoMechArm.pivotMotor.getSensorCollection().isFwdLimitSwitchClosed());
+    SmartDashboard.putBoolean("amrlimit back", cargoMechArm.pivotMotor.getSensorCollection().isRevLimitSwitchClosed());
 
     SmartDashboard.putNumber("gyro", drivetrain.getAngle());
   }

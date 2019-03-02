@@ -22,7 +22,7 @@ public class CargoMechSetToAngle extends Command {
   public CargoMechSetToAngle(double angle) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    // requires(Robot.cargoMech);
+    requires(Robot.cargoMechArm);
 
     this.angle = angle;
     sinceStarted = new Timer();
@@ -41,26 +41,26 @@ public class CargoMechSetToAngle extends Command {
   @Override
   protected void execute() {
     SmartDashboard.putString("SetToAngle status", "executing");
-    Robot.cargoMech.setToAngle(angle);
+    Robot.cargoMechArm.setToAngle(angle);
     // SmartDashboard.putNumber("Cargo set point", Robot.cargoMech.angleToEncoderTicks(angle));
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    SmartDashboard.putBoolean("SetToAngle completion", Robot.cargoMech.isAtAngle());
-    SmartDashboard.putNumber("eroor", Robot.cargoMech.getError());
+    SmartDashboard.putBoolean("SetToAngle completion", Robot.cargoMechArm.isAtAngle());
+    SmartDashboard.putNumber("eroor", Robot.cargoMechArm.getError());
 
     if (sinceStarted.get() < 0.25) {
       return false;
     }
     
     if (angle < 85) {
-      return Robot.cargoMech.isAtAngle() || Robot.cargoMech.atBottomLimit();
+      return Robot.cargoMechArm.isAtAngle() || Robot.cargoMechArm.atBottomLimit();
     } else if (angle > 5) {
-      return Robot.cargoMech.isAtAngle() || Robot.cargoMech.atTopLimit();
+      return Robot.cargoMechArm.isAtAngle() || Robot.cargoMechArm.atTopLimit();
     } else {
-      return Robot.cargoMech.isAtAngle();
+      return Robot.cargoMechArm.isAtAngle();
     }
   }
 
