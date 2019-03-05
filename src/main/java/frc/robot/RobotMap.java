@@ -54,4 +54,7 @@ public class RobotMap {
   public static final int WHEEL_DIAMETER = 6;
   public static final double GEAR_RATIO = 7.98; // TODO
   public static final int PULSE_PER_REV = 256;
+
+  public static final double CARGO_AUTO_INTAKE_SPEED = 0.65;
+  public static final double CARGO_AUTO_OUTTAKE_SPEED = -0.75;
 }

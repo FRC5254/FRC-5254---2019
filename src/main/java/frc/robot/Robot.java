@@ -146,18 +146,25 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+
+    drivetrain.setAutoDrive();
+    Limelight.setCamMode(CamMode.DRIVER_CAM); //TODO add a config funtion that incudes these
+    Limelight.setLedMode(LedMode.PIPELINE);
+    Limelight.setStreamMode(StreamMode.STANDARD);
+
     // m_autonomousCommand = m_chooser.getSelected();
 
     // m_autonomousCommand = new CrossHabline(0.0, Paths.LEVEL_1_CROSS_HABLINE);// TODO why do two paths show up?
     // m_autonomousCommand = new CrossHabline(0.0, Paths.LEVEL_2_CROSS_HABLINE);
 
     // m_autonomousCommand = new CenterHatchPlace(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE);
-    // m_autonomousCommand = new PanelPlace(Paths.CENTER_BACK_ROCKET, 0.25);
     
-    m_autonomousCommand = new CenterHatchCargoDepo(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_CARGO_DEPO);
+    // m_autonomousCommand = new CenterHatchCargoDepo(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_CARGO_DEPO);
     // m_autonomousCommand = new CenterHatchCargoDepo(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_LEFT_HATCH_TO_LEFT_CARGO_DEPO);
 
+    // m_autonomousCommand = new CenterHatchFeederStation(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_FEEDER_STATION, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_FEEDER_STATION_2, Paths.RIGHT_FEEDER_STATION_TO_CARGOSHIP, Paths.RIGHT_FEEDER_STATION_TO_CARGOSHIP_2);
     // m_autonomousCommand = new CenterHatchFeederStation();
+    
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -190,12 +197,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    
-    //TODO move
-    Limelight.setLedMode(LedMode.PIPELINE);
-    Limelight.setCamMode(CamMode.VISION_CAM);
-    Limelight.setStreamMode(StreamMode.STANDARD);
 
+    drivetrain.setTeleDrive();
     CameraServer.getInstance().startAutomaticCapture(0);
 
     if (m_autonomousCommand != null) {
@@ -214,8 +217,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Cargo Arm tick", cargoMechArm.getPosition());
     SmartDashboard.putNumber("Cargo Arm angle", cargoMechArm.getAngle());
-    SmartDashboard.putBoolean("armlimit for", cargoMechArm.pivotMotor.getSensorCollection().isFwdLimitSwitchClosed());
-    SmartDashboard.putBoolean("amrlimit back", cargoMechArm.pivotMotor.getSensorCollection().isRevLimitSwitchClosed());
+    SmartDashboard.putBoolean("armlimit for", cargoMechArm.atBottomLimit());
+    SmartDashboard.putBoolean("amrlimit back", cargoMechArm.atTopLimit());
 
     SmartDashboard.putNumber("gyro", drivetrain.getAngle());
   }

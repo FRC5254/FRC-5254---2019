@@ -7,12 +7,15 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class CargoMechSetIntakeSpeed extends Command {
 
   double speed;
+  Timer timer = new Timer();
+
   public CargoMechSetIntakeSpeed(double speed) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -23,6 +26,8 @@ public class CargoMechSetIntakeSpeed extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    timer.reset();
+    timer.start();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -34,12 +39,16 @@ public class CargoMechSetIntakeSpeed extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(speed > 0) {
-      return Robot.cargoMechIntake.ballIntook();
-    } else if (speed == 0) {
-      return true;
+    if (timer.get() > 0.3) {
+      if(speed > 0) {
+        return Robot.cargoMechIntake.ballIntook();
+      } else if (speed == 0) {
+        return true;
+      } else {
+        return false; //TODO test
+      } 
     } else {
-      return false; //TODO test
+      return false;
     }
   }
 
@@ -47,6 +56,7 @@ public class CargoMechSetIntakeSpeed extends Command {
   @Override
   protected void end() {
     Robot.cargoMechIntake.setIntakeMotor(0.0);
+    timer.stop();
   }
 
   // Called when another command which requires one or more of the same

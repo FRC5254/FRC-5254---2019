@@ -30,7 +30,7 @@ public class CargoMechArm extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public static TalonSRX pivotMotor, pivotMotor_2;
+  private static TalonSRX pivotMotor, pivotMotor_2;
 
   private static CargoMechArm instance = new CargoMechArm();
 
@@ -58,6 +58,7 @@ public class CargoMechArm extends Subsystem {
     pivotMotor.configVoltageCompSaturation(12);
     pivotMotor.enableVoltageCompensation(true);
     pivotMotor.configSetParameter(ParamEnum.eClearPositionOnLimitR, 1, 0, 0);
+    pivotMotor.configSetParameter(ParamEnum.eClearPositionOnLimitF, 0, 0, 0);
     pivotMotor.setSensorPhase(true);
 
     // pivotMotor.setSelectedSensorPosition(0, 0, 10); //zeros encoder
@@ -81,7 +82,7 @@ public class CargoMechArm extends Subsystem {
   }
 
   public void zeroEncoder() {
-    pivotMotor.setSelectedSensorPosition(0, 0, 10);
+    // pivotMotor.setSelectedSensorPosition(0, 0, 10);
   }
 
   public boolean atTopLimit() {

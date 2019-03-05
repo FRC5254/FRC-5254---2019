@@ -30,7 +30,7 @@ public class CargoMechDriveWithJoystick extends Command {
   protected void execute() { //TODO move most if not all of this into the subsystem
     double axis = OI.operator.leftStick.getY();
    
-    if(axis > 0.1) {
+    if(Math.abs(axis) > 0.1) {
       Robot.cargoMechArm.setPivotMotor(axis);//  * 0.25
     } else {
       Robot.cargoMechArm.setPivotMotor(0.0);

@@ -28,10 +28,10 @@ public class CenterHatchPlace extends CommandGroup {
     addSequential(new FollowPath(crossHabline, 0.5));
     addSequential(new FollowPath(centerHatch, 0.25));
     addSequential(new DrivetrainLineUp2());
-    // addSequential(new HatchMechSetSliderState(SliderState.OUT)); // TODO setMechState? or place command?
-    // addSequential(new HatchMechSetFinState(FinState.UNCLAMPED));
-    // addSequential(new HatchMechSetKickerState(KickerState.OUT));
-    addSequential(new HatchMechPlace());
-    // addSequential(new FollowPath(PathUtil.createStraightPath(15), -0.25));
+    addSequential(new HatchMechSetSliderState(SliderState.OUT)); // TODO setMechState? or place command?
+    addSequential(new HatchMechSetFinState(FinState.UNCLAMPED));
+    addSequential(new HatchMechSetKickerState(KickerState.OUT));
+    // addSequential(new HatchMechPlace());
+    addSequential(new FollowPath(PathUtil.createStraightPath(5), -0.25));
   }
 }

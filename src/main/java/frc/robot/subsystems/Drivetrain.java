@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -67,8 +68,8 @@ public class Drivetrain extends Subsystem {
     sLeft2.setInverted(true);
     sLeft3.setInverted(true);
 
-    // sleft1.setOpenLoopRampRate(0.2);
-    // sRight1.setOpenLoopRampRate(0.2);
+    sLeft1.setOpenLoopRampRate(0.0);
+    sRight1.setOpenLoopRampRate(0.0);
     // sLeft1.setRampRate(0.2);
     // sRight1.setRampRate(0.2);
 
@@ -184,10 +185,12 @@ public class Drivetrain extends Subsystem {
 
   public void LineUp() {
     // TODO tune these numbers
-    double KpAim = 0.1 / 27;
+    double KpAim = 0.2 / 27; // 0.3 / 27; for comp
     double KpDistance = -0.0;
     double min_aim_command = 0.00;
-    double zoom = 0.075;
+    double zoom = 0.15; // 0.225 for comp
+
+    // .075 +- 0.1 / 27
     
     double horoff = Limelight.getHorizontalOffset();
     double veroff = Limelight.getVerticalOffset();
@@ -224,6 +227,23 @@ public class Drivetrain extends Subsystem {
     return gyro.getAngle();
   }
  
+  public void setAutoDrive() {
+    sLeft1.setIdleMode(IdleMode.kBrake);
+    sLeft2.setIdleMode(IdleMode.kBrake);
+    sLeft3.setIdleMode(IdleMode.kBrake);
+    sRight1.setIdleMode(IdleMode.kBrake);
+    sRight2.setIdleMode(IdleMode.kBrake);
+    sRight3.setIdleMode(IdleMode.kBrake);
+  }
+
+  public void setTeleDrive() {
+    sLeft1.setIdleMode(IdleMode.kBrake);
+    sLeft2.setIdleMode(IdleMode.kCoast);
+    sLeft3.setIdleMode(IdleMode.kCoast);
+    sRight1.setIdleMode(IdleMode.kBrake);
+    sRight2.setIdleMode(IdleMode.kCoast);
+    sRight3.setIdleMode(IdleMode.kCoast);
+  }
   public void reset() {
    leftEncoder.reset();
    rightEncoder.reset();

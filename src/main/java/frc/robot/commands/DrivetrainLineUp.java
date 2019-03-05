@@ -9,6 +9,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.utils.Limelight;
+import frc.robot.utils.Limelight.CamMode;
+import frc.robot.utils.Limelight.LedMode;
+import frc.robot.utils.Limelight.StreamMode;
 
 public class DrivetrainLineUp extends Command {
   public DrivetrainLineUp() {
@@ -20,6 +24,9 @@ public class DrivetrainLineUp extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
+    Limelight.setLedMode(LedMode.PIPELINE);
+    Limelight.setStreamMode(StreamMode.STANDARD);
   }
 
   // Called repeatedly when this Command is scheduled to run

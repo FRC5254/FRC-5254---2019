@@ -15,6 +15,7 @@ import frc.robot.commands.HatchMechSetKickerState;
 import frc.robot.commands.HatchMechSetSliderState;
 import frc.robot.easypath.FollowPath;
 import frc.robot.easypath.Path;
+import frc.robot.easypath.PathUtil;
 import frc.robot.subsystems.HatchMech.SliderState;
 import frc.robot.subsystems.HatchMech.FinState;
 import frc.robot.subsystems.HatchMech.KickerState;
@@ -23,18 +24,32 @@ public class CenterHatchFeederStation extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public CenterHatchFeederStation(Path crossHabline, Path driveToPlace, Path backUpTurn, Path driveToFeederStation) {
+  public CenterHatchFeederStation(Path crossHabline, Path driveToPlace, Path driveToFeederStation, Path driveToFeederStation2, Path backUpToCargoShip, Path curveToCargoShip) {
 
+    // Places preloaded panel
     addSequential(new FollowPath(crossHabline, 0.25));
     addSequential(new FollowPath(driveToPlace, 0.25));
     addSequential(new DrivetrainLineUp2());
     addSequential(new HatchMechSetSliderState(SliderState.OUT));
     addSequential(new HatchMechSetFinState(FinState.UNCLAMPED));
     addSequential(new HatchMechSetKickerState(KickerState.OUT));
-    addSequential(new WaitCommand(1));
-    //TODO replace above with CenterHatchPlace?
-    addSequential(new FollowPath(backUpTurn, 0.25));
-    addSequential(new FollowPath(driveToFeederStation, 0.25));
 
+    addSequential(new WaitCommand(1));
+
+    // Drives to feeder station for another panel
+    addSequential(new FollowPath(driveToFeederStation, -0.25));
+    addSequential(new FollowPath(driveToFeederStation2, 0.25));
+    addParallel(new HatchMechSetKickerState(KickerState.IN));
+    addSequential(new DrivetrainLineUp2());
+    addSequential(new HatchMechSetFinState(FinState.CLAMPED));
+
+    // Backs up to cargoship and plances seconds panel
+    addSequential(new FollowPath(backUpToCargoShip, -0.25));
+    addSequential(new FollowPath(curveToCargoShip, 0.25));
+    addSequential(new DrivetrainLineUp2());
+    addSequential(new HatchMechSetSliderState(SliderState.OUT));
+    addSequential(new HatchMechSetFinState(FinState.UNCLAMPED));
+    addSequential(new HatchMechSetKickerState(KickerState.OUT));
+    addSequential(new FollowPath(PathUtil.createStraightPath(10), -0.25)); 
   }
 }
