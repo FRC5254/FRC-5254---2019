@@ -11,14 +11,12 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class CargoMechSetIntakeSpeed extends Command {
+public class CargoMechIntake extends Command {
 
   double speed;
   Timer timer = new Timer();
 
-  public CargoMechSetIntakeSpeed(double speed) {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+  public CargoMechIntake(double speed) {
     requires(Robot.cargoMechIntake);
     this.speed = speed;
   }
@@ -40,13 +38,7 @@ public class CargoMechSetIntakeSpeed extends Command {
   @Override
   protected boolean isFinished() {
     if (timer.get() > 0.3) {
-      if(speed > 0) {
-        return Robot.cargoMechIntake.ballIntook();
-      } else if (speed == 0) {
-        return true;
-      } else {
-        return false; //TODO test
-      } 
+      return Robot.cargoMechIntake.ballIntook();
     } else {
       return false;
     }

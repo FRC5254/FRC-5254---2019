@@ -15,9 +15,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -35,7 +33,7 @@ public class CargoMechArm extends Subsystem {
   private static CargoMechArm instance = new CargoMechArm();
 
   private static final int topEncoderLimit = 0; //TODO get real values
-  private static final int bottomEncoderLimit = 2850;
+  private static final int bottomEncoderLimit = 1949;
   
   private final double errorThreshold = Math.abs(angleToEncoderTicks(2) - angleToEncoderTicks(0));
 
@@ -53,8 +51,8 @@ public class CargoMechArm extends Subsystem {
     pivotMotor.overrideLimitSwitchesEnable(true); // this is backwards true means obey limit switches
     pivotMotor.configNominalOutputForward(0.0);
     pivotMotor.configNominalOutputReverse(0.0);
-    pivotMotor.configPeakOutputForward(0.85);//TODO chanage back
-    pivotMotor.configPeakOutputReverse(-0.85);
+    pivotMotor.configPeakOutputForward(1.0);//TODO chanage back
+    pivotMotor.configPeakOutputReverse(-1.0);
     pivotMotor.configVoltageCompSaturation(12);
     pivotMotor.enableVoltageCompensation(true);
     pivotMotor.configSetParameter(ParamEnum.eClearPositionOnLimitR, 1, 0, 0);

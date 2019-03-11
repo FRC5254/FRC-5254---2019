@@ -54,8 +54,8 @@ public class Climber extends Subsystem {
     climbMotor1.configNominalOutputForward(0.0);
     climbMotor1.configNominalOutputReverse(0.0);
     // sets Peak (maximum) percent output
-    climbMotor1.configPeakOutputForward(0.65);// TODO tune these
-    climbMotor1.configPeakOutputReverse(-0.65);
+    climbMotor1.configPeakOutputForward(1.0);// TODO tune these
+    climbMotor1.configPeakOutputReverse(-1.0);
     // This will ignore the battery volatge (if its lower than 12V) and pretend its at 12V
     // It makes PID tuning and preformance of the mechanism more consistent
     climbMotor1.configVoltageCompSaturation(12);
@@ -84,14 +84,12 @@ public class Climber extends Subsystem {
   }
 
   public void setSpeed(double speed) {
-    if (OI.driver.rightBumper.get()) { // TODO do the double button thing
-      if (limit.get() && (speed > 0.0)) {// TODO what happens when things are set to 0.0?
-        climbMotor1.set(ControlMode.PercentOutput, 0.0);
-      } else if (limit.get() && (speed < 0.0)) {
-        climbMotor1.set(ControlMode.PercentOutput, speed);
-      } else {
-        climbMotor1.set(ControlMode.PercentOutput, speed);
-      }
+    if (limit.get() && (speed > 0.0)) {// TODO what happens when things are set to 0.0?
+      climbMotor1.set(ControlMode.PercentOutput, 0.0);
+    } else if (limit.get() && (speed < 0.0)) {
+      climbMotor1.set(ControlMode.PercentOutput, speed);
+    } else {
+      climbMotor1.set(ControlMode.PercentOutput, speed);
     }
   }
 

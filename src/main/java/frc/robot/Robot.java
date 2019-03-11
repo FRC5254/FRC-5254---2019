@@ -9,7 +9,6 @@ package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -22,7 +21,6 @@ import frc.robot.autos.CenterHatchPlace;
 import frc.robot.autos.CrossHabline;
 import frc.robot.easypath.EasyPath;
 import frc.robot.easypath.EasyPathConfig;
-import frc.robot.easypath.FollowPath;
 import frc.robot.easypath.PathUtil;
 import frc.robot.easypath.Paths;
 import frc.robot.subsystems.CargoMechArm;
@@ -33,7 +31,6 @@ import frc.robot.subsystems.HatchMech;
 import frc.robot.utils.Limelight;
 import frc.robot.utils.Limelight.CamMode;
 import frc.robot.utils.Limelight.LedMode;
-import frc.robot.utils.Limelight.SnapshotMode;
 import frc.robot.utils.Limelight.StreamMode;
 
 /**
@@ -92,6 +89,7 @@ public class Robot extends TimedRobot {
     Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
     Limelight.setLedMode(LedMode.PIPELINE);
     Limelight.setStreamMode(StreamMode.STANDARD);
+    CameraServer.getInstance().startAutomaticCapture(0);
     
     m_oi = new OI(); // This one MUST be last 
 
@@ -160,7 +158,7 @@ public class Robot extends TimedRobot {
     // m_autonomousCommand = new CenterHatchPlace(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE);
     
     // m_autonomousCommand = new CenterHatchCargoDepo(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_CARGO_DEPO);
-    // m_autonomousCommand = new CenterHatchCargoDepo(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_LEFT_HATCH_TO_LEFT_CARGO_DEPO);
+    m_autonomousCommand = new CenterHatchCargoDepo(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_LEFT_HATCH_TO_LEFT_CARGO_DEPO);
 
     // m_autonomousCommand = new CenterHatchFeederStation(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_FEEDER_STATION, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_FEEDER_STATION_2, Paths.RIGHT_FEEDER_STATION_TO_CARGOSHIP, Paths.RIGHT_FEEDER_STATION_TO_CARGOSHIP_2);
     // m_autonomousCommand = new CenterHatchFeederStation();
@@ -199,7 +197,6 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
 
     drivetrain.setTeleDrive();
-    CameraServer.getInstance().startAutomaticCapture(0);
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
@@ -213,13 +210,19 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    SmartDashboard.putNumber("Intake current", cargoMechIntake.getIntakeCurrent());
+    // SmartDashboard.putNumber("Intake current", cargoMechIntake.getIntakeCurrent());
+    
+    SmartDashboard.putNumber("encoder left", drivetrain.getLeftDistance());
+    SmartDashboard.putNumber("encoder right", drivetrain.getRightDistance());
 
-    SmartDashboard.putNumber("Cargo Arm tick", cargoMechArm.getPosition());
-    SmartDashboard.putNumber("Cargo Arm angle", cargoMechArm.getAngle());
     SmartDashboard.putBoolean("armlimit for", cargoMechArm.atBottomLimit());
     SmartDashboard.putBoolean("amrlimit back", cargoMechArm.atTopLimit());
+    SmartDashboard.putBoolean("Ball Limit", cargoMechIntake.ballIntook());
+    
+    SmartDashboard.putNumber("Cargo Arm tick", cargoMechArm.getPosition());
+    SmartDashboard.putNumber("Cargo Arm angle", cargoMechArm.getAngle());
 
+    SmartDashboard.putBoolean("Climber sw", climber.limit.get());
     SmartDashboard.putNumber("gyro", drivetrain.getAngle());
   }
 

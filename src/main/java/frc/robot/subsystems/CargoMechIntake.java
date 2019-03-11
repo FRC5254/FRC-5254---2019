@@ -7,21 +7,12 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.commands.CargoMechDriveWithJoystick;
 
 /**
  * Add your docs here.
@@ -31,6 +22,7 @@ public class CargoMechIntake extends Subsystem {
   // here. Call these from Commands.
 
   public static TalonSRX intakeMotor;
+  public static DigitalInput ballLimit;
 
   private static CargoMechIntake instance = new CargoMechIntake();
 
@@ -39,7 +31,8 @@ public class CargoMechIntake extends Subsystem {
 
   private CargoMechIntake() {
 
-    intakeMotor = new TalonSRX(RobotMap.CARGO_MOTOR);
+    intakeMotor = new TalonSRX(RobotMap.CARGO_INTAKE_MOTOR);
+    ballLimit = new DigitalInput(RobotMap.BALL_LIMIT);
 
     intakeMotor.setInverted(true);
   }
@@ -58,7 +51,7 @@ public class CargoMechIntake extends Subsystem {
   }
 
   public boolean ballIntook() {
-    return getIntakeCurrent() > intakeStallLimit;
+    return (!ballLimit.get());
   }
 
   public double getIntakeCurrent() {

@@ -23,9 +23,10 @@ public class RobotMap {
   public static final int RIGHT_ENCODER_1 = 2;
   public static final int RIGHT_ENCODER_2 = 3;
   public static final int CLIMBER_BUTTON = 9; //not on bot yet
+  public static final int BALL_LIMIT = 4;
 
   // CAN
-  public static final int CARGO_MOTOR = 8; //spx is 14
+  public static final int CARGO_INTAKE_MOTOR = 8; //spx is 14
   public static final int CARGO_PIVOT_MOTOR = 11;//2
   public static final int CARGO_PIVOT_MOTOR_2 = 12; //10
 
@@ -41,9 +42,8 @@ public class RobotMap {
   public static final int S_DRIVETRAIN_RIGHT_2 = 18; // 15
   public static final int S_DRIVETRAIN_RIGHT_3 = 17; //22
 
-  public static final int CLIMB_MOTOR_1 = 9; //not on bot yet
-  public static final int CLIMB_MOTOR_2 = 4; //not on bot yet
-
+  public static final int CLIMB_MOTOR_1 = 9; //7
+  public static final int CLIMB_MOTOR_2 = 4; //6
   //Limelight
   public static final double TURN_K = 0.01;
   public static final double THROTTLE_K = 0.10;

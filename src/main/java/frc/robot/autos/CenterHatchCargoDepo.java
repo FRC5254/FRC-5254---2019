@@ -10,7 +10,6 @@ package frc.robot.autos;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.robot.RobotMap;
-import frc.robot.commands.CargoMechSetIntakeSpeed;
 import frc.robot.commands.CargoMechSetToAngle;
 import frc.robot.commands.DrivetrainLineUp2;
 import frc.robot.commands.HatchMechSetFinState;
@@ -18,7 +17,6 @@ import frc.robot.commands.HatchMechSetKickerState;
 import frc.robot.commands.HatchMechSetSliderState;
 import frc.robot.easypath.FollowPath;
 import frc.robot.easypath.Path;
-import frc.robot.easypath.PathUtil;
 import frc.robot.easypath.Paths;
 import frc.robot.subsystems.HatchMech.FinState;
 import frc.robot.subsystems.HatchMech.KickerState;
@@ -41,11 +39,11 @@ public class CenterHatchCargoDepo extends CommandGroup {
     addSequential(new WaitCommand(1));
 
     addParallel(new CargoMechSetToAngle(0.0));
-    addParallel(new CargoMechSetIntakeSpeed(RobotMap.CARGO_AUTO_INTAKE_SPEED));
+    // addParallel(new CargoMechSetIntakeSpeed(RobotMap.CARGO_AUTO_INTAKE_SPEED));
     addSequential(new FollowPath(driveToCargo, -0.25)); // TODO variation in visionlineup can really wonk this...
-    addParallel(new CargoMechSetToAngle(90.0));
-    addSequential(new FollowPath(Paths.RIGHT_CARGO_DEPO_TO_CLOSE_CARGOSHIP, 0.25));
-    addSequential(new FollowPath(Paths.RIGHT_CURVE_TO_CARGOSHIP, -0.25));
-    addParallel(new CargoMechSetIntakeSpeed(RobotMap.CARGO_AUTO_OUTTAKE_SPEED));
+    // addParallel(new CargoMechSetToAngle(90.0));
+    // addSequential(new FollowPath(Paths.RIGHT_CARGO_DEPO_TO_CLOSE_CARGOSHIP, 0.25));
+    // addSequential(new FollowPath(Paths.RIGHT_CURVE_TO_CARGOSHIP, -0.25));
+    // addParallel(new CargoMechSetIntakeSpeed(RobotMap.CARGO_AUTO_OUTTAKE_SPEED));
   }
 }

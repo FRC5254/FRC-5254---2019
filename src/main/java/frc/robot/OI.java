@@ -7,26 +7,21 @@
 
 package frc.robot;
 
-import frc.robot.commands.CargoMechSetIntakeSpeed;
-import frc.robot.commands.CargoMechSetPivotMotor;
+import frc.robot.commands.CargoMechIntake;
+import frc.robot.commands.CargoMechOuttake;
 import frc.robot.commands.CargoMechSetToAngle;
 import frc.robot.commands.ClimberLineUp;
-import frc.robot.commands.ClimberSetMode;
-import frc.robot.commands.ClimberSetSpeed;
 import frc.robot.commands.ClimberSetSpeed1;
 import frc.robot.commands.DrivetrainDriveWithJoystick;
 import frc.robot.commands.DrivetrainLineUp;
 import frc.robot.commands.DrivetrainSetShiftState;
-import frc.robot.commands.HatchMechPlace;
 import frc.robot.commands.HatchMechSetFinState;
 import frc.robot.commands.HatchMechSetKickerState;
 import frc.robot.commands.HatchMechSetSliderState;
-import frc.robot.subsystems.Climber.ClimberMode;
 import frc.robot.subsystems.Drivetrain.ShiftState;
 import frc.robot.subsystems.HatchMech.FinState;
 import frc.robot.subsystems.HatchMech.KickerState;
 import frc.robot.subsystems.HatchMech.SliderState;
-import frc.robot.utils.DoubleButton;
 import frc.robot.utils.HXboxController;
 
 /**
@@ -53,9 +48,11 @@ public class OI {
     driver.xButton.whenPressed(new DrivetrainSetShiftState(ShiftState.LOW_GEAR)); //shift
     driver.xButton.whenReleased(new DrivetrainSetShiftState(ShiftState.HIGH_GEAR));
     driver.yButton.whenPressed(new ClimberLineUp()); // Pistions for climber
-    driver.leftBumper.whenPressed(new ClimberSetSpeed1(-1.0)); // Climb
+    driver.leftBumper.whenPressed(new ClimberSetSpeed1(1.0)); // Climb
     driver.leftBumper.whenReleased(new ClimberSetSpeed1(0.0)); // note safety is on right bumper the command does nothing until thats pressed
-
+    driver.backButton.whenPressed(new ClimberSetSpeed1(-1.0));
+    driver.backButton.whenReleased(new ClimberSetSpeed1(0.0));
+    
     // Operator
     operator.leftTriggerButton.configureThreshold(0.2);
     operator.rightTriggerButton.configureThreshold(0.2);
@@ -68,21 +65,24 @@ public class OI {
     operator.yButton.whenPressed(new HatchMechSetSliderState(SliderState.OUT)); // Slider out
    
   
-    operator.rightBumper.whenPressed(new CargoMechSetIntakeSpeed(0.65)); // Intake when Pressed
-    operator.leftBumper.whenPressed(new CargoMechSetIntakeSpeed(-0.75)); // Outtake when pressed
-    operator.leftBumper.whenReleased(new CargoMechSetIntakeSpeed(0.0));
+    operator.rightBumper.whenPressed(new CargoMechIntake(0.65)); // Intake when Pressed
+    operator.leftBumper.whenPressed(new CargoMechOuttake(-1.0)); // Outtake when pressed
+    operator.leftBumper.whenReleased(new CargoMechOuttake(0.0));
 
     // operator.startButton.whenPressed(new CargoMechSetPivotMotor(1.0)); // Cargo down (TODO should invert motors so polarity reflects intaking and outtaking)
     // operator.backButton.whenPressed(new CargoMechSetPivotMotor(-1.0)); //Cargo up
-    operator.startButton.whenPressed(new CargoMechSetToAngle(-5));
+    operator.startButton.whenPressed(new CargoMechSetToAngle(0));
     operator.backButton.whenPressed(new CargoMechSetToAngle(90));
 
-    operator.rjc.whenPressed(new CargoMechSetToAngle(46));
-    operator.leftTriggerButton.whenPressed(new CargoMechSetIntakeSpeed(-0.75));
-    operator.leftTriggerButton.whenReleased(new CargoMechSetIntakeSpeed(0.0));
-    operator.rightTriggerButton.whenPressed(new CargoMechSetIntakeSpeed(0.65));
+    operator.rjc.whenPressed(new CargoMechSetToAngle(50));
+
+    operator.leftTriggerButton.whenPressed(new CargoMechOuttake(1.0));
+    operator.leftTriggerButton.whenReleased(new CargoMechOuttake(0.0));
+    
+    operator.leftTriggerButton.whenPressed(new CargoMechOuttake(1.0));
+    operator.leftTriggerButton.whenReleased(new CargoMechOuttake(0.0));
   
-    operator.dpad.up.whenPressed(new CargoMechSetToAngle(45)); // TODO this doesnt work
+    operator.dpad.left.whenPressed(new CargoMechSetToAngle(70)); // TODO this doesnt work?
   }
 }
 

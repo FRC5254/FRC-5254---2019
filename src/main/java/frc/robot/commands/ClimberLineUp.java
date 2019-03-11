@@ -16,8 +16,10 @@ public class ClimberLineUp extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public ClimberLineUp() {
-    addSequential(new FollowPath(PathUtil.createStraightPath(10), 0.25));
+  public 
+  ClimberLineUp() {
+    // addSequential(command);
+    addSequential(new FollowPath(PathUtil.createStraightPath(6.0), -0.075)); // from frame 9.5
     addSequential(new ClimberSetMode(ClimberMode.CLIMB_MODE));
   }
 }

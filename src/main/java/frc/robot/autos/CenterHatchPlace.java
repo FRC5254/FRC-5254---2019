@@ -9,7 +9,6 @@ package frc.robot.autos;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.DrivetrainLineUp2;
-import frc.robot.commands.HatchMechPlace;
 import frc.robot.commands.HatchMechSetFinState;
 import frc.robot.commands.HatchMechSetKickerState;
 import frc.robot.commands.HatchMechSetSliderState;
@@ -31,7 +30,6 @@ public class CenterHatchPlace extends CommandGroup {
     addSequential(new HatchMechSetSliderState(SliderState.OUT)); // TODO setMechState? or place command?
     addSequential(new HatchMechSetFinState(FinState.UNCLAMPED));
     addSequential(new HatchMechSetKickerState(KickerState.OUT));
-    // addSequential(new HatchMechPlace());
     addSequential(new FollowPath(PathUtil.createStraightPath(5), -0.25));
   }
 }
