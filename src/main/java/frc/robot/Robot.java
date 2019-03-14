@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
     Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
     Limelight.setLedMode(LedMode.PIPELINE);
     Limelight.setStreamMode(StreamMode.STANDARD);
-    CameraServer.getInstance().startAutomaticCapture(0);
+    // CameraServer.getInstance().startAutomaticCapture(0);
     
     m_oi = new OI(); // This one MUST be last 
 
@@ -146,7 +146,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     drivetrain.setAutoDrive();
-    Limelight.setCamMode(CamMode.DRIVER_CAM); //TODO add a config funtion that incudes these
+    Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
     Limelight.setLedMode(LedMode.PIPELINE);
     Limelight.setStreamMode(StreamMode.STANDARD);
 

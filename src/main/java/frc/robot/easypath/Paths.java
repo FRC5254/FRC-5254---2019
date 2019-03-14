@@ -58,10 +58,66 @@ public class Paths {
     57.406);
 
     // -------- To Left Cargo Depo --------
-    public static final Path CENTER_LEFT_HATCH_TO_LEFT_CARGO_DEPO = new Path(t -> 
-    /* {"start":{"x":216,"y":173},"mid1":{"x":104,"y":173},"mid2":{"x":145,"y":17},"end":{"x":67,"y":85}} */
-    (1140 * Math.pow(t, 2) + -936 * t + 0) / (-816 * Math.pow(t, 2) + 918 * t + -336),
-    206.058);
+    // public static final Path CENTER_LEFT_HATCH_TO_LEFT_CARGO_DEPO = new Path(t -> 
+    // /* {"start":{"x":216,"y":173},"mid1":{"x":104,"y":173},"mid2":{"x":145,"y":17},"end":{"x":67,"y":85}} */
+    // (1140 * Math.pow(t, 2) + -936 * t + 0) / (-816 * Math.pow(t, 2) + 918 * t + -336),
+    // 206.058);
+
+    public static final Path CENTER_LEFT_HATCH_TO_LEFT_CARGO_DEPO = 
+    // to try (end angle is 45 deg)
+    // new Path(t -> 
+	// /* {"start":{"x":216,"y":173},"mid1":{"x":104,"y":173},"mid2":{"x":142,"y":50},"end":{"x":50,"y":114}} */
+	// (930 * Math.pow(t, 2) + -738 * t + 0) / (-840 * Math.pow(t, 2) + 900 * t + -336),
+    // 200.455);
+    // new Path(t -> 
+    // /* {"start":{"x":216,"y":173},"mid1":{"x":104,"y":173},"mid2":{"x":127,"y":49},"end":{"x":66,"y":110}} */
+    // (927 * Math.pow(t, 2) + -744 * t + 0) / (-657 * Math.pow(t, 2) + 810 * t + -336),
+    // 187.031);
+    new Path(t -> 
+		/* {"start":{"x":216,"y":173},"mid1":{"x":104,"y":173},"mid2":{"x":124,"y":47},"end":{"x":64,"y":107}} */
+		(936 * Math.pow(t, 2) + -756 * t + 0) / (-636 * Math.pow(t, 2) + 792 * t + -336),
+		189.636);
+        
+    public static final Path LEFT_CARGO_DEPO_TO_CLOSE_BACKSHOT = 
+   // Drives panel first to rocket
+    // new Path(t -> 
+	// 	/* {"start":{"x":40,"y":79},"mid1":{"x":40,"y":14},"mid2":{"x":175,"y":-97},"end":{"x":228,"y":-44}} */
+	// 	(630 * Math.pow(t, 2) + -276 * t + -195) / (-651 * Math.pow(t, 2) + 810 * t + 0),
+    // 	257.804);
+
+    // Drives too far
+    new Path(t -> 
+		/* {"start":{"x":40,"y":79},"mid1":{"x":86,"y":33},"mid2":{"x":260,"y":50},"end":{"x":260,"y":125}} */
+		(-15 * Math.pow(t, 2) + 378 * t + -138) / (-906 * Math.pow(t, 2) + 768 * t + 138),
+        257.927);
+
+
+
+    public static final Path LEFT_CARGO_DEPO_TO_CLOSE_CARGOSHIP =
+    // to try (end angle is 45 deg)
+    // new Path(t -> 
+    // /* {"start":{"x":250,"y":263},"mid1":{"x":172,"y":263},"mid2":{"x":141,"y":392},"end":{"x":81,"y":452}} */
+    // (-594 * Math.pow(t, 2) + 774 * t + 0) / (-228 * Math.pow(t, 2) + 282 * t + -234),
+    // 262.371);
+
+    // new Path(t -> 
+	// /* {"start":{"x":250,"y":263},"mid1":{"x":172,"y":263},"mid2":{"x":177,"y":377},"end":{"x":95,"y":458}} */
+	// (-441 * Math.pow(t, 2) + 684 * t + 0) / (-510 * Math.pow(t, 2) + 498 * t + -234),
+    // 259.182);
+    new Path(t -> 
+		/* {"start":{"x":250,"y":263},"mid1":{"x":172,"y":263},"mid2":{"x":141,"y":371},"end":{"x":140,"y":459}} */
+		(-384 * Math.pow(t, 2) + 648 * t + 0) / (-51 * Math.pow(t, 2) + 282 * t + -234),
+		247.049);
+    
+    
+
+    public static final Path LEFT_CURVE_TO_CARGOSHIP = 
+    new Path(t -> 
+	/* {"start":{"x":280,"y":264},"mid1":{"x":249,"y":260},"mid2":{"x":256,"y":278},"end":{"x":256,"y":308}} */
+	(-30 * Math.pow(t, 2) + 132 * t + -12) / (-135 * Math.pow(t, 2) + 228 * t + -93),
+	63.01);
+
+    
 
     // -------- To Right Cargo Depo --------
     public static final Path CENTER_RIGHT_HATCH_TO_RIGHT_CARGO_DEPO = 
