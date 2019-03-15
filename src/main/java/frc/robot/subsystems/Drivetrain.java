@@ -190,6 +190,7 @@ public class Drivetrain extends Subsystem {
     double min_aim_command = 0.00;
     double zoom = 0.15; // 0.225 for comp
 
+
     // .075 +- 0.1 / 27
     
     double horoff = Limelight.getHorizontalOffset();
@@ -244,6 +245,16 @@ public class Drivetrain extends Subsystem {
     sRight2.setIdleMode(IdleMode.kCoast);
     sRight3.setIdleMode(IdleMode.kCoast);
   }
+
+  public void setDisabledDrive() {
+    sLeft1.setIdleMode(IdleMode.kCoast);
+    sLeft2.setIdleMode(IdleMode.kCoast);
+    sLeft3.setIdleMode(IdleMode.kCoast);
+    sRight1.setIdleMode(IdleMode.kCoast);
+    sRight2.setIdleMode(IdleMode.kCoast);
+    sRight3.setIdleMode(IdleMode.kCoast);
+  }
+
   public void reset() {
    leftEncoder.reset();
    rightEncoder.reset();

@@ -34,7 +34,7 @@ public class CargoMechIntake extends Subsystem {
     intakeMotor = new TalonSRX(RobotMap.CARGO_INTAKE_MOTOR);
     ballLimit = new DigitalInput(RobotMap.BALL_LIMIT);
 
-    intakeMotor.setInverted(true);
+    intakeMotor.setInverted(false);
   }
 
   public static CargoMechIntake getInstance() {

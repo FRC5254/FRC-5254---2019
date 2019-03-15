@@ -31,6 +31,7 @@ import frc.robot.subsystems.HatchMech;
 import frc.robot.utils.Limelight;
 import frc.robot.utils.Limelight.CamMode;
 import frc.robot.utils.Limelight.LedMode;
+import frc.robot.utils.Limelight.Pipeline;
 import frc.robot.utils.Limelight.StreamMode;
 
 /**
@@ -42,10 +43,6 @@ import frc.robot.utils.Limelight.StreamMode;
  */
 public class Robot extends TimedRobot {
 
-  NetworkTable table;
-  NetworkTableEntry tx;
-  NetworkTableEntry ty;
-  NetworkTableEntry ta;
   public static Drivetrain drivetrain;
   public static HatchMech hatchMech;
   public static CargoMechArm cargoMechArm;
@@ -86,14 +83,14 @@ public class Robot extends TimedRobot {
     EasyPath.configure(config);
 
     //Config Limelight
+    Limelight.setPipeline(Pipeline.PIPELINE0);
     Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
     Limelight.setLedMode(LedMode.PIPELINE);
     Limelight.setStreamMode(StreamMode.STANDARD);
-    // CameraServer.getInstance().startAutomaticCapture(0);
+    CameraServer.getInstance().startAutomaticCapture(0);
     
     m_oi = new OI(); // This one MUST be last 
 
-    
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
   }
@@ -124,6 +121,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    drivetrain.setDisabledDrive();
   }
 
   @Override
@@ -149,16 +147,17 @@ public class Robot extends TimedRobot {
     Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
     Limelight.setLedMode(LedMode.PIPELINE);
     Limelight.setStreamMode(StreamMode.STANDARD);
+    Limelight.setPipeline(Pipeline.PIPELINE0);
 
     // m_autonomousCommand = m_chooser.getSelected();
 
     // m_autonomousCommand = new CrossHabline(0.0, Paths.LEVEL_1_CROSS_HABLINE);// TODO why do two paths show up?
     // m_autonomousCommand = new CrossHabline(0.0, Paths.LEVEL_2_CROSS_HABLINE);
 
-    // m_autonomousCommand = new CenterHatchPlace(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE);
+    m_autonomousCommand = new CenterHatchPlace(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE);
     
-    // m_autonomousCommand = new CenterHatchCargoDepo(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_CARGO_DEPO);
-    m_autonomousCommand = new CenterHatchCargoDepo(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_LEFT_HATCH_TO_LEFT_CARGO_DEPO);
+    // m_autonomousCommand = new CenterHatchCargoDepo(Pipeline.PIPELINE2, Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_CARGO_DEPO,Paths.RIGHT_CARGO_DEPO_TO_CLOSE_CARGOSHIP);
+    // m_autonomousCommand = new CenterHatchCargoDepo(Pipeline.PIPELINE1, Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_LEFT_HATCH_TO_LEFT_CARGO_DEPO, Paths.LEFT_CARGO_DEPO_TO_CLOSE_CARGOSHIP);
 
     // m_autonomousCommand = new CenterHatchFeederStation(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_FEEDER_STATION, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_FEEDER_STATION_2, Paths.RIGHT_FEEDER_STATION_TO_CARGOSHIP, Paths.RIGHT_FEEDER_STATION_TO_CARGOSHIP_2);
     // m_autonomousCommand = new CenterHatchFeederStation();
@@ -187,6 +186,15 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("gyro", drivetrain.getAngle());
 
     Scheduler.getInstance().run();
+
+    boolean driverCancelButton = OI.driver.dpad.down.get();
+    boolean operatorCncelButton = OI.operator.dpad.down.get();
+
+    //TODO does this work
+    if(driverCancelButton && operatorCncelButton) {
+      m_autonomousCommand.cancel();
+    }
+
   }
 
   @Override
@@ -195,12 +203,11 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-
-    drivetrain.setTeleDrive();
-
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    drivetrain.setTeleDrive();
+    Limelight.setPipeline(Pipeline.PIPELINE0);
   }
 
   /**
@@ -214,6 +221,7 @@ public class Robot extends TimedRobot {
     
     SmartDashboard.putNumber("encoder left", drivetrain.getLeftDistance());
     SmartDashboard.putNumber("encoder right", drivetrain.getRightDistance());
+    SmartDashboard.putNumber("gyro tele", drivetrain.getAngle());
 
     SmartDashboard.putBoolean("armlimit for", cargoMechArm.atBottomLimit());
     SmartDashboard.putBoolean("amrlimit back", cargoMechArm.atTopLimit());
@@ -223,7 +231,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Cargo Arm angle", cargoMechArm.getAngle());
 
     SmartDashboard.putBoolean("Climber sw", climber.limit.get());
-    SmartDashboard.putNumber("gyro", drivetrain.getAngle());
   }
 
   /**

@@ -27,6 +27,7 @@ public class DrivetrainLineUp extends Command {
     Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
     Limelight.setLedMode(LedMode.PIPELINE);
     Limelight.setStreamMode(StreamMode.STANDARD);
+    Limelight.setSnapshotMode(Limelight.SnapshotMode.TWO_PER_SECOND);
   }
 
   // Called repeatedly when this Command is scheduled to run

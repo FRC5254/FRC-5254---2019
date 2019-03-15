@@ -37,7 +37,7 @@ public class Climber extends Subsystem {
     climberSolenoid = new Solenoid(RobotMap.CLIMBER_SOLENOID);
 
     climbMotor1 = new TalonSRX(RobotMap.CLIMB_MOTOR_1);
-    climbMotor2 = new TalonSRX(RobotMap.CLIMB_MOTOR_1);
+    climbMotor2 = new TalonSRX(RobotMap.CLIMB_MOTOR_2);
 
     limit = new DigitalInput(RobotMap.CLIMBER_BUTTON);
 

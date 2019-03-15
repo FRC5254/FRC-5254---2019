@@ -11,6 +11,7 @@ import frc.robot.commands.CargoMechIntake;
 import frc.robot.commands.CargoMechOuttake;
 import frc.robot.commands.CargoMechSetToAngle;
 import frc.robot.commands.ClimberLineUp;
+import frc.robot.commands.ClimberSetMode;
 import frc.robot.commands.ClimberSetSpeed1;
 import frc.robot.commands.DrivetrainDriveWithJoystick;
 import frc.robot.commands.DrivetrainLineUp;
@@ -18,6 +19,7 @@ import frc.robot.commands.DrivetrainSetShiftState;
 import frc.robot.commands.HatchMechSetFinState;
 import frc.robot.commands.HatchMechSetKickerState;
 import frc.robot.commands.HatchMechSetSliderState;
+import frc.robot.subsystems.Climber.ClimberMode;
 import frc.robot.subsystems.Drivetrain.ShiftState;
 import frc.robot.subsystems.HatchMech.FinState;
 import frc.robot.subsystems.HatchMech.KickerState;
@@ -50,6 +52,7 @@ public class OI {
     driver.yButton.whenPressed(new ClimberLineUp()); // Pistions for climber
     driver.leftBumper.whenPressed(new ClimberSetSpeed1(1.0)); // Climb
     driver.leftBumper.whenReleased(new ClimberSetSpeed1(0.0)); // note safety is on right bumper the command does nothing until thats pressed
+    driver.startButton.whenPressed(new ClimberSetMode(ClimberMode.SECURED_MODE));
     driver.backButton.whenPressed(new ClimberSetSpeed1(-1.0));
     driver.backButton.whenReleased(new ClimberSetSpeed1(0.0));
     
