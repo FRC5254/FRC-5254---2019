@@ -45,13 +45,13 @@ public class CenterHatchCargoDepo extends CommandGroup {
 
     addSequential(new WaitCommand(1));
 
-    addParallel(new CargoMechSetToAngle(0.0));
-    addParallel(new CargoMechIntake(RobotMap.CARGO_AUTO_INTAKE_SPEED));
-    addSequential(new FollowPath(driveToCargo, -0.25)); // TODO variation in visionlineup can really wonk this...
-    addSequential(new WaitCommand(0.5));
-    addParallel(new CargoMechSetToAngle(RobotMap.CARGO_BACKSHOT_SETPOINT));
+    // addParallel(new CargoMechSetToAngle(0.0));
+    // addParallel(new CargoMechIntake(RobotMap.CARGO_AUTO_INTAKE_SPEED));
+    // addSequential(new FollowPath(driveToCargo, -0.25)); // TODO variation in visionlineup can really wonk this...
+    // addSequential(new WaitCommand(0.5));
+    // addParallel(new CargoMechSetToAngle(RobotMap.CARGO_BACKSHOT_SETPOINT));
     // addSequential(new FollowPath(Paths.LEFT_CARGO_DEPO_TO_CLOSE_BACKSHOT, 0.25));
-    addSequential(new FollowPath(driveToCargoship, 0.25));
+    // addSequential(new FollowPath(driveToCargoship, 0.25));
     // addSequential(new FollowPath(Paths.LEFT_CURVE_TO_CARGOSHIP, -0.25));
     // addParallel(new CargoMechOuttake(-0.75));
   }

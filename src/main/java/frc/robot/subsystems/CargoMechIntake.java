@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.IntakeHold;
 
 /**
  * Add your docs here.
@@ -24,10 +25,11 @@ public class CargoMechIntake extends Subsystem {
   public static TalonSRX intakeMotor;
   public static DigitalInput ballLimit;
 
+
   private static CargoMechIntake instance = new CargoMechIntake();
 
 
-  private static final int intakeStallLimit = 25;
+  private static final double intakeStallLimit = 30;
 
   private CargoMechIntake() {
 
@@ -43,7 +45,15 @@ public class CargoMechIntake extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    // setDefaultCommand(new CargoMechDriveWithJoystick());
+    setDefaultCommand(new IntakeHold());
+  }
+
+  public boolean reachedCurrentLimit() {
+    return getIntakeCurrent() > intakeStallLimit;
+  }
+
+  public double getIntakeCurrent() {
+    return intakeMotor.getOutputCurrent();
   }
 
   public void setIntakeMotor(double speed) {
@@ -54,7 +64,7 @@ public class CargoMechIntake extends Subsystem {
     return (!ballLimit.get());
   }
 
-  public double getIntakeCurrent() {
-    return intakeMotor.getOutputCurrent();
+  public void setHoldSpeed() {
+    intakeMotor.set(ControlMode.PercentOutput, 0.1);
   }
 }

@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class DrivetrainLineUp2 extends Command {
@@ -25,6 +26,7 @@ public class DrivetrainLineUp2 extends Command {
   @Override
   protected void execute() {
     Robot.drivetrain.LineUp();
+    SmartDashboard.putBoolean("Lineup", false);
   }
 
   // Make this return true when this Command no longer needs to run execute()
