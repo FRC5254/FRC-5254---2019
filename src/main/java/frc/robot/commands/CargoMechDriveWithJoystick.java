@@ -16,7 +16,7 @@ public class CargoMechDriveWithJoystick extends Command {
   public CargoMechDriveWithJoystick() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.cargoMech);
+    requires(Robot.cargoMechArm);
   }
 
   // Called just before this Command runs the first time
@@ -26,16 +26,14 @@ public class CargoMechDriveWithJoystick extends Command {
 
   // Called repeatedly when this Command is scheduled to run
   @Override
+
   protected void execute() { //TODO move most if not all of this into the subsystem
-    double upAxis = OI.operator.triggers.getLeft();
-    double downAxis = OI.operator.triggers.getRight();
+    double axis = OI.operator.leftStick.getY();
    
-    if(upAxis > 0.1) {
-      Robot.cargoMech.setPivotMotor(upAxis);//  * 0.25
-    } else if(-downAxis < -0.1) {
-      Robot.cargoMech.setPivotMotor(-downAxis);
+    if(Math.abs(axis) > 0.25) {
+      Robot.cargoMechArm.setPivotMotor(axis);//  * 0.25
     } else {
-      Robot.cargoMech.setPivotMotor(0.0);
+      Robot.cargoMechArm.setPivotMotor(0.0);
     }
   }
 

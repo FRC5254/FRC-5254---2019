@@ -39,7 +39,7 @@ public class HThumbStick {
     }
 
     public double getY() {
-        double value = this.joystick.getRawAxis(xAxis.value);
+        double value = this.joystick.getRawAxis(yAxis.value);
         return handleDeadband(value, yDeadband);
     }
 

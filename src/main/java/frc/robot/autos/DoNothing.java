@@ -5,19 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.autos;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import frc.robot.Robot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
-/**
- * Add your docs here.
- */
-public class CargoMechSetIntakeSpeed extends InstantCommand {
+public class DoNothing extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public CargoMechSetIntakeSpeed(double speed) {
-    super(Robot.cargoMech, () -> Robot.cargoMech.setIntakeMotor(speed));
+  public DoNothing() {
+    // Do nothing
   }
 }

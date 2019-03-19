@@ -7,10 +7,9 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 /**
@@ -98,6 +97,7 @@ public class HatchMech extends Subsystem {
     }
     kickerSolenoid.set(newState.state);
     kickerState = newState;
+    SmartDashboard.putBoolean("Lineup", true);
   }
 
   public void setSliderState(SliderState newState) {

@@ -5,21 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
-
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
-import frc.robot.subsystems.HatchMech.KickerState;
+package frc.robot.utils;
 
 /**
  * Add your docs here.
+ *  TODO change to level 1 line up and level 2 line up enums?
  */
-public class HatchMechSetKickerState extends InstantCommand {
-  /**
-   * Add your docs here.
-   */
-  public HatchMechSetKickerState(KickerState kickerState) {
-    super(Robot.hatchMech, () -> Robot.hatchMech.setKickerState(kickerState));
-  }
+public enum AutoLineup {
+    // CENTER_LEFT, CENTER_RIGHT, LEVEL_1_LEFT, LEVEL_1_RIGHT, LEVEL_2_LEFT, LEVEL_2_RIGHT;
+    CENTER, LEFT, RIGHT;
 }

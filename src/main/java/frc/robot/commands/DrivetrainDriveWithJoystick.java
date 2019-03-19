@@ -10,7 +10,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.subsystems.Drivetrain.ManipulationMode;
 
 public class DrivetrainDriveWithJoystick extends Command {
   public DrivetrainDriveWithJoystick() {
@@ -22,20 +21,13 @@ protected void initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
+
 protected void execute() { 
-  if(Robot.drivetrain.manipulationMode == ManipulationMode.PANEL) {
-    Robot.drivetrain.GTADrive(
-      OI.driver.triggers.getLeft(),
-      OI.driver.triggers.getRight(),
-      -(OI.driver.leftStick.getX()*0.675)
-    );
-  } else if (Robot.drivetrain.manipulationMode == ManipulationMode.CARGO){
     Robot.drivetrain.GTADrive(
       OI.driver.triggers.getLeft(),
       OI.driver.triggers.getRight(),
       (OI.driver.leftStick.getX()*0.675)
     );
-  } else {}
 }
 
 // Make this return true when this Command no longer needs to run execute()

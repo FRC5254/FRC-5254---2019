@@ -16,7 +16,7 @@ public class CargoMechSetPivotMotor extends Command {
   public CargoMechSetPivotMotor(double speed) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.cargoMech); //TODO how to make it so we can both intake and lift w/ pivot motor?
+    requires(Robot.cargoMechArm); //TODO how to make it so we can both intake and lift w/ pivot motor?
     this.speed = speed;
   }
 
@@ -28,24 +28,24 @@ public class CargoMechSetPivotMotor extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.cargoMech.setPivotMotor(speed);
+    Robot.cargoMechArm.setPivotMotor(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     if(speed < 0) {
-      return Robot.cargoMech.atBottomLimit();
+      return Robot.cargoMechArm.atBottomLimit();
     } else {
-      return Robot.cargoMech.atTopLimit();
+      return Robot.cargoMechArm.atTopLimit();
     }
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    if(Robot.cargoMech.atBottomLimit()) {
-      Robot.cargoMech.zeroEncoder();
+    if(Robot.cargoMechArm.atBottomLimit()) {
+      Robot.cargoMechArm.zeroEncoder();
     }
   }
 

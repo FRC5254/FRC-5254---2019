@@ -7,19 +7,31 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.CargoMech;
+import frc.robot.autos.CenterHatchCargoDepo;
+import frc.robot.autos.CenterHatchFeederStation;
+import frc.robot.autos.CenterHatchPlace;
+import frc.robot.autos.CrossHabline;
+import frc.robot.easypath.EasyPath;
+import frc.robot.easypath.EasyPathConfig;
+import frc.robot.easypath.PathUtil;
+import frc.robot.easypath.Paths;
+import frc.robot.subsystems.CargoMechArm;
+import frc.robot.subsystems.CargoMechIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchMech;
 import frc.robot.utils.Limelight;
 import frc.robot.utils.Limelight.CamMode;
 import frc.robot.utils.Limelight.LedMode;
+import frc.robot.utils.Limelight.Pipeline;
 import frc.robot.utils.Limelight.StreamMode;
 
 /**
@@ -30,10 +42,15 @@ import frc.robot.utils.Limelight.StreamMode;
  * project.
  */
 public class Robot extends TimedRobot {
+
   public static Drivetrain drivetrain;
   public static HatchMech hatchMech;
-  public static CargoMech cargoMech;
+  public static CargoMechArm cargoMechArm;
+  public static CargoMechIntake cargoMechIntake;
   public static Climber climber;
+
+  public static EasyPathConfig config;
+
   public static OI m_oi;
 
   Command m_autonomousCommand;
@@ -45,14 +62,35 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-
-    cargoMech =  CargoMech.getInstance();
+    cargoMechArm =  CargoMechArm.getInstance();
+    cargoMechIntake = CargoMechIntake.getInstance();
     drivetrain = Drivetrain.getInstance();
     hatchMech = HatchMech.getInstance();
     climber = Climber.getInstance();
+
+    config = new EasyPathConfig(
+      drivetrain, 
+      drivetrain::setLeftRightSpeeds,
+      () -> PathUtil.defaultLengthDrivenEstimator(drivetrain::getLeftDistance, drivetrain::getRightDistance),
+      drivetrain::getAngle,
+      drivetrain::reset,
+      0.037
+      // 0.015
+    );
+    config.setSwapDrivingDirection(true);
+    config.setSwapTurningDirection(false); //false for cargo mech 
+
+    EasyPath.configure(config);
+
+    //Config Limelight
+    Limelight.setPipeline(Pipeline.PIPELINE0);
+    Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
+    Limelight.setLedMode(LedMode.PIPELINE);
+    Limelight.setStreamMode(StreamMode.STANDARD);
+    CameraServer.getInstance().startAutomaticCapture(0);
     
     m_oi = new OI(); // This one MUST be last 
-    
+
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
   }
@@ -67,6 +105,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    // Double[] camtran = Limelight.getCamtran(); // TODO enable high res mode
+    // SmartDashboard.putNumber("translationX", camtran[0]);
+    // SmartDashboard.putNumber("translationy1", camtran[1]);
+    // SmartDashboard.putNumber("translationy2", camtran[2]);
+    // SmartDashboard.putNumber("pitch", camtran[3]);
+    // SmartDashboard.putNumber("yaw", camtran[4]);
+    // SmartDashboard.putNumber("roll", camtran[5]);
   }
 
   /**
@@ -76,6 +121,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    drivetrain.setDisabledDrive();
   }
 
   @Override
@@ -96,14 +142,33 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
 
+    drivetrain.setAutoDrive();
+    Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
+    Limelight.setLedMode(LedMode.PIPELINE);
+    Limelight.setStreamMode(StreamMode.STANDARD);
+    Limelight.setPipeline(Pipeline.PIPELINE0);
+
+    // m_autonomousCommand = m_chooser.getSelected();
+
+    // m_autonomousCommand = new CrossHabline(0.0, Paths.LEVEL_1_CROSS_HABLINE);// TODO why do two paths show up?
+    // m_autonomousCommand = new CrossHabline(0.0, Paths.LEVEL_2_CROSS_HABLINE);
+
+    // TODO left and right
+    // m_autonomousCommand = new CenterHatchPlace(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE);
+    
+    // m_autonomousCommand = new CenterHatchCargoDepo(Pipeline.PIPELINE2, Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_CARGO_DEPO,Paths.RIGHT_CARGO_DEPO_TO_CLOSE_CARGOSHIP);
+    m_autonomousCommand = new CenterHatchCargoDepo(Pipeline.PIPELINE1, Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_LEFT_HATCH_TO_LEFT_CARGO_DEPO, Paths.LEFT_CARGO_DEPO_TO_CLOSE_CARGOSHIP);
+
+    // m_autonomousCommand = new CenterHatchFeederStation(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_FEEDER_STATION, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_FEEDER_STATION_2, Paths.RIGHT_FEEDER_STATION_TO_CARGOSHIP, Paths.RIGHT_FEEDER_STATION_TO_CARGOSHIP_2);
+    // m_autonomousCommand = new CenterHatchFeederStation();
+    
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
      * = new MyAutoCommand(); break; case "Default Auto": default:
      * autonomousCommand = new ExampleCommand(); break; }
-     */
+    */
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -116,7 +181,21 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+
+    SmartDashboard.putNumber("encoder left", drivetrain.getLeftDistance());
+    SmartDashboard.putNumber("encoder right", drivetrain.getRightDistance());
+    SmartDashboard.putNumber("gyro", drivetrain.getAngle());
+
     Scheduler.getInstance().run();
+
+    boolean driverCancelButton = OI.driver.dpad.down.get();
+    boolean operatorCncelButton = OI.operator.dpad.down.get();
+
+    //TODO does this work
+    if(driverCancelButton && operatorCncelButton) {
+      m_autonomousCommand.cancel();
+    }
+
   }
 
   @Override
@@ -125,17 +204,11 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    
-    //TODO move
-    Limelight.setLedMode(LedMode.FORCE_OFF);
-    Limelight.setCamMode(CamMode.DRIVER_CAM);
-    Limelight.setStreamMode(StreamMode.STANDARD);
-
-    CameraServer.getInstance().startAutomaticCapture(0);
-
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    drivetrain.setTeleDrive();
+    Limelight.setPipeline(Pipeline.PIPELINE0);
   }
 
   /**
@@ -145,11 +218,22 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    SmartDashboard.putBoolean("climberthing", climber.limit.get());
-    SmartDashboard.putBoolean("armlimit for", cargoMech.pivotMotor.getSensorCollection().isFwdLimitSwitchClosed());
-    SmartDashboard.putBoolean("amrlimit back", cargoMech.pivotMotor.getSensorCollection().isRevLimitSwitchClosed());
+    // SmartDashboard.putNumber("Intake current", cargoMechIntake.getIntakeCurrent());
+    
+    SmartDashboard.putNumber("encoder left", drivetrain.getLeftDistance());
+    SmartDashboard.putNumber("encoder right", drivetrain.getRightDistance());
+    SmartDashboard.putNumber("gyro tele", drivetrain.getAngle());
 
-    SmartDashboard.putNumber("gyro", drivetrain.getAngle());
+    SmartDashboard.putBoolean("armlimit for", cargoMechArm.atBottomLimit());
+    SmartDashboard.putBoolean("amrlimit back", cargoMechArm.atTopLimit());
+    SmartDashboard.putBoolean("Ball Limit", cargoMechIntake.ballIntook());
+    
+    SmartDashboard.putNumber("Cargo Arm tick", cargoMechArm.getPosition());
+    SmartDashboard.putNumber("Cargo Arm angle", cargoMechArm.getAngle());
+    
+    SmartDashboard.putNumber("intake", cargoMechIntake.getIntakeCurrent());
+
+    SmartDashboard.putBoolean("Climber sw", climber.limit.get());
   }
 
   /**

@@ -5,20 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.autos;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import frc.robot.Robot;
-import frc.robot.subsystems.Drivetrain.ManipulationMode;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
+import frc.robot.easypath.FollowPath;
+import frc.robot.easypath.Path;
 
-/**
- * Add your docs here.
- */
-public class DrivetrainSetManipulationMode extends InstantCommand {
+public class CrossHabline extends CommandGroup {
   /**
-   * Add your docs here.
+   * TODO is it smarter to precode paths here?
    */
-  public DrivetrainSetManipulationMode(ManipulationMode newMode) {
-    super(Robot.drivetrain, () -> Robot.drivetrain.setManipulationMode(newMode));
+  public CrossHabline(double wait, Path path) {
+    
+    addSequential(new WaitCommand(wait));
+    addSequential(new FollowPath(path, 0.5));
   }
 }

@@ -7,47 +7,74 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 
 public class CargoMechSetToAngle extends Command {
 
   double angle;
+  double startAngle;
+  Timer sinceStarted;
 
   public CargoMechSetToAngle(double angle) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.cargoMech);
+    requires(Robot.cargoMechArm);
 
     this.angle = angle;
+    sinceStarted = new Timer();
+    sinceStarted.stop();
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    // startAngle = Robot.cargoMech.getAngle();
+    sinceStarted.reset();
+    sinceStarted.start();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.cargoMech.setToAngle(angle);
+    SmartDashboard.putString("SetToAngle status", "executing");
+    Robot.cargoMechArm.setToAngle(angle);
+    // SmartDashboard.putNumber("Cargo set point", Robot.cargoMech.angleToEncoderTicks(angle));
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.cargoMech.isAtAngle();
+    SmartDashboard.putBoolean("SetToAngle completion", Robot.cargoMechArm.isAtAngle());
+    SmartDashboard.putNumber("eroor", Robot.cargoMechArm.getError());
+
+    if (sinceStarted.get() < 0.25) {
+      return false;
+    }
+    
+    if (angle < 85) {
+      return Robot.cargoMechArm.isAtAngle() || Robot.cargoMechArm.atBottomLimit();
+    } else if (angle > 5) {
+      return Robot.cargoMechArm.isAtAngle() || Robot.cargoMechArm.atTopLimit();
+    } else {
+      return Robot.cargoMechArm.isAtAngle();
+    }
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    SmartDashboard.putString("SetToAngle status", "end");
+    sinceStarted.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }
