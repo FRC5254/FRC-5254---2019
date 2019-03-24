@@ -20,11 +20,12 @@ public class HatchMechPlace extends CommandGroup {
    * Add your docs here.
    */
   public HatchMechPlace() {  
-    addSequential(new HatchMechSetMechState(FinState.UNCLAMPED, KickerState.IN, SliderState.OUT));
-    addSequential(new WaitCommand(0.5));
+    addSequential(new HatchMechSetMechState(FinState.CLAMPED, KickerState.IN, SliderState.OUT));
+    addSequential(new WaitCommand(0.1));
     addSequential(new HatchMechSetMechState(FinState.UNCLAMPED, KickerState.OUT, SliderState.OUT));
-    addSequential(new WaitCommand(1));
-    addSequential(new FollowPath(PathUtil.createStraightPath(15), -.25));
-    addSequential(new HatchMechSetMechState(FinState.UNCLAMPED, KickerState.IN, SliderState.IN));
+    // addSequential(new WaitCommand(1));
+    // addSequential(new FollowPath(PathUtil.createStraightPath(15), -.25));
+    // addSequential(new HatchMechSetMechState(FinState.UNCLAMPED, KickerState.IN, SliderState.IN));
+
   }
 }

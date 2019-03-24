@@ -19,8 +19,11 @@ import frc.robot.autos.CenterHatchCargoDepo;
 import frc.robot.autos.CenterHatchFeederStation;
 import frc.robot.autos.CenterHatchPlace;
 import frc.robot.autos.CrossHabline;
+import frc.robot.autos.SidePanelAuto;
 import frc.robot.easypath.EasyPath;
 import frc.robot.easypath.EasyPathConfig;
+import frc.robot.easypath.FollowPath;
+import frc.robot.easypath.Path;
 import frc.robot.easypath.PathUtil;
 import frc.robot.easypath.Paths;
 import frc.robot.subsystems.CargoMechArm;
@@ -82,6 +85,8 @@ public class Robot extends TimedRobot {
 
     EasyPath.configure(config);
 
+  
+
     //Config Limelight
     Limelight.setPipeline(Pipeline.PIPELINE0);
     Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
@@ -91,6 +96,7 @@ public class Robot extends TimedRobot {
     
     m_oi = new OI(); // This one MUST be last 
 
+    SmartDashboard.putBoolean("init", true);
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
   }
@@ -122,6 +128,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     drivetrain.setDisabledDrive();
+    Limelight.setLedMode(LedMode.FORCE_OFF);
   }
 
   @Override
@@ -149,7 +156,7 @@ public class Robot extends TimedRobot {
     Limelight.setStreamMode(StreamMode.STANDARD);
     Limelight.setPipeline(Pipeline.PIPELINE0);
 
-    // m_autonomousCommand = m_chooser.getSelected();
+    m_autonomousCommand = new SidePanelAuto();
 
     // m_autonomousCommand = new CrossHabline(0.0, Paths.LEVEL_1_CROSS_HABLINE);// TODO why do two paths show up?
     // m_autonomousCommand = new CrossHabline(0.0, Paths.LEVEL_2_CROSS_HABLINE);
@@ -158,7 +165,7 @@ public class Robot extends TimedRobot {
     // m_autonomousCommand = new CenterHatchPlace(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE);
     
     // m_autonomousCommand = new CenterHatchCargoDepo(Pipeline.PIPELINE2, Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_CARGO_DEPO,Paths.RIGHT_CARGO_DEPO_TO_CLOSE_CARGOSHIP);
-    m_autonomousCommand = new CenterHatchCargoDepo(Pipeline.PIPELINE1, Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_LEFT_HATCH_TO_LEFT_CARGO_DEPO, Paths.LEFT_CARGO_DEPO_TO_CLOSE_CARGOSHIP);
+    // m_autonomousCommand = new CenterHatchCargoDepo(Pipeline.PIPELINE1, Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_LEFT_HATCH_TO_LEFT_CARGO_DEPO, Paths.LEFT_CARGO_DEPO_TO_CLOSE_CARGOSHIP);
 
     // m_autonomousCommand = new CenterHatchFeederStation(Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_FEEDER_STATION, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_FEEDER_STATION_2, Paths.RIGHT_FEEDER_STATION_TO_CARGOSHIP, Paths.RIGHT_FEEDER_STATION_TO_CARGOSHIP_2);
     // m_autonomousCommand = new CenterHatchFeederStation();
@@ -185,6 +192,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("encoder left", drivetrain.getLeftDistance());
     SmartDashboard.putNumber("encoder right", drivetrain.getRightDistance());
     SmartDashboard.putNumber("gyro", drivetrain.getAngle());
+
+    SmartDashboard.putNumber("ver off", Limelight.getVerticalOffset());
 
     Scheduler.getInstance().run();
 

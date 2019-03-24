@@ -216,13 +216,14 @@ public class Drivetrain extends Subsystem {
     SmartDashboard.putNumber("LineUp Left", zoom + adjust);
     SmartDashboard.putNumber("LineUp Right", zoom - adjust);
 
+    
     sLeft1.set(zoom + adjust);
     sRight1.set(zoom - adjust);
   }
   
   public boolean LineUpIsFinished() {
     double veroff = Limelight.getVerticalOffset();
-    return veroff < 8; // 9?
+    return veroff < 7; // was 8
   }
   public double getAngle() {
     return gyro.getAngle();

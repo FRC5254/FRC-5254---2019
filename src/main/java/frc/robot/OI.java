@@ -16,8 +16,10 @@ import frc.robot.commands.ClimberSetSpeed1;
 import frc.robot.commands.DrivetrainDriveWithJoystick;
 import frc.robot.commands.DrivetrainLineUp;
 import frc.robot.commands.DrivetrainSetShiftState;
+import frc.robot.commands.HatchMechPlace;
 import frc.robot.commands.HatchMechSetFinState;
 import frc.robot.commands.HatchMechSetKickerState;
+import frc.robot.commands.HatchMechSetMechState;
 import frc.robot.commands.HatchMechSetSliderState;
 import frc.robot.subsystems.Climber.ClimberMode;
 import frc.robot.subsystems.Drivetrain.ShiftState;
@@ -62,11 +64,20 @@ public class OI {
 
     operator.aButton.whenPressed(new HatchMechSetFinState(FinState.UNCLAMPED)); // Fins unclamp when pressed
     operator.aButton.whenReleased(new HatchMechSetFinState(FinState.CLAMPED));
-    operator.bButton.whenPressed(new HatchMechSetKickerState(KickerState.OUT)); // Kicker out whne pressed
-    operator.bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
+    // operator.bButton.whenPressed(new HatchMechSetKickerState(KickerState.OUT)); // Kicker out whne pressed
+    // operator.bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
     operator.xButton.whenPressed(new HatchMechSetSliderState(SliderState.IN)); // Slider in
     operator.yButton.whenPressed(new HatchMechSetSliderState(SliderState.OUT)); // Slider out
-   
+
+    // New controls
+    // operator.aButton.whenPressed(new HatchMechSetMechState(FinState.UNCLAMPED, KickerState.IN, SliderState.OUT));
+    // operator.aButton.whenReleased(new HatchMechSetMechState(FinState.CLAMPED, KickerState.IN, SliderState.IN));
+    // operator.bButton.whenPressed(new HatchMechSetMechState(FinState.UNCLAMPED, KickerState.OUT, SliderState.OUT));
+    // operator.bButton.whenReleased(new HatchMechSetMechState(FinState.CLAMPED, KickerState.IN, SliderState.IN));
+    // or 
+    operator.bButton.whenPressed(new HatchMechPlace());
+    operator.bButton.whenReleased(new HatchMechSetMechState(FinState.CLAMPED, KickerState.IN, SliderState.IN));
+
   
     operator.rightBumper.whenPressed(new CargoMechIntake(0.65)); // Intake when Pressed
     operator.leftBumper.whenPressed(new CargoMechOuttake(-1.0)); // Outtake when pressed
