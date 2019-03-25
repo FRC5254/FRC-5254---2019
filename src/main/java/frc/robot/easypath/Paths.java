@@ -15,7 +15,7 @@ public class Paths {
     public static final Path LEVEL_1_CROSS_HABLINE = PathUtil.createStraightPath(50.0);
     public static final Path LEVEL_2_CROSS_HABLINE = PathUtil.createStraightPath(100.0);
 
-    public static final Path CENTER_HATCH_DRIVE = PathUtil.createStraightPath(50.0);
+    public static final Path CENTER_HATCH_DRIVE = PathUtil.createStraightPath(65.0);
 
     public static final Path CENTER_BACK_ROCKET = new Path(t -> 
 	/* {"start":{"x":49,"y":163},"mid1":{"x":213,"y":163},"mid2":{"x":222,"y":315},"end":{"x":299,"y":280}} */

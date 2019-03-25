@@ -63,7 +63,7 @@ public class OI {
     operator.rightTriggerButton.configureThreshold(0.2);
 
     operator.aButton.whenPressed(new HatchMechSetFinState(FinState.UNCLAMPED)); // Fins unclamp when pressed
-    operator.aButton.whenReleased(new HatchMechSetFinState(FinState.CLAMPED));
+    // operator.aButton.whenReleased(new HatchMechSetFinState(FinState.CLAMPED));
     // operator.bButton.whenPressed(new HatchMechSetKickerState(KickerState.OUT)); // Kicker out whne pressed
     // operator.bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
     operator.xButton.whenPressed(new HatchMechSetSliderState(SliderState.IN)); // Slider in
@@ -71,7 +71,7 @@ public class OI {
 
     // New controls
     // operator.aButton.whenPressed(new HatchMechSetMechState(FinState.UNCLAMPED, KickerState.IN, SliderState.OUT));
-    // operator.aButton.whenReleased(new HatchMechSetMechState(FinState.CLAMPED, KickerState.IN, SliderState.IN));
+    operator.aButton.whenReleased(new HatchMechSetMechState(FinState.CLAMPED, KickerState.IN, SliderState.IN));
     // operator.bButton.whenPressed(new HatchMechSetMechState(FinState.UNCLAMPED, KickerState.OUT, SliderState.OUT));
     // operator.bButton.whenReleased(new HatchMechSetMechState(FinState.CLAMPED, KickerState.IN, SliderState.IN));
     // or 
