@@ -248,12 +248,12 @@ public class Drivetrain extends Subsystem {
   }
 
   public void setDisabledDrive() {
-    sLeft1.setIdleMode(IdleMode.kCoast);
-    sLeft2.setIdleMode(IdleMode.kCoast);
-    sLeft3.setIdleMode(IdleMode.kCoast);
-    sRight1.setIdleMode(IdleMode.kCoast);
-    sRight2.setIdleMode(IdleMode.kCoast);
-    sRight3.setIdleMode(IdleMode.kCoast);
+    sLeft1.setIdleMode(IdleMode.kBrake);
+    sLeft2.setIdleMode(IdleMode.kBrake);
+    sLeft3.setIdleMode(IdleMode.kBrake);
+    sRight1.setIdleMode(IdleMode.kBrake);
+    sRight2.setIdleMode(IdleMode.kBrake);
+    sRight3.setIdleMode(IdleMode.kBrake);
   }
 
   public void reset() {

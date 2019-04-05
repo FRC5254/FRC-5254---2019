@@ -21,6 +21,7 @@ import frc.robot.subsystems.HatchMech.FinState;
 import frc.robot.subsystems.HatchMech.KickerState;
 import frc.robot.subsystems.HatchMech.SliderState;
 import frc.robot.utils.Limelight;
+import frc.robot.utils.Limelight.CamMode;
 import frc.robot.utils.Limelight.Pipeline;
 
 public class CenterHatchPlace extends CommandGroup {
@@ -28,17 +29,25 @@ public class CenterHatchPlace extends CommandGroup {
    * Add your docs here.
    */
   public CenterHatchPlace(Pipeline pipeline, Path crossHabline, Path centerHatch) {
-    addSequential(new InstantCommand(() -> Limelight.setPipeline(pipeline)));
+    // addSequential(new InstantCommand(() -> Limelight.setPipeline(pipeline)));
 
-    addSequential(new FollowPath(crossHabline, 0.5));
-    addSequential(new FollowPath(centerHatch, 0.3));
-    addSequential(new DrivetrainLineUp(), 1);
-    addSequential(new HatchMechSetSliderState(SliderState.OUT)); // TODO setMechState? or place command?
-    addSequential(new HatchMechSetFinState(FinState.UNCLAMPED));
-    addSequential(new HatchMechSetKickerState(KickerState.OUT));
-    addSequential(new FollowPath(PathUtil.createStraightPath(17), -0.25));
-    addSequential(new HatchMechSetSliderState(SliderState.IN)); // TODO setMechState? or place command?
-    addSequential(new HatchMechSetKickerState(KickerState.IN));
-    addSequential(new HatchMechSetFinState(FinState.CLAMPED));
+    // addSequential(new FollowPath(crossHabline, 0.5));
+    // addSequential(new HatchMechSetSliderState(SliderState.OUT)); // TODO setMechState? or place command?
+    // addSequential(new FollowPath(centerHatch, 0.3));
+    // addSequential(new DrivetrainLineUp(), 3);
+
+    addSequential(new InstantCommand(() -> Limelight.setCamMode(CamMode.DRIVER_CAM)));
+
+
+    // Place and back up
+    // addSequential(new HatchMechSetFinState(FinState.UNCLAMPED));
+    // addSequential(new HatchMechSetKickerState(KickerState.OUT));
+    // addSequential(new FollowPath(PathUtil.createStraightPath(17), -0.25));
+    
+
+    //idk
+    // addSequential(new HatchMechSetSliderState(SliderState.IN)); // TODO setMechState? or place command?
+    // addSequential(new HatchMechSetKickerState(KickerState.IN));
+    // addSequential(new HatchMechSetFinState(FinState.CLAMPED));
   }
 }

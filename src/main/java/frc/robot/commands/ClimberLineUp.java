@@ -23,3 +23,4 @@ public class ClimberLineUp extends CommandGroup {
     addSequential(new ClimberSetMode(ClimberMode.CLIMB_MODE));
   }
 }
+

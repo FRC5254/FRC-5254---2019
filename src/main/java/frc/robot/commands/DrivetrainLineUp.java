@@ -13,6 +13,7 @@ import frc.robot.Robot;
 import frc.robot.utils.Limelight;
 import frc.robot.utils.Limelight.CamMode;
 import frc.robot.utils.Limelight.LedMode;
+import frc.robot.utils.Limelight.Pipeline;
 import frc.robot.utils.Limelight.StreamMode;
 
 public class DrivetrainLineUp extends Command {
@@ -26,6 +27,7 @@ public class DrivetrainLineUp extends Command {
   @Override
   protected void initialize() {
     Limelight.setCamMode(CamMode.VISION_CAM); //TODO add a config funtion that incudes these
+    Limelight.setPipeline(Pipeline.PIPELINE0);
     Limelight.setLedMode(LedMode.PIPELINE);
     Limelight.setStreamMode(StreamMode.STANDARD);
     Limelight.setSnapshotMode(Limelight.SnapshotMode.TWO_PER_SECOND);
@@ -47,6 +49,7 @@ public class DrivetrainLineUp extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Limelight.setSnapshotMode(Limelight.SnapshotMode.TWO_PER_SECOND);
   }
 
   // Called when another command which requires one or more of the same

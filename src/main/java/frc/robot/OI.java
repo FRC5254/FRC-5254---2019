@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.commands.CargoMechIntake;
 import frc.robot.commands.CargoMechOuttake;
 import frc.robot.commands.CargoMechSetToAngle;
@@ -27,6 +28,8 @@ import frc.robot.subsystems.HatchMech.FinState;
 import frc.robot.subsystems.HatchMech.KickerState;
 import frc.robot.subsystems.HatchMech.SliderState;
 import frc.robot.utils.HXboxController;
+import frc.robot.utils.Limelight;
+import frc.robot.utils.Limelight.CamMode;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -55,30 +58,39 @@ public class OI {
     driver.leftBumper.whenPressed(new ClimberSetSpeed1(1.0)); // Climb
     driver.leftBumper.whenReleased(new ClimberSetSpeed1(0.0)); // note safety is on right bumper the command does nothing until thats pressed
     driver.startButton.whenPressed(new ClimberSetMode(ClimberMode.SECURED_MODE));
-    driver.backButton.whenPressed(new ClimberSetSpeed1(-1.0));
+    driver.backButton.whenPressed(new ClimberSetSpeed1(-0.5));
     driver.backButton.whenReleased(new ClimberSetSpeed1(0.0));
+
+    driver.dpad.up.whenPressed(new InstantCommand(() -> Limelight.setCamMode(CamMode.DRIVER_CAM)));
+    driver.dpad.up.whenReleased(new InstantCommand(() -> Limelight.setCamMode(CamMode.VISION_CAM)));
     
     // Operator
     operator.leftTriggerButton.configureThreshold(0.2);
     operator.rightTriggerButton.configureThreshold(0.2);
 
-    operator.aButton.whenPressed(new HatchMechSetFinState(FinState.UNCLAMPED)); // Fins unclamp when pressed
+    // operator.aButton.whenPressed(new HatchMechSetFinState(FinState.UNCLAMPED)); // Fins unclamp when pressed
     // operator.aButton.whenReleased(new HatchMechSetFinState(FinState.CLAMPED));
     // operator.bButton.whenPressed(new HatchMechSetKickerState(KickerState.OUT)); // Kicker out whne pressed
     // operator.bButton.whenReleased(new HatchMechSetKickerState(KickerState.IN));
-    operator.xButton.whenPressed(new HatchMechSetSliderState(SliderState.IN)); // Slider in
-    operator.yButton.whenPressed(new HatchMechSetSliderState(SliderState.OUT)); // Slider out
+    // operator.xButton.whenPressed(new HatchMechSetSliderState(SliderState.IN)); // Slider in
+    // operator.yButton.whenPressed(new HatchMechSetSliderState(SliderState.OUT)); // Slider out
 
     // New controls
     // operator.aButton.whenPressed(new HatchMechSetMechState(FinState.UNCLAMPED, KickerState.IN, SliderState.OUT));
-    operator.aButton.whenReleased(new HatchMechSetMechState(FinState.CLAMPED, KickerState.IN, SliderState.IN));
+    // operator.aButton.whenReleased(new HatchMechSetMechState(FinState.CLAMPED, KickerState.IN, SliderState.IN));
     // operator.bButton.whenPressed(new HatchMechSetMechState(FinState.UNCLAMPED, KickerState.OUT, SliderState.OUT));
     // operator.bButton.whenReleased(new HatchMechSetMechState(FinState.CLAMPED, KickerState.IN, SliderState.IN));
     // or 
+
+    // This
+    operator.aButton.whenPressed(new HatchMechSetFinState(FinState.UNCLAMPED)); // Fins unclamp when pressed
+    operator.aButton.whenReleased(new HatchMechSetMechState(FinState.CLAMPED, KickerState.IN, SliderState.IN));
     operator.bButton.whenPressed(new HatchMechPlace());
     operator.bButton.whenReleased(new HatchMechSetMechState(FinState.CLAMPED, KickerState.IN, SliderState.IN));
-
-  
+    operator.xButton.whenPressed(new HatchMechSetSliderState(SliderState.IN)); // Slider in
+    operator.yButton.whenPressed(new HatchMechSetSliderState(SliderState.OUT)); // Slider out
+    // That
+    
     operator.rightBumper.whenPressed(new CargoMechIntake(0.65)); // Intake when Pressed
     operator.leftBumper.whenPressed(new CargoMechOuttake(-1.0)); // Outtake when pressed
     operator.leftBumper.whenReleased(new CargoMechOuttake(0.0));
@@ -96,7 +108,10 @@ public class OI {
     operator.leftTriggerButton.whenPressed(new CargoMechOuttake(1.0));
     operator.leftTriggerButton.whenReleased(new CargoMechOuttake(0.0));
   
-    operator.dpad.left.whenPressed(new CargoMechSetToAngle(70)); // TODO this doesnt work?
+    // operator.dpad.left.whenPressed(new CargoMechSetToAngle(70)); // TODO this doesnt work?
+   
+    operator.dpad.up.whenPressed(new InstantCommand(() -> Limelight.setCamMode(CamMode.DRIVER_CAM)));
+    operator.dpad.up.whenReleased(new InstantCommand(() -> Limelight.setCamMode(CamMode.VISION_CAM)));
   }
 }
 

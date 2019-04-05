@@ -158,7 +158,7 @@ public class Robot extends TimedRobot {
 
 
     //right
-    m_autonomousCommand = new SidePanelAuto();
+    // m_autonomousCommand = new SidePanelAuto();
 
     // m_autonomousCommand = new CrossHabline(0.0, Paths.LEVEL_1_CROSS_HABLINE);// TODO why do two paths show up?
     // m_autonomousCommand = new CrossHabline(0.0, Paths.LEVEL_2_CROSS_HABLINE);
@@ -166,7 +166,7 @@ public class Robot extends TimedRobot {
     // left
     // m_autonomousCommand = new CenterHatchPlace(Pipeline.PIPELINE1, Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE);
     // right
-    // m_autonomousCommand = new CenterHatchPlace(Pipeline.PIPELINE2, Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE);
+    m_autonomousCommand = new CenterHatchPlace(Pipeline.PIPELINE2, Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE);
 
     // m_autonomousCommand = new CenterHatchCargoDepo(Pipeline.PIPELINE1, Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_LEFT_HATCH_TO_LEFT_CARGO_DEPO, Paths.LEFT_CARGO_DEPO_TO_CLOSE_CARGOSHIP);
     // m_autonomousCommand = new CenterHatchCargoDepo(Pipeline.PIPELINE2, Paths.LEVEL_1_CROSS_HABLINE, Paths.CENTER_HATCH_DRIVE, Paths.CENTER_RIGHT_HATCH_TO_RIGHT_CARGO_DEPO,Paths.RIGHT_CARGO_DEPO_TO_CLOSE_CARGOSHIP);
@@ -222,6 +222,7 @@ public class Robot extends TimedRobot {
     }
     drivetrain.setTeleDrive();
     Limelight.setPipeline(Pipeline.PIPELINE0);
+    Limelight.setCamMode(CamMode.VISION_CAM);
   }
 
   /**
