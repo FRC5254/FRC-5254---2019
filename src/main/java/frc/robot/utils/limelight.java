@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 /**
- * Add your docs here.
+ * Limelight class for calling limelight comands
  */
 public class Limelight {
 
