@@ -10,6 +10,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.utils.Limelight;
+import frc.robot.utils.Limelight.CamMode;
+import frc.robot.utils.Limelight.Pipeline;
 
 public class DrivetrainLineUp2 extends Command {
   public DrivetrainLineUp2() {
@@ -20,6 +23,8 @@ public class DrivetrainLineUp2 extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Limelight.setCamMode(CamMode.VISION_CAM);
+    Limelight.setSnapshotMode(Limelight.SnapshotMode.TWO_PER_SECOND);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -40,6 +45,9 @@ public class DrivetrainLineUp2 extends Command {
   @Override
   protected void end() {
     Robot.drivetrain.setLeftRightSpeeds(0.0, 0.0);
+    SmartDashboard.putNumber("lastvertical", Limelight.getVerticalOffset());
+    Limelight.setSnapshotMode(Limelight.SnapshotMode.TWO_PER_SECOND);
+
   }
 
   // Called when another command which requires one or more of the same

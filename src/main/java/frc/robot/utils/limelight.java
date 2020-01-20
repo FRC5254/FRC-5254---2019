@@ -10,10 +10,11 @@ package frc.robot.utils;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 /**
- * Add your docs here.
+ * Limelight class for calling limelight comands
  */
 public class Limelight {
 
@@ -221,6 +222,7 @@ public class Limelight {
     * @param mode The LED Mode to set on the Limelight
     */
     public static void setCamMode(CamMode mode) {
+        SmartDashboard.putString("Test cam mode", mode.name());
         if (mode != CamMode.UNKNOWN) {
             setValue("camMode", mode.value);
         }

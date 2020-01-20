@@ -216,13 +216,14 @@ public class Drivetrain extends Subsystem {
     SmartDashboard.putNumber("LineUp Left", zoom + adjust);
     SmartDashboard.putNumber("LineUp Right", zoom - adjust);
 
+    
     sLeft1.set(zoom + adjust);
     sRight1.set(zoom - adjust);
   }
   
   public boolean LineUpIsFinished() {
     double veroff = Limelight.getVerticalOffset();
-    return veroff < 8; // 9?
+    return veroff < 7; // was 8
   }
   public double getAngle() {
     return gyro.getAngle();
@@ -247,12 +248,12 @@ public class Drivetrain extends Subsystem {
   }
 
   public void setDisabledDrive() {
-    sLeft1.setIdleMode(IdleMode.kCoast);
-    sLeft2.setIdleMode(IdleMode.kCoast);
-    sLeft3.setIdleMode(IdleMode.kCoast);
-    sRight1.setIdleMode(IdleMode.kCoast);
-    sRight2.setIdleMode(IdleMode.kCoast);
-    sRight3.setIdleMode(IdleMode.kCoast);
+    sLeft1.setIdleMode(IdleMode.kBrake);
+    sLeft2.setIdleMode(IdleMode.kBrake);
+    sLeft3.setIdleMode(IdleMode.kBrake);
+    sRight1.setIdleMode(IdleMode.kBrake);
+    sRight2.setIdleMode(IdleMode.kBrake);
+    sRight3.setIdleMode(IdleMode.kBrake);
   }
 
   public void reset() {

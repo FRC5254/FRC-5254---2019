@@ -44,7 +44,7 @@ public class HXboxController extends Joystick {
     }
 
     static enum XboxDpad {
-        UNPRESSED(-1), UP(1), UP_RIGHT(45), RIGHT(90), DOWN_RIGHT(135), DOWN (180),
+        UNPRESSED(-1), UP(0), UP_RIGHT(45), RIGHT(90), DOWN_RIGHT(135), DOWN (180),
         DOWN_LEFT(225), LEFT(270), UP_LEFT(315);
 
         final int value;
